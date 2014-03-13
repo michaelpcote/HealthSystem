@@ -32,10 +32,10 @@ public class FillDatabase {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
-    				statement.executeUpdate("INSERT INTO condition_types ( cid, description ) VALUES ( 1, 'HIV' )");
-    				statement.executeUpdate("INSERT INTO condition_types ( cid, description ) VALUES ( 2, 'Obesity' )");
-    				statement.executeUpdate("INSERT INTO condition_types ( cid, description ) VALUES ( 3, 'High Risk Pregnancy' )");
-    				statement.executeUpdate("INSERT INTO condition_types ( cid, description ) VALUES ( 4, 'COPD' )");
+    				statement.executeUpdate("INSERT INTO condition_types ( description ) VALUES ( 'HIV' )");
+    				statement.executeUpdate("INSERT INTO condition_types ( description ) VALUES ( 'Obesity' )");
+    				statement.executeUpdate("INSERT INTO condition_types ( description ) VALUES ( 'High Risk Pregnancy' )");
+    				statement.executeUpdate("INSERT INTO condition_types ( description ) VALUES ( 'COPD' )");
             	} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {
@@ -70,9 +70,9 @@ public class FillDatabase {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
-    				statement.executeUpdate("INSERT INTO observation_categories ( ocid, description ) VALUES ( 1, 'Behavioral' )");
-    				statement.executeUpdate("INSERT INTO observation_categories ( ocid, description ) VALUES ( 2, 'Physiological' )");
-    				statement.executeUpdate("INSERT INTO observation_categories ( ocid, description ) VALUES ( 3, 'Psychological' )");
+    				statement.executeUpdate("INSERT INTO observation_categories ( description ) VALUES ( 'Behavioral' )");
+    				statement.executeUpdate("INSERT INTO observation_categories ( description ) VALUES ( 'Physiological' )");
+    				statement.executeUpdate("INSERT INTO observation_categories ( description ) VALUES ( 'Psychological' )");
     			} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {
@@ -107,16 +107,16 @@ public class FillDatabase {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 1, 1, 'Diet' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 2, 1, 'Weight' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 3, 1, 'Exercise' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 4, 2, 'Blood Pressure' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 5, 2, 'Exercise Tolerance' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 6, 2, 'Oxygen Saturation' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 7, 2, 'Pain' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 8, 3, 'Mood' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 9, 3, 'Contraction' )");
-    				statement.executeUpdate("INSERT INTO category_types ( type_id, ocid, description ) VALUES ( 10, 3, 'Temperature' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Diet' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Weight' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Exercise' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Blood Pressure' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Exercise Tolerance' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Oxygen Saturation' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Pain' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Mood' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Contraction' )");
+    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Temperature' )");
     			} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {

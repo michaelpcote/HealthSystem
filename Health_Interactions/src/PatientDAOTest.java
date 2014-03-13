@@ -18,9 +18,10 @@ public class PatientDAOTest {
 		patient.setAddress("1409 Kennon Road");
 		patient.setCity("Garner");
 		patient.setState("NC");
+		patient.setZip("27529");
 		patient.setFname("Michael");
 		patient.setLname("Cote'");
-		patient.setSex("Male");
+		patient.setSex(1);
 		patient.setDob("1979-03-03");
 		patient.setPublicStatus("yes");
 	}

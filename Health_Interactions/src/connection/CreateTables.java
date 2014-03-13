@@ -20,7 +20,11 @@ public class CreateTables {
     				
     				//DEPENDENT TABLES
     				//These have to be dropped first
-    				
+    				statement.executeUpdate("DROP TRIGGER observations_trigger");
+					statement.executeUpdate("DROP TRIGGER cat_type_trigger");
+    				statement.executeUpdate("DROP TRIGGER obs_categories_trigger");
+					statement.executeUpdate("DROP TRIGGER conditions_trigger");
+					statement.executeUpdate("DROP TRIGGER patient_trigger");
     				statement.executeUpdate("DROP TABLE health_supporter");
     				statement.executeUpdate("DROP TABLE health_friends");
     				statement.executeUpdate("DROP TABLE temperature");
@@ -39,8 +43,12 @@ public class CreateTables {
     				statement.executeUpdate("DROP TABLE category_types");
     				
     				//INDEPENDENT TABLES TO DROP
+    				statement.executeUpdate("DROP SEQUENCE observations_seq");
+					statement.executeUpdate("DROP SEQUENCE cat_type_seq");
+    				statement.executeUpdate("DROP SEQUENCE observation_categories_seq");
+					statement.executeUpdate("DROP SEQUENCE conditions_cid_seq");
     				statement.executeUpdate("DROP TABLE health_supporter_type");
-					statement.executeUpdate("DROP SEQUENCE patient_pid_seq");
+					statement.executeUpdate("DROP SEQUENCE patients_pid_seq");
     				statement.executeUpdate("DROP TABLE sex");
     				statement.executeUpdate("DROP TABLE condition_types");
     				statement.executeUpdate("DROP TABLE observation_categories");
@@ -69,26 +77,40 @@ public class CreateTables {
 						"CHECK ( public_status = 'yes' OR public_status = 'no' )"+
 					")");
 					
-					statement.executeUpdate("CREATE SEQUENCE patient_pid_seq "+
+					statement.executeUpdate("CREATE SEQUENCE patients_pid_seq "+
 							"START WITH 1 "+
 							"INCREMENT BY 1"); 
-						
-						/*
-						statement.executeUpdate("DROP TRIGGER patient_trigger");
-						statement.executeUpdate("CREATE TRIGGER sex_trigger "+
-								"BEFORE INSERT ON patient "+
-								"FOR EACH ROW "+
-								"WHEN :new.sex_id IS NULL " +
-								"UPDATE :new.sex_id = sex_id_seq.nextval");
-						*/
-						
-						 
 					
+					
+					statement.executeUpdate("CREATE TRIGGER patient_trigger "+
+								"BEFORE INSERT ON patients "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.pid IS NULL THEN "+
+								"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
+								"END IF; " +
+								"END;");
+						
 					statement.executeUpdate("CREATE TABLE condition_types ("+
 						"cid int,"+
 						"description VARCHAR(100),"+
 						"PRIMARY KEY( cid )"+
 					")");
+					
+					statement.executeUpdate("CREATE SEQUENCE conditions_cid_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE TRIGGER conditions_trigger "+
+								"BEFORE INSERT ON condition_types "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.cid IS NULL THEN "+
+								"SELECT conditions_cid_seq.nextval INTO :new.cid FROM DUAL; "+
+								"END IF; " +
+								"END;");
+					
 					
 					statement.executeUpdate("CREATE Table patient_conditions ("+
 						"pid NUMBER(19),"+
@@ -98,11 +120,26 @@ public class CreateTables {
 						"FOREIGN KEY (cid) REFERENCES condition_types (cid)"+
 					")");
 					
+					
 					statement.executeUpdate("CREATE TABLE observation_categories ("+
-						"ocid NUMBER(3),"+
+						"ocid int,"+
 						"description VARCHAR(50),"+
 						"PRIMARY KEY(ocid)"+
 					")");
+					
+					
+					statement.executeUpdate("CREATE SEQUENCE observation_categories_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					statement.executeUpdate("CREATE TRIGGER obs_categories_trigger "+
+								"BEFORE INSERT ON observation_categories "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.ocid IS NULL THEN "+
+								"SELECT observation_categories_seq.nextval INTO :new.ocid FROM DUAL; "+
+								"END IF; " +
+								"END;");
 						
 					statement.executeUpdate("CREATE TABLE category_types ("+
 						"type_id int,"+
@@ -111,6 +148,21 @@ public class CreateTables {
 						"PRIMARY KEY (type_id),"+
 						"FOREIGN KEY (ocid) REFERENCES Observation_Categories(ocid)"+
 					")");
+					
+					
+					statement.executeUpdate("CREATE SEQUENCE cat_type_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE TRIGGER cat_type_trigger "+
+								"BEFORE INSERT ON category_types "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.type_id IS NULL THEN "+
+								"SELECT cat_type_seq.nextval INTO :new.type_id FROM DUAL; "+
+								"END IF; " +
+								"END;");
 				
 					
 					statement.executeUpdate("CREATE TABLE observations ("+
@@ -127,6 +179,21 @@ public class CreateTables {
 						"FOREIGN KEY (ocid) REFERENCES observation_categories(ocid),"+
 						"FOREIGN KEY (type_id) REFERENCES category_types(type_id)"+
 					")");
+					
+					
+					statement.executeUpdate("CREATE SEQUENCE observations_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE TRIGGER observations_trigger "+
+								"BEFORE INSERT ON observations "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.oid IS NULL THEN "+
+								"SELECT observations_seq.nextval INTO :new.oid FROM DUAL; "+
+								"END IF; " +
+								"END;");
 						
 					statement.executeUpdate("CREATE TABLE diet ("+
 						"oid NUMBER(19),"+
