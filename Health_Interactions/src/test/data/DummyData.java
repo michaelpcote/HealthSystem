@@ -20,13 +20,13 @@ import beans.Weight;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		//addPatients();
-		//addPatientConditions();
-		//addPatientDietObservations();
-		//addPatientWeightObservations();
-		//addPatientExerciseObservations();
-		//addPatientBloodPressureObservations();
-		//addOxygenSaturationObservations();
+		addPatients();
+		addPatientConditions();
+		addPatientDietObservations();
+		addPatientWeightObservations();
+		addPatientExerciseObservations();
+		addPatientBloodPressureObservations();
+		addOxygenSaturationObservations();
 		addPatientExerciseToleranceObservations();
 		addPainObservations();
 		addContractionObservations();
