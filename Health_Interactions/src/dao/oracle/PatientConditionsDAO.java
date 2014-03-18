@@ -35,10 +35,10 @@ public class PatientConditionsDAO {
 	}
 	
 	/**
-	 * Get a list of all possible patient conditions
+	 * Get a list of all possible patient condition types
 	 * @return
 	 */
-	public List<PatientConditions> getAllConditions() {
+	public static List<PatientConditions> getAllConditionTypes() {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -61,17 +61,21 @@ public class PatientConditionsDAO {
 		return conditions;
 	}
 	
-	
-	public List<Patient> getAllPatientsWithCondition(int condition) {
+	/**
+	 * Get a list of all patients with a given condition type
+	 * @param condition
+	 * @return
+	 */
+	public static List<Patient> getAllPatientsWithCondition(int condition) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 		try {
 			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement("SELECT pid, fname, lname, address, city, state"+
-					"zip, dob, sex, public_status FROM patients p, patient_conditions pc"+
-					"where p.pid = patient_conditions.pid and patient_conditions.cid = ?");
+			ps = conn.prepareStatement("SELECT p.pid, p.fname, p.lname, p.address, p.city, p.state, "+
+					"p.zip, p.dob, p.sex, p.public_status FROM patients p, patient_conditions pc "+
+					"where p.pid = pc.pid and pc.cid = ?");
 			ps.setInt(1, condition);
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
@@ -95,4 +99,45 @@ public class PatientConditionsDAO {
 		}
 		return patients;
 	}
+	
+	/**
+	 * This will add a new type of condition that it is possible to diagnosis a patient with.
+	 * @param description - The name of the new condition to add
+	 */
+	public static void addNewCondition(String description) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement("INSERT INTO condition_types ( description ) VALUES ( ? )");
+			ps.setString( 1, description );
+			ps.execute();
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+	}
+	
+	/**
+	 * This method will create a new relationship between a Condition type and a observation type
+	 * @param cid - The condition type
+	 * @param type_id - The observation type to connect to the condition
+	 */
+	public static void addNewConditionObservationInteraction( int cid, int type_id ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( ?, ? )");
+			ps.setInt( 1, cid );
+			ps.setInt( 2, type_id );
+			ps.execute();
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+	}
+	
 }

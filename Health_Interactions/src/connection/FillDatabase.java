@@ -14,9 +14,10 @@ public class FillDatabase {
 	public static void main(String[] args) {
 		addConditions();
 		addObservationCategories();
-		addCategoryTypes();
+		addObservationTypes();
 		addSex();
-		
+		addConditionCategoryRelationships();
+		System.out.println("Database tables inserted");
 	}
 	
 	private static void addConditions() {
@@ -94,7 +95,7 @@ public class FillDatabase {
 		}
 	}
 	
-	private static void addCategoryTypes() {
+	private static void addObservationTypes() {
 		try {
             // Register JDBC Driver (Oracle Thin)
             Connection connection = null;
@@ -107,16 +108,57 @@ public class FillDatabase {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Diet' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Weight' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 1, 'Exercise' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Blood Pressure' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Exercise Tolerance' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Oxygen Saturation' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 2, 'Pain' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Mood' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Contraction' )");
-    				statement.executeUpdate("INSERT INTO category_types ( ocid, description ) VALUES ( 3, 'Temperature' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Diet' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Weight' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Exercise' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Blood Pressure' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Exercise Tolerance' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Oxygen Saturation' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Pain' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 3, 'Mood' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Contraction' )");
+    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Temperature' )");
+    			} catch(SQLException e) {
+            		e.printStackTrace();
+        		} catch(Exception e) {
+            		e.printStackTrace();
+       	 	} finally {
+				// Close resultSet, statement and connection.
+				try{
+	                if(statement!=null)
+	                				statement.close();
+					if(connection!=null)
+	                				connection.close();
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+        	}
+    	}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private static void addConditionCategoryRelationships() {
+		try {
+            // Register JDBC Driver (Oracle Thin)
+            Connection connection = null;
+            Statement statement = null;
+            
+            	try {
+            		// Get a connection to the specified JDBC URL.
+    				connection = JDBCConnection.getConnection();
+                    
+    		 		// Create a Statement object for sending SQL statements to the database.
+    				// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    				statement = connection.createStatement();
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 1, 10 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 2, 4 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 3, 4 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 3, 7 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 3, 9 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 4, 5 )");
+    				statement.executeUpdate("INSERT INTO cond_obser_relationships ( cid, type_id ) VALUES ( 4, 6 )");
     			} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {

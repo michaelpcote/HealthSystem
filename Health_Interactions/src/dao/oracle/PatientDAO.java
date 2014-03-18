@@ -1,12 +1,15 @@
 package dao.oracle;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.Diet;
+import beans.ObservationTypes;
 import beans.Patient;
 import connection.JDBCConnection;
 
@@ -37,7 +40,7 @@ public class PatientDAO {
 		}
 	}
 	
-	public List<Patient> viewAllPatients() {
+	public static List<Patient> viewAllPatients() {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -59,7 +62,7 @@ public class PatientDAO {
 	 * Creates a list of Patient
 	 * @return the list
 	 */
-	public List<Patient> loadPatients(ResultSet rs) throws SQLException {
+	public static List<Patient> loadPatients(ResultSet rs) throws SQLException {
 		ArrayList<Patient> list = new ArrayList<Patient>();
 		while (rs.next()) {
 			list.add(loadSinglePatient(rs));
@@ -72,9 +75,9 @@ public class PatientDAO {
 	 * Used with conjunction of loadList, this helps build the list by building a single line of the
 	 * ResultSet into a Bean
 	 */
-	public Patient loadSinglePatient(ResultSet rs) throws SQLException {
+	public static Patient loadSinglePatient(ResultSet rs) throws SQLException {
 		Patient patient = new Patient();
-		patient.setPid(rs.getInt("address"));
+		patient.setPid(rs.getInt("pid"));
 		patient.setFname(rs.getString("fname"));
 		patient.setLname(rs.getString("lname"));
 		patient.setAddress(rs.getString("address"));
@@ -102,10 +105,33 @@ public class PatientDAO {
 		ps.setString(i++, patient.getCity());
 		ps.setString(i++, patient.getState());
 		ps.setString(i++, patient.getZip());
-		ps.setDate(i++, patient.getDob());
+		ps.setDate(i++, (Date) patient.getDob());
 		ps.setInt(i++, patient.getSex());
 		ps.setString(i++, patient.getPublicStatus());
-		ps.executeUpdate();
+		//ps.executeUpdate();
 		return ps;
 	}
+
+	public Patient getPatient(int i) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement("SELECT * FROM patients where pid = ?");
+			ps.setDouble( 1, i );
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				return loadSinglePatient(rs);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+		}
+		return null;
+	}
+	
+	
+	
 }

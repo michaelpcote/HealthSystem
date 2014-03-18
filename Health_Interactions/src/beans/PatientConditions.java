@@ -8,6 +8,11 @@ public class PatientConditions {
 	 * An empty constructor
 	 */
 	public PatientConditions() {
+		
+	}
+	
+	public PatientConditions( String description ) {
+		this.description = description;
 	}
 
 	/**
