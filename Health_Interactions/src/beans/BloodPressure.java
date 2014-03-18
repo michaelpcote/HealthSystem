@@ -12,6 +12,10 @@ public class BloodPressure {
 		type_id = 4;
 	}
 
+	public BloodPressure() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return the systolic
 	 */
