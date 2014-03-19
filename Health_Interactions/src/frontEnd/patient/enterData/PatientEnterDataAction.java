@@ -1,4 +1,4 @@
-package frontEnd;
+package frontEnd.patient.enterData;
 
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -68,18 +68,23 @@ public class PatientEnterDataAction {
 			//TODO ERROR CHECK ANS AGAINST VALUE
 			values.put(fields[i], ans);
 		}
+		scan.close();
 		updateDB();
 	}
 
-
+	/**
+	 * Adds to the database a "obsChoice" observation type using "values" as the
+	 * fields to add.
+	 */
 	private void updateDB() {
-		// use values to update db using cote method
 		// TODO Auto-generated method stub
-		
 	}
 
+	/**
+	 * Returns a string array of the fields needed to be entered for "obsChoice"
+	 * @return
+	 */
 	private String[] getObsFields() {
-		// use obschoice and cote method to get fields
 		// TODO Auto-generated method stub
 		return null;
 	}
