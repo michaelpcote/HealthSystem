@@ -307,6 +307,7 @@ public class CreateTables {
 					statement.executeUpdate("CREATE TABLE alerts ("+
 							"oid NUMBER(19),"+
 							"alert_date date,"+
+							"viewed int,"+
 							"alert_active int,"+
 							"PRIMARY KEY ( oid ),"+
 							"FOREIGN KEY ( oid ) REFERENCES observations ( oid )"+

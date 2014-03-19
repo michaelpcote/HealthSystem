@@ -31,6 +31,7 @@ public class DummyData {
 		addPainObservations();
 		addContractionObservations();
 		addTemperatureObservations();
+		addLotsOfPatientBloodPressureObservations();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -181,6 +182,23 @@ public class DummyData {
 				ObservationDAO.addBloodPressureObservation(patient, o, bp);
 				System.out.println( String.valueOf(i) + " blood pressure observation");
 			}
+		}
+	}
+	
+	public static void addLotsOfPatientBloodPressureObservations() {
+		PatientDAO pdao = new PatientDAO();
+		Patient patient = new Patient();
+		patient = pdao.getPatient( 8 );
+		for ( int i = 1; i <= 20; i++ ) {
+			Observation o = new Observation();
+			Date date = Date.valueOf("2014-05-16");
+			date.setMonth(-i);
+			o.setDate_Observed(date);
+			o.setHours(23);
+			o.setMinutes(47);
+			BloodPressure bp = new BloodPressure( 100 + 2*i, 70 + i);
+			ObservationDAO.addBloodPressureObservation(patient, o, bp);
+			System.out.println( String.valueOf(i) + " blood pressure observation");
 		}
 	}
 	
