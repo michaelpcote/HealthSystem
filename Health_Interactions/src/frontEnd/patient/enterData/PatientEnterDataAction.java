@@ -77,7 +77,7 @@ public class PatientEnterDataAction {
 	 * fields to add.
 	 */
 	private void updateDB() {
-		// TODO Auto-generated method stub
+		//TODO link with cote
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class PatientEnterDataAction {
 	 * @return
 	 */
 	private String[] getObsFields() {
-		// TODO Auto-generated method stub
+		// TODO link with cote
 		return null;
 	}
 
@@ -94,7 +94,7 @@ public class PatientEnterDataAction {
 	 * @return String[]
 	 */
 	private String[] getObservationTypes() {
-		// TODO Auto-generated method stub
+		// TODO link with cote
 		return null;
 	}
 	
