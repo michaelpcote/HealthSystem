@@ -108,16 +108,30 @@ public class FillDatabase {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Diet' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Weight' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 1, 'Exercise' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Blood Pressure' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Exercise Tolerance' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Oxygen Saturation' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Pain' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 3, 'Mood' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Contraction' )");
-    				statement.executeUpdate("INSERT INTO observation_types ( ocid, description ) VALUES ( 2, 'Temperature' )");
+    				String insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Diet', 'What  was  consumed, amount'";
+    				insert += ", '0')";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Weight', 'Amount', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Exercise', 'What kind, duration', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Blood Pressure', 'Systolic, Diastolic', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Exercise Tolerance', 'Number of steps before";  
+    				insert += "exhaustion', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Oxygen Saturation', 'Amount', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Pain', 'Scale [1-10]', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 3, 'Mood', 'One of the values ";
+    				insert += "{Happy, Sad, Neutral}', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Contraction', 'Frequency - #per ";
+    				insert += "half hour', '0' )";
+    				statement.executeUpdate(insert);
+    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Temperature', 'Amount', '0' )";
+    				statement.executeUpdate(insert);
     			} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {

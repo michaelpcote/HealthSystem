@@ -14,7 +14,24 @@ public class Patient {
 	Date dob = null;
 	int sex = -1;
 	String publicStatus = null;
+	String password = null;
 	
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public Patient() {
 	}
 

@@ -20,9 +20,9 @@ import beans.Weight;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		addPatients();
-		addPatientConditions();
-		addPatientDietObservations();
+		//addPatients();
+		//addPatientConditions();
+		//addPatientDietObservations();
 		addPatientWeightObservations();
 		addPatientExerciseObservations();
 		addPatientBloodPressureObservations();
@@ -50,6 +50,7 @@ public class DummyData {
 			} else {
 				patient.setPublicStatus("no");
 			}
+			patient.setPassword(String.valueOf(i));
 			patient.setAddress("1409 Kennon Road");
 			patient.setState("NC");
 			patient.setZip("27529");

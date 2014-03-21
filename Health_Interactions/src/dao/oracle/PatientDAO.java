@@ -29,8 +29,8 @@ public class PatientDAO {
 		PreparedStatement ps = null;
 		try {
 			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement("INSERT INTO patients ( fname, lname, address, city, state, zip," +
-					" dob, sex, public_status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+			ps = conn.prepareStatement("INSERT INTO patients ( password, fname, lname, address, city, state, zip," +
+					" dob, sex, public_status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 			ps = loadParameters( ps, patient );
 			ps.execute();
 		} catch (SQLException e) {
@@ -78,6 +78,7 @@ public class PatientDAO {
 	public static Patient loadSinglePatient(ResultSet rs) throws SQLException {
 		Patient patient = new Patient();
 		patient.setPid(rs.getInt("pid"));
+		patient.setPassword(rs.getString("password"));
 		patient.setFname(rs.getString("fname"));
 		patient.setLname(rs.getString("lname"));
 		patient.setAddress(rs.getString("address"));
@@ -99,6 +100,7 @@ public class PatientDAO {
 	 */
 	private PreparedStatement loadParameters(PreparedStatement ps, Patient patient) throws SQLException {
 		int i = 1;
+		ps.setString(i++, patient.getPassword());
 		ps.setString(i++, patient.getFname());
 		ps.setString(i++, patient.getLname());
 		ps.setString(i++, patient.getAddress());

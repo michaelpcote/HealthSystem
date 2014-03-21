@@ -20,7 +20,9 @@ public class CreateTables {
     				
     				//DEPENDENT TABLES
     				//These have to be dropped first
-    				statement.executeUpdate("DROP TABLE alerts");
+    				statement.executeUpdate("DROP TABLE doctor_ob_types"); 
+					statement.executeUpdate("DROP TABLE patient_ob_types"); 
+					statement.executeUpdate("DROP TABLE alerts");
     				statement.executeUpdate("DROP TABLE cond_obser_relationships");
 					statement.executeUpdate("DROP TRIGGER observations_trigger");
 					statement.executeUpdate("DROP TRIGGER cat_type_trigger");
@@ -45,6 +47,7 @@ public class CreateTables {
     				statement.executeUpdate("DROP TABLE observation_types");
     				
     				//INDEPENDENT TABLES TO DROP
+    				statement.executeUpdate("DROP SEQUENCE patient_ob_type_seq");
     				statement.executeUpdate("DROP SEQUENCE observations_seq");
 					statement.executeUpdate("DROP SEQUENCE cat_type_seq");
     				statement.executeUpdate("DROP SEQUENCE observation_categories_seq");
@@ -66,6 +69,7 @@ public class CreateTables {
 					
 					statement.executeUpdate("CREATE TABLE patients ("+
 						"pid NUMBER(19),"+
+						"password varchar(50) NOT NULL,"+
 						"fname VARCHAR(30) NOT NULL,"+
 						"lname VARCHAR(30) NOT NULL,"+
 						"address VARCHAR(150) NOT NULL,"+
@@ -151,6 +155,8 @@ public class CreateTables {
 						"type_id int,"+
 						"ocid NUMBER(3),"+
 						"description VARCHAR(50) NOT NULL,"+
+						"additional_info varchar(250),"+
+						"doctor_created int DEFAULT '1',"+
 						"PRIMARY KEY (type_id),"+
 						"FOREIGN KEY (ocid) REFERENCES Observation_Categories(ocid)"+
 					")");
@@ -222,6 +228,7 @@ public class CreateTables {
 						
 					statement.executeUpdate("CREATE TABLE exercise ("+
 						"oid NUMBER(19),"+
+						"exercise_type varchar(50),"+
 						"minutes int,"+
 						"PRIMARY KEY (oid),"+
 						"FOREIGN KEY (oid) REFERENCES observations(oid)"+
@@ -313,7 +320,46 @@ public class CreateTables {
 							"FOREIGN KEY ( oid ) REFERENCES observations ( oid )"+
 						")");
 					
-            	} catch(SQLException e) {
+					statement.executeUpdate("CREATE TABLE patient_ob_types ("+
+							"table_id NUMBER(19),"+
+							"pid NUMBER(19),"+
+							"ocid NUMBER(3),"+
+							"table_name varchar(50),"+
+							"display_name varchar(50),"+
+							"additional_info varchar(250),"+
+							"number_of_columns int,"+
+							"column_names_types varchar(300),"+
+							"value_choices varchar(300),"+
+							"PRIMARY KEY ( table_id ),"+
+							"FOREIGN KEY ( pid ) REFERENCES patients ( pid )"+
+						")");
+					
+					
+					statement.executeUpdate("CREATE SEQUENCE patient_ob_type_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER patient_ob_type_trigger "+
+								"BEFORE INSERT ON patient_ob_types "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.table_id IS NULL THEN "+
+								"SELECT patient_ob_type_seq.nextval INTO :new.table_id FROM DUAL; "+
+								"END IF; " +
+								"END;");
+					
+					statement.executeUpdate("CREATE TABLE doctor_ob_types ("+
+							"type_id int,"+
+							"table_name varchar(50),"+
+							"display_name varchar(50),"+
+							"number_of_columns int,"+
+							"column_names_types varchar(300),"+
+							"value_choices varchar(300) DEFAULT '',"+
+							"PRIMARY KEY ( type_id ),"+
+							"FOREIGN KEY ( type_id ) REFERENCES observation_types ( type_id )"+
+						")");
+					
+				} catch(SQLException e) {
             		e.printStackTrace();
         		} catch(Exception e) {
             		e.printStackTrace();
