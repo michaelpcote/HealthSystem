@@ -15,331 +15,324 @@ import connection.JDBCConnection;
 public class ObservationReportsDAO {
 
 	/**
-	 * Find the average calories consumed for a variable number of patient conditions
+	 * Find the average of an integer column
+	 * @param ot - An observation type - should have an integer
 	 * @param patient_conditions takes a variable number of integers representing observation types
-	 * @return an int - the average
+	 * @return an String - it will return the name of the column that is an int and the value like
+	 * "colname:value,colname:value" one column and value for each integer column
 	 */
-	public static int dietAverageAmount(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int avgCalories = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(d.calories) AS avg FROM diet d, observations o, patient_conditions pc WHERE ";
-		query += "d.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgCalories = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return avgCalories;
-	}
-	
-	/**
-	 * Find the average weight based on patient_conditions
-	 * @param patient_conditions - a variable number of observation types
-	 * @return an int
-	 */
-	
-	public static int weightAverage(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int avgWeight = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(w.weight) AS avg FROM weight w, observations o, patient_conditions pc WHERE ";
-		query += "w.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgWeight = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return avgWeight;
-	}
-	
-	/**
-	 * The average exercise time for a variable number of patient conditions
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static int exerciseAvgTime(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(e.minutes) AS avg FROM exercise e, observations o, patient_conditions pc WHERE ";
-		query += "e.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return avgTime;
-	}
-	
-	/**
-	 * Get the average blood pressure for a variable number of patient conditions
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static String bloodPressureAvg(int ... patient_conditions) {
+	public static String averageAmount(ObservationType ot, int ... patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
 			return null;
 		}
-		int avgDiastolic = 0;
-		int avgSystolic = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(bp.diastolic) AS avgD, AVG(bp.systolic) AS avgS FROM blood_pressure bp, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
+		String averages = "";
+		String database = ot.getTable_name();
+		String types[] = parseColumnTypes( ot.getColumn_names_types());
+		String names[] = parseColumnNames( ot.getColumn_names_types());
+		boolean first = true;
+		for ( int i = 0; i < types.length; i++ ) {
+			if ( types[i].equals("int")) {
+				int avg = -1;
+				String name = names[i];
+				if ( first ) {
+					averages += name;
+					first = false;
+				} else {
+					averages += ","+name;
+				}
+				Connection conn = null;
+				PreparedStatement ps = null;
+				ResultSet rs = null;
+				String query = "SELECT AVG(u."+name+") AS avg FROM " + database + " u";
+				query += ", observations o, patient_conditions pc WHERE ";
+				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ? ";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				try {
+					conn = JDBCConnection.getConnection();
+					ps = conn.prepareStatement(query);
+					for ( int j = 0; j < patient_conditions.length; j++ ) {
+						ps.setInt( (j + 1), patient_conditions[j]);
+					}
+					rs = ps.executeQuery();
+					if ( rs.next() ) {
+						avg = rs.getInt("avg");
+					}
+					averages += ":"+avg;
+				} catch (SQLException e) {
+					System.out.println(e.toString());
+				} finally {
+					JDBCConnection.closeConnection(conn, ps, rs);
+				}
 			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgDiastolic = rs.getInt("avgD");
-				avgSystolic = rs.getInt("avgS");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return avgSystolic+"/"+avgDiastolic;
+		return averages;
 	}
 	
 	/**
-	 * Avg exercise tolerance for a given number of patient conditions
+	 * Select the lowest weight by observation types
 	 * @param patient_conditions
 	 * @return
 	 */
-	public static int exerciseToleranceAvg(int ... patient_conditions) {
+	public static String lowestAmount(ObservationType ot, int ... patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
-			return -1;
+			return null;
 		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(et.steps) AS avg FROM exercise_tolerance et, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
+		String lowest = "";
+		String database = ot.getTable_name();
+		String types[] = parseColumnTypes( ot.getColumn_names_types());
+		String names[] = parseColumnNames( ot.getColumn_names_types());
+		boolean first = true;
+		for ( int i = 0; i < types.length; i++ ) {
+			if ( types[i].equals("int")) {
+				int min = -1;
+				String name = names[i];
+				if ( first ) {
+					lowest += name;
+					first = false;
+				} else {
+					lowest += ","+name;
+				}
+				Connection conn = null;
+				PreparedStatement ps = null;
+				ResultSet rs = null;
+				String query = "SELECT MIN(u."+name+") AS minimum FROM " + database + " u";
+				query += ", observations o, patient_conditions pc WHERE ";
+				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				try {
+					conn = JDBCConnection.getConnection();
+					ps = conn.prepareStatement(query);
+					for ( int j = 0; j < patient_conditions.length; j++ ) {
+						ps.setInt( (j + 1), patient_conditions[j]);
+					}
+					rs = ps.executeQuery();
+					if ( rs.next() ) {
+						min = rs.getInt("minimum");
+					}
+					lowest += ":"+min;
+				} catch (SQLException e) {
+					System.out.println(e.toString());
+				} finally {
+					JDBCConnection.closeConnection(conn, ps, rs);
+				}
 			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return avgTime;
+		return lowest;
+	}
+	
+	public static String highestAmount(ObservationType ot, int ... patient_conditions) {
+		if ( patient_conditions.length == 0 ) {
+			return null;
+		}
+		String highest = "";
+		String database = ot.getTable_name();
+		String types[] = parseColumnTypes( ot.getColumn_names_types());
+		String names[] = parseColumnNames( ot.getColumn_names_types());
+		boolean first = true;
+		for ( int i = 0; i < types.length; i++ ) {
+			if ( types[i].equals("int")) {
+				int max = -1;
+				String name = names[i];
+				if ( first ) {
+					highest += name;
+					first = false;
+				} else {
+					highest += ","+name;
+				}
+				Connection conn = null;
+				PreparedStatement ps = null;
+				ResultSet rs = null;
+				String query = "SELECT MAX(u."+name+") AS maximum FROM " + database + " u";
+				query += ", observations o, patient_conditions pc WHERE ";
+				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				try {
+					conn = JDBCConnection.getConnection();
+					ps = conn.prepareStatement(query);
+					for ( int j = 0; j < patient_conditions.length; j++ ) {
+						ps.setInt( (j + 1), patient_conditions[j]);
+					}
+					rs = ps.executeQuery();
+					if ( rs.next() ) {
+						max = rs.getInt("maximum");
+					}
+					highest += ":"+max;
+				} catch (SQLException e) {
+					System.out.println(e.toString());
+				} finally {
+					JDBCConnection.closeConnection(conn, ps, rs);
+				}
+			}
+		}
+		return highest;
 	}
 	
 	/**
-	 * Average oxygen based on a variable number of patient conditions
+	 * Get a list of patients that have a number equal to the highest number of a column given a 
+	 * variable number of patient conditions. If the observation type that is passed in has two 
+	 * integer columns, then the list will contain patients that have the highest of one or the other.
+	 * If the same person has the highest in both columns, only a single patient will be returned.
 	 * @param patient_conditions
-	 * @return
+	 * @return List of patients with that blood pressure
 	 */
-	public static int oxygenSaturationAvg(int ... patient_conditions) {
+	public static List<Patient> getPatientsWithHighest(ObservationType ot, int ... patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
-			return -1;
+			return null;
 		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(os.amount) AS avg FROM oxygen_saturation os, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
+		String database = ot.getTable_name();
+		String types[] = parseColumnTypes( ot.getColumn_names_types());
+		String names[] = parseColumnNames( ot.getColumn_names_types());
+		List<Patient> patients = null;
+		for ( int i = 0; i < types.length; i++ ) {
+			if ( types[i].equals("int")) {
+				Connection conn = null;
+				PreparedStatement ps = null;
+				ResultSet rs = null;
+				String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status, "+ 
+							   "p.password FROM patients p, "+ database + " u, observations o, patient_conditions pc WHERE ";
+				query += "o.oid = u.oid AND o.pid = p.pid AND p.pid = pc.pid AND ";
+				if ( patients != null && patients.size() != 0 ) {
+					query += "( p.pid <> ? ";
+					if ( patients.size() > 1 ) {
+						for ( int j = 1; j < patients.size(); j++ ) {
+							query += "AND p.pid <> ? ";
+						}
+					}
+					query += ") AND ";
+				}
+				query += "( pc.cid = ? ";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				query += ") AND (u."+names[i]+") = ";
+				query += "(SELECT MAX( u2."+names[i]+" ) FROM "+ database+" u2, ";
+				query += "observations o2, patient_conditions pc WHERE ";
+				query += "u2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				query += ") )";
+				try {
+					conn = JDBCConnection.getConnection();
+					ps = conn.prepareStatement(query);
+					int index = 1;
+					if ( patients != null && patients.size() != 0 ) {
+						for ( int j = 0; j < patients.size(); j++ ) {
+							ps.setDouble(index++, patients.get(j).getPid());
+						}
+					}
+					for ( int j = 0; j < (patient_conditions.length ); j++ ) {
+						ps.setInt( index++, patient_conditions[j]);
+					}
+					for ( int j = patient_conditions.length; j < (patient_conditions.length * 2); j++ ) {
+						ps.setInt( index++, patient_conditions[j - patient_conditions.length]);
+					}
+					rs = ps.executeQuery();
+					if ( patients == null ) {
+						patients = PatientDAO.loadPatients(rs);
+					} else {
+						List<Patient> temp = PatientDAO.loadPatients(rs);
+						for ( int j = 0; j < temp.size(); j++ ) {
+							patients.add(temp.get(j));
+						}
+					}
+				} catch (SQLException e) {
+					System.out.println(e.toString());
+				} finally {
+					JDBCConnection.closeConnection(conn, ps, rs);
+				}
 			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return avgTime;
+		return patients;
 	}
 	
 	/**
-	 * The average amount of pain felt for a variable number of patient conditions
+	 * Get a list of patients that have a number equal to the lowest number of an int type column given a 
+	 * variable number of patient conditions. If the observation type that is passed in has two 
+	 * integer columns, then the list will contain patients that have the highest of one or the other.
+	 * If the same person has the highest in both columns, only a single patient will be returned.
 	 * @param patient_conditions
-	 * @return
+	 * @return List of patients with that blood pressure
 	 */
-	public static int painAvg(int ... patient_conditions) {
+	public static List<Patient> getPatientsWithLowest(ObservationType ot, int ... patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
-			return -1;
+			return null;
 		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(p.rating) AS avg FROM pain p, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
+		String database = ot.getTable_name();
+		String types[] = parseColumnTypes( ot.getColumn_names_types());
+		String names[] = parseColumnNames( ot.getColumn_names_types());
+		List<Patient> patients = null;
+		for ( int i = 0; i < types.length; i++ ) {
+			if ( types[i].equals("int")) {
+				Connection conn = null;
+				PreparedStatement ps = null;
+				ResultSet rs = null;
+				String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status, "+ 
+							   "p.password FROM patients p, "+ database + " u, observations o, patient_conditions pc WHERE ";
+				query += "o.oid = u.oid AND o.pid = p.pid AND p.pid = pc.pid AND ";
+				if ( patients != null && patients.size() != 0 ) {
+					query += "( p.pid <> ? ";
+					if ( patients.size() > 1 ) {
+						for ( int j = 1; j < patients.size(); j++ ) {
+							query += "AND p.pid <> ? ";
+						}
+					}
+					query += ") AND ";
+				}
+				query += "( pc.cid = ? ";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				query += ") AND (u."+names[i]+") = ";
+				query += "(SELECT MIN( u2."+names[i]+" ) FROM "+ database+" u2, ";
+				query += "observations o2, patient_conditions pc WHERE ";
+				query += "u2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
+				for ( int j = 1; j < patient_conditions.length; j++ ) {
+					query += "OR pc.cid = ? ";
+				}
+				query += ") )";
+				try {
+					conn = JDBCConnection.getConnection();
+					ps = conn.prepareStatement(query);
+					int index = 1;
+					if ( patients != null && patients.size() != 0 ) {
+						for ( int j = 0; j < patients.size(); j++ ) {
+							ps.setDouble(index++, patients.get(j).getPid());
+						}
+					}
+					for ( int j = 0; j < (patient_conditions.length ); j++ ) {
+						ps.setInt( index++, patient_conditions[j]);
+					}
+					for ( int j = patient_conditions.length; j < (patient_conditions.length * 2); j++ ) {
+						ps.setInt( index++, patient_conditions[j - patient_conditions.length]);
+					}
+					rs = ps.executeQuery();
+					if ( patients == null ) {
+						patients = PatientDAO.loadPatients(rs);
+					} else {
+						List<Patient> temp = PatientDAO.loadPatients(rs);
+						for ( int j = 0; j < temp.size(); j++ ) {
+							patients.add(temp.get(j));
+						}
+					}
+				} catch (SQLException e) {
+					System.out.println(e.toString());
+				} finally {
+					JDBCConnection.closeConnection(conn, ps, rs);
+				}
 			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return avgTime;
+		return patients;
 	}
 	
-	/**
-	 * The average number of contractions felt for a variable number of patient conditions
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static int contractionAvg(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(c.frequency) AS avg FROM contraction c, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return avgTime;
-	}
 	
-	/**
-	 * The average temperature for a given number of patient conditions
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static int temperatureAvg(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int avgTime = 0;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT AVG(t.temp) AS avg FROM temperature t, observations o, patient_conditions pc WHERE ";
-		query += "bp.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				avgTime = rs.getInt("avg");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return avgTime;
-	}
+	
 	
 	/**
 	 * Select the mood that has been chosen the most
@@ -393,166 +386,6 @@ public class ObservationReportsDAO {
 			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return mood;
-	}
-	
-	/**
-	 * Select the lowest weight by observation types
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static int lowestWeight(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int lowestWeight = -1;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT MIN(w.pounds) AS minimum FROM weight w, observations o, patient_conditions pc WHERE ";
-		query += "w.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				lowestWeight = rs.getInt("minimum");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
-		}
-		return lowestWeight;
-	}
-	
-	/**
-	 * Select the highest weight by observation types
-	 * @param patient_conditions
-	 * @return
-	 */
-	public static int highestWeight(int ... patient_conditions ) {
-		if ( patient_conditions.length == 0 ) {
-			return -1;
-		}
-		int lowestWeight = -1;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT MAX(w.pounds) AS highest FROM weight w, observations o, patient_conditions pc WHERE ";
-		query += "w.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < patient_conditions.length; i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			rs = ps.executeQuery();
-			if ( rs.next() ) {
-				lowestWeight = rs.getInt("highest");
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return lowestWeight;
-	}
-	
-	/**
-	 * Find the highest blood pressure for a variable number of patient conditions
-	 * @param patient_conditions
-	 * @return List of patients with that blood pressure
-	 */
-	public static List<Patient> highestBloodPressure(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return null;
-		}
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status "+ 
-					   "FROM patients p, blood_pressure bp, observations o, patient_conditions pc WHERE ";
-		query += "o.oid = bp.oid AND o.pid = p.pid AND p.pid = pc.pid AND ( pc.cid = ? ";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		query += ") AND (bp.systolic + bp.diastolic) = ";
-		query += "(SELECT MAX( bp2.systolic + bp2.diastolic ) FROM blood_pressure bp2, observations o2, patient_conditions pc WHERE ";
-		query += "bp2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		query += ") )";
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < (patient_conditions.length ); i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			for ( int i = patient_conditions.length; i < (patient_conditions.length * 2); i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i - patient_conditions.length]);
-			}
-			rs = ps.executeQuery();
-			return PatientDAO.loadPatients(rs);
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return null;
-	}
-	
-	/**
-	 * Find the lowest weight for patients with a variable number of patient conditions
-	 * @param patient_conditions
-	 * @return List of patients with that weight
-	 */
-	public static List<Patient> lowestWeightPatients(int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
-			return null;
-		}
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status "+ 
-					   "FROM patients p, weight w, observations o, patient_conditions pc WHERE ";
-		query += "o.oid = w.oid AND o.pid = p.pid AND p.pid = pc.pid AND ( pc.cid = ? ";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		query += ") AND (w.pounds) = ";
-		query += "(SELECT MIN( w2.pounds ) FROM weight w2, observations o2, patient_conditions pc WHERE ";
-		query += "w2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
-		for ( int i = 1; i < patient_conditions.length; i++ ) {
-			query += "OR pc.cid = ? ";
-		}
-		query += ") )";
-		try {
-			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement(query);
-			for ( int i = 0; i < (patient_conditions.length ); i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i]);
-			}
-			for ( int i = patient_conditions.length; i < (patient_conditions.length * 2); i++ ) {
-				ps.setInt( (i + 1), patient_conditions[i - patient_conditions.length]);
-			}
-			rs = ps.executeQuery();
-			return PatientDAO.loadPatients(rs);
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return null;
 	}
 	
 	/**

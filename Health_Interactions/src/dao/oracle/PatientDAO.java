@@ -23,20 +23,28 @@ public class PatientDAO {
 	 * Inserts into the db
 	 * @param patient
 	 */
-	public void insertPatient( Patient patient ) {
+	public int insertPatient( Patient patient ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int pid = -1;
 		try {
 			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement("INSERT INTO patients ( password, fname, lname, address, city, state, zip," +
-					" dob, sex, public_status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+			String query = "INSERT INTO patients ( password, fname, lname, address, city, state, zip,";
+			query += " dob, sex, public_status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+			ps = conn.prepareStatement(query, new String[] {"pid"});
 			ps = loadParameters( ps, patient );
-			ps.execute();
+			ps.executeUpdate();
+    		rs = ps.getGeneratedKeys();
+    		if ( rs != null && rs.next() ) {
+    			pid = rs.getInt(1);
+    		}
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
+		return pid;
 	}
 	
 	public static List<Patient> viewAllPatients() {

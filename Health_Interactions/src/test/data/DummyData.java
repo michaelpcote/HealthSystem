@@ -13,19 +13,20 @@ import beans.Patient;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		//addPatients();
-		//addPatientConditions();
-		//addPatientDietObservations();
-		//addPatientWeightObservations();
-		//addPatientExerciseObservations();
-		//addPatientBloodPressureObservations();
+		/*addPatients();
+		addPatientConditions();
+		addPatientDietObservations();
+		addPatientWeightObservations();
+		addPatientExerciseObservations();
+		addPatientBloodPressureObservations();
 		addOxygenSaturationObservations();
 		addPatientExerciseToleranceObservations();
 		addPainObservations();
 		addContractionObservations();
 		addTemperatureObservations();
 		addLotsOfPatientBloodPressureObservations();
-		createPatientTable();
+		createPatientTable();*/
+		addTwoPatientsWithHighDiet();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -207,6 +208,24 @@ public class DummyData {
 			ObservationDAO.addPatientObservation(patient, o, ot, "systolic:"+ systolic+",diastolic:"+diastolic);
 			System.out.println( String.valueOf(i) + " blood pressure observation");
 		}
+	}
+	
+	public static void addTwoPatientsWithHighDiet() {
+		PatientDAO pdao = new PatientDAO();
+		Patient patient = new Patient();
+		patient = pdao.getPatient( 8 );
+		ObservationType ot = ObservationTypeDAO.getObservationType(1);
+		Observation o = new Observation();
+		Date date = Date.valueOf("2014-05-16");
+		o.setDate_Observed(date);
+		o.setHours(23);
+		o.setMinutes(47);
+		patient = pdao.getPatient( 12 );
+		ObservationDAO.addPatientObservation(patient, o, ot, "food_type:Shrimp,calories:1576");
+		System.out.println( String.valueOf(12) + " diet observation");
+		patient = pdao.getPatient( 14 );
+		ObservationDAO.addPatientObservation(patient, o, ot, "food_type:Shrimp,calories:1576");
+		System.out.println( String.valueOf(14) + " diet observation");
 	}
 	
 	public static void addPatientExerciseToleranceObservations() {

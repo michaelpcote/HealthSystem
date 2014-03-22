@@ -25,38 +25,92 @@ public class ObservationReportsTest {
 
 	@Test
 	public void testDietAverageAmount() {
-		int diet = ObservationReportsDAO.dietAverageAmount(1, 3);
+		ObservationType ot = ObservationTypeDAO.getObservationType(1);
+		String diet = ObservationReportsDAO.averageAmount(ot, 1, 3);
 		System.out.println( "Diet: " + diet );
 	}
 	
 	@Test
+	public void testGetNumberOfObservations() {
+		int diet = ObservationReportsDAO.numberOfObservationsByObsType(1);
+		System.out.println( "Diet observations: " + diet );
+	}
+	
+	@Test
+	public void testGetPatientListHighDiet() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(1);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, 1,2,3,4);
+		System.out.println( "High Diet #: " + patients.size() );
+	}
+	
+	@Test
+	public void testGetNumberOfObservationsByPatient() {
+		PatientDAO pdao = new PatientDAO();
+		Patient patient = pdao.getPatient(8);
+		int diet = ObservationReportsDAO.numberOfObservationsMadeByPatient(patient);
+		System.out.println( "Observations for patient: " + diet );
+	}
+	
+	@Test
 	public void testWeightAverageAmount() {
-		int weight = ObservationReportsDAO.weightAverage(1, 2, 3, 4);
+		ObservationType ot = ObservationTypeDAO.getObservationType(2);
+		String weight = ObservationReportsDAO.averageAmount(ot, 1, 2, 3, 4);
 		System.out.println("Weight: "+ weight );
 	}
 	
 	@Test
-	public void testHighestBloodPressure() {
-		List<Patient> patients = ObservationReportsDAO.highestBloodPressure(1, 2, 3, 4);
-		System.out.println( "High BP: "+patients.size() );
+	public void tesBloodPressureAverageAmount() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		String weight = ObservationReportsDAO.averageAmount(ot, 1, 2, 3, 4);
+		System.out.println("Blood Pressure Average: "+ weight );
 	}
 	
+	@Test
+	public void testHighestBloodPressure() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, 1,2,3,4);
+		System.out.println( "High BP #: "+patients.size() );
+	}
+	
+	@Test
+	public void testLowesetBloodPressure() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithLowest(ot, 1,2,3,4);
+		System.out.println( "Low BP #: "+patients.size() );
+	}
+	/*
 	@Test
 	public void testLowestWeightForPatients() {
 		List<Patient> patients = ObservationReportsDAO.lowestWeightPatients(1, 2, 3, 4);
 		System.out.println( "Lowest Weight for patients: "+patients.size() );
 		System.out.println( "LW Patient: "+ patients.get(0).getPid());
 	}
-	
+	*/
 	@Test
 	public void testLowestWeight() {
-		int weight = ObservationReportsDAO.lowestWeight(1, 2, 3, 4);
+		ObservationType ot = ObservationTypeDAO.getObservationType(2);
+		String weight = ObservationReportsDAO.lowestAmount(ot, 1, 2, 3, 4);
 		System.out.println( "THe lowest weight is: "+ weight );
 	}
 	
 	@Test
+	public void testLowestBloodPressure() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		String bp = ObservationReportsDAO.lowestAmount(ot, 1, 2, 3, 4);
+		System.out.println( "Lowest BP: " + bp );
+	}
+	
+	@Test
+	public void testHighestBloodPressureAmount() {
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		String bp = ObservationReportsDAO.highestAmount(ot, 1, 2, 3, 4);
+		System.out.println( "Highest BP: " + bp );
+	}
+	
+	@Test
 	public void testHighesetWeight() {
-		int weight = ObservationReportsDAO.highestWeight(1, 2, 3, 4);
+		ObservationType ot = ObservationTypeDAO.getObservationType(2);
+		String weight = ObservationReportsDAO.highestAmount(ot, 1, 2, 3, 4);
 		System.out.println("THe highest weight is: "+ weight );
 	}
 	

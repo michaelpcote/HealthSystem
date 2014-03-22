@@ -52,8 +52,9 @@ public class CreateTables {
     				statement.executeUpdate("DROP TABLE sex");
     				statement.executeUpdate("DROP TABLE condition_types");
     				statement.executeUpdate("DROP TABLE observation_categories");
+    				statement.executeUpdate("DROP TABLE social_workers");
+					statement.executeUpdate("DROP TABLE physicians");
     				
-					
     				statement.executeUpdate("alter session set NLS_DATE_FORMAT='yyyy-MM-dd HH24:MI:SS'");
     				
     				statement.executeUpdate("CREATE TABLE sex ("+
@@ -80,6 +81,30 @@ public class CreateTables {
 						"CHECK ( public_status = 'yes' OR public_status = 'no' )"+
 					")");
 					
+					statement.executeUpdate("CREATE TABLE physicians ("+
+							"pid NUMBER(19),"+
+							"password varchar(50) NOT NULL,"+
+							"fname VARCHAR(30) NOT NULL,"+
+							"lname VARCHAR(30) NOT NULL,"+
+							"clinic VARCHAR(150) NOT NULL,"+
+							"PRIMARY KEY (pid)"+
+						")");
+					
+					statement.executeUpdate("CREATE TABLE social_workers ("+
+							"sid NUMBER(19),"+
+							"password varchar(50) NOT NULL,"+
+							"fname VARCHAR(30) NOT NULL,"+
+							"lname VARCHAR(30) NOT NULL,"+
+							"PRIMARY KEY (pid)"+
+						")");
+					
+					statement.executeUpdate("CREATE TABLE social_w_patients ("+
+							"sid NUMBER(19),"+
+							"pid NUMBER(19),"+
+							"PRIMARY KEY (sid, pid),"+
+							"FOREIGN KEY (sid) REFERENCES social_workers( sid ),"+
+							"FOREIGN KEY (pid) REFERENCES patients( pid )"+
+						")");
 					
 					statement.executeUpdate("CREATE SEQUENCE patients_pid_seq "+
 							"START WITH 1 "+
@@ -94,6 +119,24 @@ public class CreateTables {
 								"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
 								"END IF; " +
 								"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER physicians_trigger "+
+							"BEFORE INSERT ON physicians "+
+							"FOR EACH ROW "+
+							"BEGIN "+
+							"IF :new.pid IS NULL THEN "+
+							"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
+							"END IF; " +
+							"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER social_workers_trigger "+
+							"BEFORE INSERT ON social_workers "+
+							"FOR EACH ROW "+
+							"BEGIN "+
+							"IF :new.pid IS NULL THEN "+
+							"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
+							"END IF; " +
+							"END;");
 						
 					statement.executeUpdate("CREATE TABLE condition_types ("+
 						"cid int,"+
