@@ -1,6 +1,6 @@
 package beans;
 
-public class PatientAddedObservationType {
+public class PatientCreatedObservationType {
 
 	private int table_id = -1;
 	private int pid = -1;
@@ -8,11 +8,10 @@ public class PatientAddedObservationType {
 	private String table_name = null;
 	private String display_name = null;
 	private String additional_info = null;
-	private int number_of_columns = -1;
 	private String column_names_types = null;
 	private String value_choices = null;
 	
-	public PatientAddedObservationType() {
+	public PatientCreatedObservationType() {
 		
 	}
 	
@@ -114,20 +113,6 @@ public class PatientAddedObservationType {
 	 */
 	public void setAdditional_info(String additional_info) {
 		this.additional_info = additional_info;
-	}
-
-	/**
-	 * @return the number_of_columns
-	 */
-	public int getNumber_of_columns() {
-		return number_of_columns;
-	}
-
-	/**
-	 * @param number_of_columns the number_of_columns to set
-	 */
-	public void setNumber_of_columns(int number_of_columns) {
-		this.number_of_columns = number_of_columns;
 	}
 
 	/**

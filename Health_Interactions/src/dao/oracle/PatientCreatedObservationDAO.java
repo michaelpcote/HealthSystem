@@ -6,22 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connection.JDBCConnection;
-import beans.PatientAddedObservationType;
+import beans.PatientCreatedObservationType;
 
-public class CreateUserTables {
+public class PatientCreatedObservationDAO {
 
 	
-	public static void addDoctorTable() {
-		
-	}
-	
-	public static void addPatientTable(PatientAddedObservationType pot) {
+	public static void addPatientCreatedObservationType(PatientCreatedObservationType pot) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
 			conn = JDBCConnection.getConnection();
 			String query = "INSERT INTO patient_ob_types p ( p.pid, p.ocid, p.table_name, p.display_name, p.additional_info, ";
-			query += "p.number_of_columns, p.column_names_types, p.value_choices VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )";
+			query += "p.column_names_types, p.value_choices ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
 			ps = conn.prepareStatement(query);
 			int i = 1;
 			ps.setInt( i++, pot.getPid());
@@ -29,10 +25,10 @@ public class CreateUserTables {
 			ps.setString( i++, pot.getTable_name());
 			ps.setString( i++, pot.getDisplay_name());
 			ps.setString( i++, pot.getAdditional_info());
-			ps.setInt( i++, pot.getNumber_of_columns());
 			ps.setString( i++, pot.getColumn_names_types());
 			ps.setString( i++, pot.getValue_choices());
 			ps.execute();
+			createPatientTable(pot);
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
@@ -40,7 +36,7 @@ public class CreateUserTables {
 		}
 	}
 	
-	private static void createPatientTable(PatientAddedObservationType pot) {
+	private static void createPatientTable(PatientCreatedObservationType pot) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
@@ -51,9 +47,34 @@ public class CreateUserTables {
 				String colInfo[] = colnames[i].split(":");
 				String colname = colInfo[0];
 				String coltype = colInfo[1];
-				query += colname + " "+ coltype;
+				if ( coltype.equals("String")) {
+					coltype = "varchar(250)";
+				} else {
+					coltype = "int";
+				}
+				query += colname + " "+ coltype + ", ";
 			}
 			query += "PRIMARY KEY (oid), FOREIGN KEY (oid) REFERENCES observations(oid)";
+			if ( pot.getValue_choices() == null ) {
+				query += ")";
+			} else {
+				query += ", ";
+				String possibleValues[] = pot.getValue_choices().split(":");
+				if ( possibleValues[1].equals("String")) {
+					String values[] = possibleValues[2].split(",");
+					query += "CHECK ( " + possibleValues[0] + " = '"+values[0]+"' ";
+					for ( int i = 1; i < values.length; i++ ) {
+						query += "OR " + possibleValues[0] + " = '"+values[i]+"' ";
+					}
+					query += " ) )";
+				} else {
+					String values[] = possibleValues[2].split(",");
+					query += "CHECK ( " + possibleValues[0] + " >= '"+values[0]+"' ";
+					query += "AND " + possibleValues[0] + " >= '"+values[1]+"' ";
+					query += " ) )";
+				}
+			}
+			System.out.println(query);
 			ps = conn.prepareStatement(query);
 			ps.execute();
 		} catch (SQLException e) {

@@ -2,20 +2,15 @@ package test.data;
 
 import java.sql.Date;
 
+import dao.oracle.ObservationTypeDAO;
+import dao.oracle.PatientCreatedObservationDAO;
 import dao.oracle.ObservationDAO;
 import dao.oracle.PatientConditionsDAO;
 import dao.oracle.PatientDAO;
-import beans.BloodPressure;
-import beans.Contractions;
-import beans.Diet;
-import beans.Exercise;
-import beans.ExerciseTolerance;
 import beans.Observation;
-import beans.OxygenSaturation;
-import beans.Pain;
+import beans.ObservationType;
 import beans.Patient;
-import beans.Temperature;
-import beans.Weight;
+import beans.PatientCreatedObservationType;
 
 public class DummyData {
 	
@@ -23,15 +18,16 @@ public class DummyData {
 		//addPatients();
 		//addPatientConditions();
 		//addPatientDietObservations();
-		addPatientWeightObservations();
-		addPatientExerciseObservations();
-		addPatientBloodPressureObservations();
+		//addPatientWeightObservations();
+		//addPatientExerciseObservations();
+		//addPatientBloodPressureObservations();
 		addOxygenSaturationObservations();
 		addPatientExerciseToleranceObservations();
 		addPainObservations();
 		addContractionObservations();
 		addTemperatureObservations();
 		addLotsOfPatientBloodPressureObservations();
+		createPatientTable();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -71,20 +67,24 @@ public class DummyData {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
+			
 			if ( i % 2 == 0 ) {
+				patient = pdao.getPatient( i );
 				pcDAO.designatePatient( patient, 1);
 				System.out.println( String.valueOf(i) + " linked with 1 condition");
 			}
 			if ( i % 4 == 0 ) {
+				patient = pdao.getPatient( i );
 				pcDAO.designatePatient( patient, 2);
 				System.out.println( String.valueOf(i) + " linked with 2 condition");
 			}
 			if ( i % 5 == 0 ) {
+				patient = pdao.getPatient( i );
 				pcDAO.designatePatient( patient, 3);
 				System.out.println( String.valueOf(i) + " linked with 3 condition");
 			}
 			if ( i % 10 == 0 ) {
+				patient = pdao.getPatient( i );
 				pcDAO.designatePatient( patient, 4);
 				System.out.println( String.valueOf(i) + " linked with 4 condition");
 			}
@@ -95,8 +95,9 @@ public class DummyData {
 	public static void addPatientDietObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		int calories = 750;
+		ObservationType ot = ObservationTypeDAO.getObservationType(1);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -104,8 +105,8 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 5 == 0 ) {
-				Diet diet = new Diet("Shrimp", 500);
-				ObservationDAO.addDietObservation(patient, o, diet);
+				patient = pdao.getPatient( i );
+				ObservationDAO.addPatientObservation(patient, o, ot, "food_type:Shrimp,calories:"+ ( calories + 3*i ));
 				System.out.println( String.valueOf(i) + " diet observation");
 			} /*
 			if ( i % 4 == 0 ) {
@@ -113,8 +114,8 @@ public class DummyData {
 				System.out.println( String.valueOf(i) + " linked with 2 condition");
 			} */
 			else if ( i % 2 == 0 ) {
-				Diet diet = new Diet("Shrimp", 30);
-				ObservationDAO.addDietObservation(patient, o, diet);
+				patient = pdao.getPatient( i );
+				ObservationDAO.addPatientObservation(patient, o, ot, "food_type:Shrimp,calories:"+ ( calories + 3*i ));
 				System.out.println( String.valueOf(i) + " diet observation");
 			} /*
 			if ( i % 10 == 0 ) {
@@ -124,11 +125,12 @@ public class DummyData {
 		}
 	}
 	
+	
 	public static void addPatientWeightObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(2);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -136,8 +138,9 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 5 == 0 ) {
-				Weight weight = new Weight( 250 - i );
-				ObservationDAO.addWeightObservation(patient, o, weight);
+				patient = pdao.getPatient( i );
+				int weight = 250 - i;
+				ObservationDAO.addPatientObservation(patient, o, ot, "weight:"+ weight);
 				System.out.println( String.valueOf(i) + " weight observation");
 			}
 		}
@@ -146,8 +149,8 @@ public class DummyData {
 	public static void addPatientExerciseObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(3);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -155,8 +158,9 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 8 == 0 ) {
-				Exercise exercise = new Exercise( 300 - 2*i );
-				ObservationDAO.addExerciseObservation(patient, o, exercise);
+				patient = pdao.getPatient( i );
+				int exercise = 300 - 2*i;
+				ObservationDAO.addPatientObservation(patient, o, ot, "minutes:"+ exercise+",exercise_type:Running");
 				System.out.println( String.valueOf(i) + " exercise observation");
 			}
 			
@@ -166,21 +170,23 @@ public class DummyData {
 	public static void addPatientBloodPressureObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
 			o.setDate_Observed(date);
 			o.setHours(23);
 			o.setMinutes(47);
+			int systolic = 100 + 2*i;
+			int diastolic = 70+i;
 			if ( i % 8 == 0 ) {
-				BloodPressure bp = new BloodPressure( 100 + 2*i, 70 + i);
-				ObservationDAO.addBloodPressureObservation(patient, o, bp);
+				patient = pdao.getPatient( i );
+				ObservationDAO.addPatientObservation(patient, o, ot, "systolic:"+ systolic+",diastolic:"+diastolic);
 				System.out.println( String.valueOf(i) + " blood pressure observation");
 			} else if ( i % 10 == 0 ) {
-				BloodPressure bp = new BloodPressure( 100 + 2*i, 70 + i);
-				ObservationDAO.addBloodPressureObservation(patient, o, bp);
+				patient = pdao.getPatient( i );
+				ObservationDAO.addPatientObservation(patient, o, ot, "systolic:"+ systolic+",diastolic:"+diastolic);
 				System.out.println( String.valueOf(i) + " blood pressure observation");
 			}
 		}
@@ -190,6 +196,7 @@ public class DummyData {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
 		patient = pdao.getPatient( 8 );
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
 		for ( int i = 1; i <= 20; i++ ) {
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
@@ -197,8 +204,9 @@ public class DummyData {
 			o.setDate_Observed(date);
 			o.setHours(23);
 			o.setMinutes(47);
-			BloodPressure bp = new BloodPressure( 100 + 2*i, 70 + i);
-			ObservationDAO.addBloodPressureObservation(patient, o, bp);
+			int systolic = 100 + 2*i;
+			int diastolic = 70+i;
+			ObservationDAO.addPatientObservation(patient, o, ot, "systolic:"+ systolic+",diastolic:"+diastolic);
 			System.out.println( String.valueOf(i) + " blood pressure observation");
 		}
 	}
@@ -206,8 +214,8 @@ public class DummyData {
 	public static void addPatientExerciseToleranceObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(5);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -215,8 +223,9 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 20 == 0 ) {
-				ExerciseTolerance et = new ExerciseTolerance( 5000 - 10 * i);
-				ObservationDAO.addExerciseToleranceObservation(patient, o, et);
+				patient = pdao.getPatient( i );
+				int steps =  5000 - 10 * i;
+				ObservationDAO.addPatientObservation(patient, o, ot, "steps:"+steps);
 				System.out.println( String.valueOf(i) + " exercise tolerance observation");
 			} 
 		}
@@ -225,8 +234,8 @@ public class DummyData {
 	public static void addOxygenSaturationObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(6);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -234,8 +243,9 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 30 == 0 ) {
-				OxygenSaturation os = new OxygenSaturation( 300 - 2*i );
-				ObservationDAO.addOxygenSaturationObservation(patient, o, os);
+				patient = pdao.getPatient( i );
+				int percent =  300 - 2*i;
+				ObservationDAO.addPatientObservation(patient, o, ot, "percentage:"+percent);
 				System.out.println( String.valueOf(i) + " oxygen saturation observation");
 			} 
 		}
@@ -244,8 +254,8 @@ public class DummyData {
 	public static void addPainObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(7);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -253,17 +263,18 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 5 == 0 ) {
-				Pain pain = new Pain( 7 );
+				patient = pdao.getPatient( i );
+				int pain =  7;
 				if ( i % 25 == 0 ) {
-					pain.setRating(2);
+					pain = 2;
 				} else if ( i % 20 == 0 ) {
-					pain.setRating( 9 );
+					pain = 9;
 				} else if ( i % 15 == 0 ) {
-					pain.setRating( 3 );
+					pain = 3;
 				} else if ( i % 10 == 0 ) {
-					pain.setRating( 5 );
+					pain = 5;
 				}
-				ObservationDAO.addPainObservation(patient, o, pain );
+				ObservationDAO.addPatientObservation(patient, o, ot, "rating:"+pain);
 				System.out.println( String.valueOf(i) + " pain observation");
 			} 
 		}
@@ -272,8 +283,8 @@ public class DummyData {
 	public static void addContractionObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(9);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -281,18 +292,30 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 5 == 0 ) {
-				Contractions cont = new Contractions( 5 + ( i % 5 ));
-				ObservationDAO.addContractionsObservation(patient, o, cont );
+				patient = pdao.getPatient( i );
+				int cont = 5 + ( i % 5 );
+				ObservationDAO.addPatientObservation(patient, o, ot, "frequency:"+cont);
 				System.out.println( String.valueOf(i) + " contractions observation");
 			} 
 		}
 	}
 	
+	public static void createPatientTable() {
+		ObservationType ot = new ObservationType();
+		ot.setAdditional_info("How I am sleeping");
+		ot.setValue_choices("sleep:String:Trouble Sleeping,Little Sleep,Moderate Sleep,Fine Sleep");
+		ot.setDisplay_name("Sleep Patterns");
+		ot.setTable_name("sleep_patterns");
+		ot.setOcid(1);
+		ot.setColumn_names_types("sleep:String");
+		ObservationTypeDAO.addNewObservationType(ot);
+	}
+	
 	public static void addTemperatureObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = new Patient();
+		ObservationType ot = ObservationTypeDAO.getObservationType(10);
 		for ( int i = 1; i <= 100; i++ ) {
-			patient = pdao.getPatient( i );
 			Observation o = new Observation();
 			Date date = Date.valueOf("2014-05-16");
 			date.setMonth(-i);
@@ -300,8 +323,9 @@ public class DummyData {
 			o.setHours(23);
 			o.setMinutes(47);
 			if ( i % 4 == 0 ) {
-				Temperature temp = new Temperature( i );
-				ObservationDAO.addTemperatureObservation(patient, o, temp );
+				patient = pdao.getPatient( i );
+				int temp = i;
+				ObservationDAO.addPatientObservation(patient, o, ot, "temp:"+i);
 				System.out.println( String.valueOf(i) + " temperature observation");
 			} 
 		}

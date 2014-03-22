@@ -8,18 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import beans.BloodPressure;
-import beans.Contractions;
-import beans.Diet;
-import beans.Exercise;
-import beans.ExerciseTolerance;
-import beans.Mood;
-import beans.ObservationTypes;
-import beans.OxygenSaturation;
-import beans.Pain;
+import beans.ObservationType;
 import beans.Patient;
-import beans.Temperature;
-import beans.Weight;
 import connection.JDBCConnection;
 
 public class ObservationReportsDAO {
@@ -74,7 +64,7 @@ public class ObservationReportsDAO {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String query = "SELECT AVG(w.pounds) AS avg FROM weight w, observations o, patient_conditions pc WHERE ";
+		String query = "SELECT AVG(w.weight) AS avg FROM weight w, observations o, patient_conditions pc WHERE ";
 		query += "w.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
 		for ( int i = 1; i < patient_conditions.length; i++ ) {
 			query += "OR pc.cid = ? ";
@@ -623,381 +613,80 @@ public class ObservationReportsDAO {
 	 * @param ot - Type of 
 	 * @param startdate - The earlier date
 	 * @param enddate - The later date
-	 * @return
+	 * @return String - This will be a comma separated list so that the first line will be the headers and the 
+	 * rest of the string will be "header:header:header,value:value:value,value:value:value"
 	 */
-	public static List<Diet> getDietObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
+	public static String getObservationsBetween( Patient patient, ObservationType ot, String startdate, String enddate ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ArrayList<Diet> diets = new ArrayList<Diet>();
 		Date start = Date.valueOf(startdate);
 		Date end = Date.valueOf(enddate);
+		String observations = "";
 		try {
+			String names[] = parseColumnNames( ot.getColumn_names_types() );
+			String types[] = parseColumnTypes( ot.getColumn_names_types() );
 			conn = JDBCConnection.getConnection();
-			String query = "SELECT d.oid, d.food_type, d.calories FROM diet d, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = d.oid AND o.date_observed > ? AND o.date_observed < ?";
+			String query = "SELECT u.oid";//FROM diet d, observations o where o.pid = ? ";
+			for ( int i = 0; i < names.length; i++ ) {
+				query += ", u."+names[i];
+			}
+			query += " FROM "+ ot.getTable_name() + " u, observations o where o.pid = ? ";
+			query += "AND o.type_id = ? AND o.oid = u.oid AND o.date_observed > ? AND o.date_observed < ?";
 			ps = conn.prepareStatement(query);
 			ps.setDouble( 1, patient.getPid() );
 			ps.setInt( 2, ot.getType_id());
 			ps.setDate(3, start);
 			ps.setDate(4, end);
 			rs = ps.executeQuery();
+			observations = createHeaders( names );
 			while ( rs.next() ) {
-				Diet diet = new Diet( );
-				diet.setCalories(rs.getInt("calories"));
-				diet.setFood(rs.getString("food_type"));
-				diets.add( diet );
+				observations += ",";
+				for ( int i = 0; i < names.length; i++ ) {
+					if ( types[i].equals("String")) {
+						observations += rs.getString(names[i]);
+					} else {
+						observations += rs.getInt(names[i]);
+					}
+					if ( i != names.length - 1 ) {
+						observations += ":";
+					}
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
 			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return diets;
+		return observations;
 	}
 	
-	/**
-	 * Get all weight observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Weight> getWeightObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Weight> weights = new ArrayList<Weight>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT w.oid, w.pounds FROM weight w, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = w.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Weight weight = new Weight( rs.getInt("pounds"));
-				weight.setOid(rs.getInt("oid"));
-				weights.add( weight );
-				
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
+	private static String createHeaders(String[] names) {
+		String headers = names[0];
+		for ( int i = 1; i < names.length; i++ ) {
+			headers += ":"+names[i];
 		}
-		return weights;
+		return headers;
+	}
+
+	private static String[] parseColumnNames(String columnInfo) {
+		String both[] = columnInfo.split(",");
+		String names[] = new String[both.length];
+		for ( int i = 0; i < names.length; i++ ) {
+			String combo[] = both[i].split(":");
+			names[i] = combo[0];
+		}
+		return names;
 	}
 	
-	/**
-	 * Get all exercise observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Exercise> getExerciseObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Exercise> exercise = new ArrayList<Exercise>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT e.oid, e.minutes FROM exercise e, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = e.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Exercise exer = new Exercise( rs.getInt("minutes"));
-				exer.setOid(rs.getInt("oid"));
-				exercise.add( exer );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
+	private static String[] parseColumnTypes(String columnInfo) {
+		String both[] = columnInfo.split(",");
+		String values[] = new String[both.length];
+		for ( int i = 0; i < values.length; i++ ) {
+			String combo[] = both[i].split(":");
+			values[i] = combo[1];
 		}
-		return exercise;
+		return values;
 	}
 	
-	/**
-	 * Get all blood pressure observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<BloodPressure> getBloodPressureObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<BloodPressure> pressures = new ArrayList<BloodPressure>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT bp.oid, bp.systolic, bp.diastolic FROM blood_pressure bp, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = bp.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				BloodPressure bp = new BloodPressure();
-				bp.setOid(rs.getInt("oid"));
-				bp.setSystolic(rs.getInt("systolic"));
-				bp.setDiastolic(rs.getInt("diastolic"));
-				pressures.add(bp);
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return pressures;
-	}
-	
-	/**
-	 * Get all exercise tolerance observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<ExerciseTolerance> getExerciseToleranceObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<ExerciseTolerance> exercises = new ArrayList<ExerciseTolerance>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT et.oid, et.steps FROM exercise_tolerance et, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = et.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				ExerciseTolerance et = new ExerciseTolerance(rs.getInt("steps"));
-				et.setOid(rs.getInt("oid"));
-				exercises.add( et );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return exercises;
-	}
-	
-	/**
-	 * Get all oxygen saturation observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<OxygenSaturation> getOxygenSaturationObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<OxygenSaturation> saturations = new ArrayList<OxygenSaturation>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT os.oid, os.amount FROM oxygen_saturation os, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = os.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				OxygenSaturation os = new OxygenSaturation(rs.getInt("amount"));
-				os.setOid(rs.getInt("oid"));
-				saturations.add( os );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return saturations;
-	}
-	
-	/**
-	 * Get all Pain observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Pain> getPainObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Pain> pains = new ArrayList<Pain>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT p.oid, p.amount FROM pain p, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = p.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Pain pain = new Pain(rs.getInt("rating"));
-				pain.setOid(rs.getInt("oid"));
-				pains.add( pain );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return pains;
-	}
-	
-	/**
-	 * Get all Mood observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Mood> getMoodObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Mood> moods = new ArrayList<Mood>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT m.oid, m.mood FROM mood m, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = m.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Mood mood = new Mood(rs.getString("mood"));
-				mood.setOid(rs.getInt("oid"));
-				moods.add( mood );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return moods;
-	}
-	
-	/**
-	 * Get all Contraction observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Contractions> getContractionsObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Contractions> contractions = new ArrayList<Contractions>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT c.oid, c.frequency FROM contractions c, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = c.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Contractions contraction = new Contractions(rs.getInt("frequency"));
-				contraction.setOid(rs.getInt("oid"));
-				contractions.add( contraction );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return contractions;
-	}
-	
-	/**
-	 * Get all Temperature observations between two dates for a specific patient
-	 * @param patient
-	 * @param ot - Type of 
-	 * @param startdate - The earlier date
-	 * @param enddate - The later date
-	 * @return
-	 */
-	public static List<Temperature> getTemperatureObservationsBetween( Patient patient, ObservationTypes ot, String startdate, String enddate ) {
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		ArrayList<Temperature> temps = new ArrayList<Temperature>();
-		Date start = Date.valueOf(startdate);
-		Date end = Date.valueOf(enddate);
-		try {
-			conn = JDBCConnection.getConnection();
-			String query = "SELECT t.oid, t.temp FROM temperature t, observations o where o.pid = ? ";
-			query += "AND o.type_id = ? AND o.oid = t.oid AND o.date_observed > ? AND o.date_observed < ?";
-			ps = conn.prepareStatement(query);
-			ps.setDouble( 1, patient.getPid() );
-			ps.setInt( 2, ot.getType_id());
-			ps.setDate(3, start);
-			ps.setDate(4, end);
-			rs = ps.executeQuery();
-			while ( rs.next() ) {
-				Temperature temp = new Temperature(rs.getInt("temp"));
-				temp.setOid(rs.getInt("oid"));
-				temps.add( temp );
-			}
-		} catch (SQLException e) {
-			System.out.println(e.toString());
-		} finally {
-			JDBCConnection.closeConnection(conn, ps, rs);
-		}
-		return temps;
-	}
 }

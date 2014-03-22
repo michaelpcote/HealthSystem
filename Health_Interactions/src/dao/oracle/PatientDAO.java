@@ -8,8 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import beans.Diet;
-import beans.ObservationTypes;
+import beans.ObservationType;
 import beans.Patient;
 import connection.JDBCConnection;
 

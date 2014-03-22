@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class Observation {
 	private double oid = -1;
 	private double pid = -1;
+	private int type_id = -1;
 	private Date date_observed = null;
 	private Date date_recorded = null;
 	private int hours = -1;
@@ -26,6 +27,23 @@ public class Observation {
 		DateFormat formater = new SimpleDateFormat("hh:mm");
 		date_recorded = new Date( System.currentTimeMillis());
 		time_recorded = formater.format(date);
+	}
+	
+	
+	
+
+	/**
+	 * @return the type_id
+	 */
+	public int getType_id() {
+		return type_id;
+	}
+
+	/**
+	 * @param type_id the type_id to set
+	 */
+	public void setType_id(int type_id) {
+		this.type_id = type_id;
 	}
 
 	/**

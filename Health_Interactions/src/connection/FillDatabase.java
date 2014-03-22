@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import dao.oracle.ObservationTypeDAO;
+import beans.ObservationType;
+
 /**
  * This class will fill the database with values that shall not change.
  * @author SG0214981
@@ -17,7 +20,7 @@ public class FillDatabase {
 		addObservationTypes();
 		addSex();
 		addConditionCategoryRelationships();
-		System.out.println("Database tables inserted");
+		System.out.println("Database tables filled");
 	}
 	
 	private static void addConditions() {
@@ -95,63 +98,100 @@ public class FillDatabase {
 		}
 	}
 	
-	private static void addObservationTypes() {
-		try {
-            // Register JDBC Driver (Oracle Thin)
-            Connection connection = null;
-            Statement statement = null;
-            
-            	try {
-            		// Get a connection to the specified JDBC URL.
-    				connection = JDBCConnection.getConnection();
-                    
-    		 		// Create a Statement object for sending SQL statements to the database.
-    				// Statement: The object used for executing a static SQL statement and returning the results it produces.
-    				statement = connection.createStatement();
-    				String insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Diet', 'What  was  consumed, amount'";
-    				insert += ", '0')";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Weight', 'Amount', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 1, 'Exercise', 'What kind, duration', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Blood Pressure', 'Systolic, Diastolic', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Exercise Tolerance', 'Number of steps before";  
-    				insert += "exhaustion', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Oxygen Saturation', 'Amount', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Pain', 'Scale [1-10]', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 3, 'Mood', 'One of the values ";
-    				insert += "{Happy, Sad, Neutral}', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Contraction', 'Frequency - #per ";
-    				insert += "half hour', '0' )";
-    				statement.executeUpdate(insert);
-    				insert = "INSERT INTO observation_types ( ocid, description, additional_info, doctor_created ) VALUES ( 2, 'Temperature', 'Amount', '0' )";
-    				statement.executeUpdate(insert);
-    			} catch(SQLException e) {
-            		e.printStackTrace();
-        		} catch(Exception e) {
-            		e.printStackTrace();
-       	 	} finally {
-				// Close resultSet, statement and connection.
-				try{
-	                if(statement!=null)
-	                				statement.close();
-					if(connection!=null)
-	                				connection.close();
-				} catch (Exception e){
-					e.printStackTrace();
-				}
-        	}
-    	}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+	public static void addObservationTypes() {
+		
+		ObservationType ot = new ObservationType();
+    	ot.setAdditional_info("What  was  consumed, amount");
+    	ot.setColumn_names_types("food_type:String,calories:int");
+    	ot.setOcid(1);
+    	ot.setDisplay_name("Diet");
+    	ot.setTable_name("diet");
+    	ObservationTypeDAO.addNewObservationType(ot);
+    				
+    	//Add a weight observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Amount");
+		ot.setColumn_names_types("weight:int");
+		ot.setOcid(1);
+		ot.setDisplay_name("Weight");
+		ot.setTable_name("weight");
+		ObservationTypeDAO.addNewObservationType(ot);			
+    				
+		//Add an exercise observation
+		ot = new ObservationType();
+		ot.setAdditional_info("What kind, duration");
+		ot.setColumn_names_types("exercise_type:String,minutes:int");
+		ot.setOcid(1);
+		ot.setDisplay_name("Exercise");
+		ot.setTable_name("exercise");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a blood pressure observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Systolic, Diastolic");
+		ot.setColumn_names_types("systolic:int,diastolic:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Blood Pressure");
+		ot.setTable_name("blood_pressure");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a exercise tolerance observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Number of steps before exhaustion");
+		ot.setColumn_names_types("steps:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Exercise Tolerance");
+		ot.setTable_name("exercise_tolerance");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add an oxygen saturation observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Amount");
+		ot.setColumn_names_types("percentage:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Oxygen Saturation");
+		ot.setTable_name("oxygen_saturation");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a pain observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Amount");
+		ot.setColumn_names_types("rating:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Pain");
+		ot.setTable_name("pain");
+		ot.setValue_choices("rating:int:1,10");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a mood observation
+		ot = new ObservationType();
+		ot.setAdditional_info("One of the values {Happy, Sad, Neutral}");
+		ot.setColumn_names_types("mood:String");
+		ot.setOcid(3);
+		ot.setDisplay_name("Mood");
+		ot.setTable_name("mood");
+		ot.setValue_choices("mood:String:Happy,Sad,Neutral");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a contraction observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Frequency - #per half hour");
+		ot.setColumn_names_types("frequency:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Contraction");
+		ot.setTable_name("contraction");
+		ObservationTypeDAO.addNewObservationType(ot);
+		
+		//Add a temperature observation
+		ot = new ObservationType();
+		ot.setAdditional_info("Amount");
+		ot.setColumn_names_types("temp:int");
+		ot.setOcid(2);
+		ot.setDisplay_name("Temperature");
+		ot.setTable_name("temperature");
+		ObservationTypeDAO.addNewObservationType(ot);			
+    				
+    }
 	
 	private static void addConditionCategoryRelationships() {
 		try {
