@@ -9,7 +9,6 @@ import java.util.List;
 
 import beans.ObservationType;
 import beans.Patient;
-import beans.PatientCreatedObservationType;
 import connection.JDBCConnection;
 
 public class ObservationTypeDAO {

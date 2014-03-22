@@ -3,14 +3,12 @@ package test.data;
 import java.sql.Date;
 
 import dao.oracle.ObservationTypeDAO;
-import dao.oracle.PatientCreatedObservationDAO;
 import dao.oracle.ObservationDAO;
 import dao.oracle.PatientConditionsDAO;
 import dao.oracle.PatientDAO;
 import beans.Observation;
 import beans.ObservationType;
 import beans.Patient;
-import beans.PatientCreatedObservationType;
 
 public class DummyData {
 	
