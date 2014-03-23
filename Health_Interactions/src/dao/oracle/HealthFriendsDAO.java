@@ -25,14 +25,13 @@ public class HealthFriendsDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-            // Create a Statement object for sending SQL statements to the database.
-    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
-    		ps = conn.prepareStatement("SELECT DISTINCT pid, fname, lname, address, city, state, zip, dob, sex, public_status "+ 
-    									"FROM patients p, patient_conditions pc WHERE p.public_status = 'yes' AND "+
-    									"p.pid <> ? AND p.pid = pc.cid AND pc.cid = SELECT pc2.cid FROM patient_conditions pc2 "+
-    									"WHERE pc2.pid = ?");
+    		String query = "SELECT p.pid, p.password, p.fname, p.lname, p.address, p.city, p.state, p.zip, ";
+    		query += "p.dob, p.sex, p.public_status FROM patients p WHERE p.pid <> ? AND p.public_status = 'yes' AND ";
+    		query += "p.pid IN ( SELECT pc.pid FROM patient_conditions pc WHERE pc.cid IN ( SELECT ";
+    		query += "pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) )";
+			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
-    		ps.setDouble( 2,  patient.getPid());
+    		ps.setDouble( 2, patient.getPid());
     		rs = ps.executeQuery();
     		return PatientDAO.loadPatients(rs);
     	} catch(SQLException e) {

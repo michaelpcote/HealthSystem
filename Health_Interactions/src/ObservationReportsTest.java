@@ -52,11 +52,22 @@ public class ObservationReportsTest {
 	}
 	
 	@Test
+	public void testViewObservationsForPatient() {
+		PatientDAO pdao = new PatientDAO();
+		ObservationType ot = ObservationTypeDAO.getObservationType(4);
+		Patient patient = pdao.getPatient(8);
+		String bp = ObservationReportsDAO.viewObservationsForPatient(patient, ot);
+		System.out.println( "Observations for patient 8: " + bp );
+	}
+	
+	@Test
 	public void testWeightAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
 		String weight = ObservationReportsDAO.averageAmount(ot, 1, 2, 3, 4);
 		System.out.println("Weight: "+ weight );
 	}
+	
+	
 	
 	@Test
 	public void tesBloodPressureAverageAmount() {

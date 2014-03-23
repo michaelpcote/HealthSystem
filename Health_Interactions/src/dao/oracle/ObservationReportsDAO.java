@@ -441,7 +441,7 @@ public class ObservationReportsDAO {
 	}
 	
 	/**
-	 * Get all diet observations between two dates for a specific patient
+	 * Get all observations between two dates for a specific patient and observation type
 	 * @param patient
 	 * @param ot - Type of 
 	 * @param startdate - The earlier date
@@ -471,6 +471,54 @@ public class ObservationReportsDAO {
 			ps.setInt( 2, ot.getType_id());
 			ps.setDate(3, start);
 			ps.setDate(4, end);
+			rs = ps.executeQuery();
+			observations = createHeaders( names );
+			while ( rs.next() ) {
+				observations += ",";
+				for ( int i = 0; i < names.length; i++ ) {
+					if ( types[i].equals("String")) {
+						observations += rs.getString(names[i]);
+					} else {
+						observations += rs.getInt(names[i]);
+					}
+					if ( i != names.length - 1 ) {
+						observations += ":";
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+		}
+		return observations;
+	}
+	
+	/**
+	 * Get all observations for a specific patient and observation type
+	 * @param patient
+	 * @param ot - Type of observation
+	 * @return String - This will be a comma separated list so that the first line will be the headers and the 
+	 * rest of the string will be "header:header:header,value:value:value,value:value:value"
+	 */
+	public static String viewObservationsForPatient( Patient patient, ObservationType ot ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String observations = "";
+		try {
+			String names[] = parseColumnNames( ot.getColumn_names_types() );
+			String types[] = parseColumnTypes( ot.getColumn_names_types() );
+			conn = JDBCConnection.getConnection();
+			String query = "SELECT u.oid";//FROM diet d, observations o where o.pid = ? ";
+			for ( int i = 0; i < names.length; i++ ) {
+				query += ", u."+names[i];
+			}
+			query += " FROM "+ ot.getTable_name() + " u, observations o where o.pid = ? ";
+			query += "AND o.type_id = ? AND o.oid = u.oid";
+			ps = conn.prepareStatement(query);
+			ps.setDouble( 1, patient.getPid() );
+			ps.setInt( 2, ot.getType_id());
 			rs = ps.executeQuery();
 			observations = createHeaders( names );
 			while ( rs.next() ) {

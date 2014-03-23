@@ -2,10 +2,22 @@ package beans;
 
 import java.sql.Date;
 
+/**
+ * A class to create a health friend
+ * @author SG0214981
+ *
+ */
 public class HealthFriends {
 	int patientID = -1;
 	int friendID = -1;
 	Date dateAdded = null;
+	
+	/**
+	 * The constructor will create the date Added.
+	 */
+	public HealthFriends() {
+		dateAdded = new Date( System.currentTimeMillis());
+	}
 	/**
 	 * @return the patientID
 	 */

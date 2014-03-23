@@ -21,9 +21,15 @@ public class LogInDAO {
 		ResultSet rs = null;
 		try {
 			conn = JDBCConnection.getConnection();
-			ps = conn.prepareStatement("SELECT * FROM patients p where p.pid = ? AND p.password = ?");
-			ps.setInt( 1, user);
-			ps.setString(2, pw);
+			String query = "SELECT * FROM patients p, physicians phy, social_workers sw ";
+			query += "where ( p.pid = ? AND p.password = ? ) OR ( phy.phy_id = ? AND phy.password = ? ) ";
+			query += "OR ( sw.sid = ? AND sw.password = ? )";
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			for ( int i = 0; i < 3; i++ ) {
+				ps.setInt( index++, user);
+				ps.setString(index++, pw);
+			}
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				return true;

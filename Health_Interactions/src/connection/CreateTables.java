@@ -21,6 +21,7 @@ public class CreateTables {
     		 		// Create a Statement object for sending SQL statements to the database.
     				// Statement: The object used for executing a static SQL statement and returning the results it produces.
     				statement = connection.createStatement();
+    				
     				conn2 = JDBCConnection.getConnection();
     				ps2 = conn2.prepareStatement("SELECT DISTINCT table_name FROM observation_types");
     				rs = ps2.executeQuery();
@@ -33,6 +34,7 @@ public class CreateTables {
     				//DEPENDENT TABLES
     				//These have to be dropped first
     				
+    				statement.executeUpdate("DROP TABLE social_w_patients");
     				statement.executeUpdate("DROP TABLE alerts");
     				statement.executeUpdate("DROP TABLE cond_obser_relationships"); 
 					statement.executeUpdate("DROP TABLE health_supporter");
@@ -82,12 +84,12 @@ public class CreateTables {
 					")");
 					
 					statement.executeUpdate("CREATE TABLE physicians ("+
-							"pid NUMBER(19),"+
+							"phy_id NUMBER(19),"+
 							"password varchar(50) NOT NULL,"+
 							"fname VARCHAR(30) NOT NULL,"+
 							"lname VARCHAR(30) NOT NULL,"+
 							"clinic VARCHAR(150) NOT NULL,"+
-							"PRIMARY KEY (pid)"+
+							"PRIMARY KEY (phy_id)"+
 						")");
 					
 					statement.executeUpdate("CREATE TABLE social_workers ("+
@@ -95,7 +97,7 @@ public class CreateTables {
 							"password varchar(50) NOT NULL,"+
 							"fname VARCHAR(30) NOT NULL,"+
 							"lname VARCHAR(30) NOT NULL,"+
-							"PRIMARY KEY (pid)"+
+							"PRIMARY KEY (sid)"+
 						")");
 					
 					statement.executeUpdate("CREATE TABLE social_w_patients ("+
@@ -124,8 +126,8 @@ public class CreateTables {
 							"BEFORE INSERT ON physicians "+
 							"FOR EACH ROW "+
 							"BEGIN "+
-							"IF :new.pid IS NULL THEN "+
-							"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
+							"IF :new.phy_id IS NULL THEN "+
+							"SELECT patients_pid_seq.nextval INTO :new.phy_id FROM DUAL; "+
 							"END IF; " +
 							"END;");
 					
@@ -133,8 +135,8 @@ public class CreateTables {
 							"BEFORE INSERT ON social_workers "+
 							"FOR EACH ROW "+
 							"BEGIN "+
-							"IF :new.pid IS NULL THEN "+
-							"SELECT patients_pid_seq.nextval INTO :new.pid FROM DUAL; "+
+							"IF :new.sid IS NULL THEN "+
+							"SELECT patients_pid_seq.nextval INTO :new.sid FROM DUAL; "+
 							"END IF; " +
 							"END;");
 						

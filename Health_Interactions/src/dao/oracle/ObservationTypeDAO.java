@@ -170,7 +170,7 @@ public class ObservationTypeDAO {
 				} else {
 					String values[] = possibleValues[2].split(",");
 					query += "CHECK ( " + possibleValues[0] + " >= '"+values[0]+"' ";
-					query += "AND " + possibleValues[0] + " >= '"+values[1]+"' ";
+					query += "AND " + possibleValues[0] + " <= '"+values[1]+"' ";
 					query += " ) )";
 				}
 			}

@@ -1,19 +1,32 @@
 package test.data;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
+import connection.JDBCConnection;
 import dao.oracle.ObservationTypeDAO;
 import dao.oracle.ObservationDAO;
 import dao.oracle.PatientConditionsDAO;
 import dao.oracle.PatientDAO;
+import dao.oracle.PhysiciansDAO;
+import dao.oracle.SocialWorkersDAO;
 import beans.Observation;
 import beans.ObservationType;
 import beans.Patient;
+import beans.Physicians;
+import beans.SocialWorker;
 
 public class DummyData {
 	
 	public static void main(String[] args) {
-		/*addPatients();
+		/*
+		addPatients();
+		addPhysicians();
+		addSocialWorkers();
+		assignPatientsToSocialWorker();
 		addPatientConditions();
 		addPatientDietObservations();
 		addPatientWeightObservations();
@@ -25,10 +38,39 @@ public class DummyData {
 		addContractionObservations();
 		addTemperatureObservations();
 		addLotsOfPatientBloodPressureObservations();
-		createPatientTable();*/
-		addTwoPatientsWithHighDiet();
+		createPatientTable();
+		addTwoPatientsWithHighDiet();*/
+		addThreshold();
 	}
 	
+	public static void addThreshold() {
+		 Connection connection = null;
+         Statement statement = null;
+		try {
+            // Register JDBC Driver (Oracle Thin)
+           
+            connection = JDBCConnection.getConnection();
+            
+	 		// Create a Statement object for sending SQL statements to the database.
+			// Statement: The object used for executing a static SQL statement and returning the results it produces.
+			statement = connection.createStatement();
+            statement.executeUpdate("CREATE OR REPLACE TRIGGER temperature_trigger "+
+				"AFTER INSERT ON temperature "+
+            	"IF ( SELECT rating FROM INSERTED ) > 7 "+
+				"BEGIN "+
+            	"INSERT INTO alerts VALUES ( observations_seq.currval, getdate(), 0, 1 ) "+
+				"END; " +
+				"END IF;");
+		} catch(SQLException e) {
+    		e.printStackTrace();
+		} catch(Exception e) {
+    		e.printStackTrace();
+	 	} finally {
+			// Close resultSet, statement and connection.
+			
+		}
+	}
+
 	@SuppressWarnings("deprecation")
 	public static void addPatients() {
 		PatientDAO pdao = new PatientDAO();
@@ -59,6 +101,40 @@ public class DummyData {
 			System.out.println(String.valueOf(i) + " inserted");
 		}
 		System.out.println("Finished");
+	}
+	
+	public static void addPhysicians() {
+		Physicians phy = new Physicians();
+		for ( int i = 0; i < 10; i++ ) {
+			phy.setClinic("WakeMed");
+			phy.setFname("Scooter");
+			phy.setLname("Zooey");
+			phy.setPw(String.valueOf(i));
+			int id = PhysiciansDAO.insertPhysician(phy);
+			System.out.println("Physician: "+ id );
+		}
+	}
+	
+	public static void addSocialWorkers() {
+		SocialWorker sw = new SocialWorker();
+		for ( int i = 0; i < 5; i++ ) {
+			sw.setFname("Laura");
+			sw.setLname("Cote");
+			sw.setPw(String.valueOf(i));
+			int id = SocialWorkersDAO.insertSocialWorker(sw);
+			System.out.println("SocialWorker: "+ id );
+		}
+	}
+	
+	public static void assignPatientsToSocialWorker() {
+		List<SocialWorker> sws = SocialWorkersDAO.getAllSocialWorkers();
+		PatientDAO pdao = new PatientDAO();
+		SocialWorker sw = sws.get(0);
+		for ( int i = 1; i < 6; i++ ) {
+			Patient p = pdao.getPatient(i);
+			PhysiciansDAO.assignPatientToSocialWorker(p, sw);
+			System.out.println("SW Assigned Patient");
+		}
 	}
 	
 	public static void addPatientConditions() {
