@@ -1,6 +1,8 @@
 package frontEnd.healthPro;
 
-public class ProEnterNewObsType {
+public class ProViewAgrrReport {
 
 	// TODO conceptual with cote
 }
+
+
