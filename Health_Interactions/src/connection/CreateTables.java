@@ -33,8 +33,9 @@ public class CreateTables {
     				
     				//DEPENDENT TABLES
     				//These have to be dropped first
-    				
-    				statement.executeUpdate("DROP TABLE social_w_patients");
+    				//statement.executeUpdate("DROP TABLE prescriptions");
+					//statement.executeUpdate("DROP TABLE messages");
+					statement.executeUpdate("DROP TABLE social_w_patients");
     				statement.executeUpdate("DROP TABLE alerts");
     				statement.executeUpdate("DROP TABLE cond_obser_relationships"); 
 					statement.executeUpdate("DROP TABLE health_supporter");
@@ -45,6 +46,8 @@ public class CreateTables {
     				statement.executeUpdate("DROP TABLE observation_types");
     				
     				//INDEPENDENT TABLES TO DROP
+    				//statement.executeUpdate("DROP SEQUENCE prescription_seq");
+					//statement.executeUpdate("DROP SEQUENCE message_seq");
     				statement.executeUpdate("DROP SEQUENCE observations_seq");
 					statement.executeUpdate("DROP SEQUENCE obs_type_seq");
     				statement.executeUpdate("DROP SEQUENCE observation_categories_seq");
@@ -290,7 +293,56 @@ public class CreateTables {
 							"FOREIGN KEY ( oid ) REFERENCES observations ( oid )"+
 						")");
 					
+					statement.executeUpdate("CREATE TABLE messages ("+
+							"mid NUMBER(19),"+
+							"from NUMBER(19),"+
+							"to NUMBER(19),"+
+							"message varchar(700),"+
+							"viewed int DEFAULT 0,"+
+							"PRIMARY KEY ( mid ),"+
+							"FOREIGN KEY ( from ) REFERENCES patients( pid ),"+
+							"FOREIGN KEY ( to ) REFERENCES patients( pid )"+
+						")");
 					
+					statement.executeUpdate("CREATE SEQUENCE message_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER message_trigger "+
+								"BEFORE INSERT ON messages "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.mid IS NULL THEN "+
+								"SELECT message_seq.nextval INTO :new.mid FROM DUAL; "+
+								"END IF; " +
+								"END;");
+					
+					statement.executeUpdate("CREATE TABLE prescriptions ("+
+							"prescription NUMBER(19),"+
+							"for NUMBER(19),"+
+							"phone varchar(20),"+
+							"drug_name varchar(75),"+
+							"dosage int,"+
+							"start_date date,"+
+							"end_date date,"+
+							"PRIMARY KEY ( prescription ),"+
+							"FOREIGN KEY ( for ) REFERENCES patients( pid )"+
+						")");
+					
+					statement.executeUpdate("CREATE SEQUENCE prescription_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER prescription_trigger "+
+								"BEFORE INSERT ON messages "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.prescription IS NULL THEN "+
+								"SELECT prescription_seq.nextval INTO :new.prescription FROM DUAL; "+
+								"END IF; " +
+								"END;");
 					
 					
 				} catch(SQLException e) {

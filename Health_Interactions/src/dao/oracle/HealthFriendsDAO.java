@@ -57,6 +57,7 @@ public class HealthFriendsDAO {
         	ps.setDouble( 1, patient.getPid());
         	ps.setDouble( 2, healthFriend.getPid());
         	ps.setDate( 3, (java.sql.Date) date );
+        	ps.execute();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {

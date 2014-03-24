@@ -56,7 +56,7 @@ public class DummyData {
 			statement = connection.createStatement();
             statement.executeUpdate("CREATE OR REPLACE TRIGGER temperature_trigger "+
 				"AFTER INSERT ON temperature "+
-            	"IF ( SELECT rating FROM INSERTED ) > 7 "+
+            	"IF ( UPPER(NEW.rating ) > 7 "+
 				"BEGIN "+
             	"INSERT INTO alerts VALUES ( observations_seq.currval, getdate(), 0, 1 ) "+
 				"END; " +
