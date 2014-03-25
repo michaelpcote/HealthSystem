@@ -5,6 +5,7 @@ public class ObservationDataField {
 	private String name;
 	private String description;
 	private String type;
+	private String value_choices;
 	
 	public ObservationDataField(String name, String description, String type) {
 		this.name = name;
@@ -31,5 +32,9 @@ public class ObservationDataField {
 	 */
 	public String getType() {
 		return type;
+	}
+	
+	public String getValueChoices() {
+		return value_choices;
 	}
 }
