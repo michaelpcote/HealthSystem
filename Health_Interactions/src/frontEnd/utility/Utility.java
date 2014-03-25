@@ -27,12 +27,6 @@ public class Utility {
 			}
 		}
 	}
-	
-	public static String getInput() {
-		Scanner scan = new Scanner(System.in);
-		scan.close();
-		return scan.nextLine();
-	}
 		
 	public static List<ObservationDataField> getFields(ObservationType ot) {
 		String[] cols_types = ot.getColumn_names_types().split(",");

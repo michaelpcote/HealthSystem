@@ -18,17 +18,31 @@ public class LogInTest {
 	}
 
 	@Test
-	public void testLogInSuccess() {
-		boolean success = false;
-		success = LogInDAO.allowLogIn(1, "0");
-		assertTrue( success);
+	public void testLogInPatient() {
+		String success = null;
+		success = LogInDAO.allowLogIn(1, "pw");
+		System.out.println(success);
+	}
+	
+	@Test
+	public void testLogInPhysician() {
+		String success = null;
+		success = LogInDAO.allowLogIn(110, "pw");
+		System.out.println(success);
+	}
+	
+	@Test
+	public void testLogInSocialWorker() {
+		String success = null;
+		success = LogInDAO.allowLogIn(115, "pw");
+		System.out.println(success);
 	}
 	
 	@Test
 	public void testLogInFailure() {
-		boolean success = false;
-		success = LogInDAO.allowLogIn(1, "0/");
-		assertFalse( success);
+		String success = null;
+		success = LogInDAO.allowLogIn(37, "pw1");
+		assertTrue( success == null );
 	}
 
 }

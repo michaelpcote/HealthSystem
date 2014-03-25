@@ -259,6 +259,56 @@ public class CreateTables {
 									
 					FillDatabase.main(null);
 					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER pain_trigger "+
+							"AFTER INSERT ON pain "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.rating  > 7 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER contraction_trigger "+
+							"AFTER INSERT ON contraction "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.frequency  > 4 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER temperature_trigger "+
+							"AFTER INSERT ON temperature "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.temp  > 102 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER oxygen_sat_trigger "+
+							"AFTER INSERT ON oxygen_saturation "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.percentage  < 88 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER blood_pressure_trigger "+
+							"AFTER INSERT ON blood_pressure "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.systolic > 140 OR :new.diastolic > 90 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					
 					statement.executeUpdate("CREATE TABLE health_friends ("+
 						"pid NUMBER(19),"+
 						"hf_pid NUMBER(19),"+

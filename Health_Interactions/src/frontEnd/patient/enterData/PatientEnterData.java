@@ -14,7 +14,7 @@ import frontEnd.utility.Utility;
 public class PatientEnterData {
 
 	/**
-	 * Prompts the user for and adds to the database:  the ObservationType requested yee
+	 * Prompts the user for and adds to the database:  the ObservationType requested 
 	 * and the Observation data. 
 	 * @param Patient that is logged and will be prompted.
 	 */

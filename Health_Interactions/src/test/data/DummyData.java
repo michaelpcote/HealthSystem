@@ -33,9 +33,8 @@ public class DummyData {
 		addPatientExerciseObservations();
 		addPatientBloodPressureObservations();
 		addOxygenSaturationObservations();
-		addPatientExerciseToleranceObservations(); 
-		addThreshold();
-		addPainObservations(); 
+		addPatientExerciseToleranceObservations();
+		addPainObservations();
 		addContractionObservations();
 		addTemperatureObservations(); 
 		addLotsOfPatientBloodPressureObservations();
@@ -44,36 +43,6 @@ public class DummyData {
 		
 	}
 	
-	public static void addThreshold() {
-		 Connection connection = null;
-         Statement statement = null;
-		try {
-            // Register JDBC Driver (Oracle Thin)
-           
-            connection = JDBCConnection.getConnection();
-            
-	 		// Create a Statement object for sending SQL statements to the database.
-			// Statement: The object used for executing a static SQL statement and returning the results it produces.
-			statement = connection.createStatement();
-            statement.executeUpdate("CREATE OR REPLACE TRIGGER pain_trigger "+
-				"AFTER INSERT ON pain "+
-            	"FOR EACH ROW "+
-				"BEGIN "+
-            	//"IF :new.rating  > 7 THEN "+
-				"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
-				"VALUES ( observations_seq.currval, to_date(SYSDATE), '0', '1' ) "+
-				//"END IF; "+
-				"END;");
-		} catch(SQLException e) {
-    		e.printStackTrace();
-		} catch(Exception e) {
-    		e.printStackTrace();
-	 	} finally {
-			System.out.println("Trigger Success");
-			
-		}
-	}
-
 	@SuppressWarnings("deprecation")
 	public static void addPatients() {
 		PatientDAO pdao = new PatientDAO();
@@ -90,7 +59,7 @@ public class DummyData {
 			} else {
 				patient.setPublicStatus("no");
 			}
-			patient.setPassword(String.valueOf(i));
+			patient.setPassword("pw");
 			patient.setAddress("1409 Kennon Road");
 			patient.setState("NC");
 			patient.setZip("27529");
@@ -112,7 +81,7 @@ public class DummyData {
 			phy.setClinic("WakeMed");
 			phy.setFname("Scooter");
 			phy.setLname("Zooey");
-			phy.setPw(String.valueOf(i));
+			phy.setPw("pw");
 			int id = PhysiciansDAO.insertPhysician(phy);
 			System.out.println("Physician: "+ id );
 		}
@@ -123,7 +92,7 @@ public class DummyData {
 		for ( int i = 0; i < 5; i++ ) {
 			sw.setFname("Laura");
 			sw.setLname("Cote");
-			sw.setPw(String.valueOf(i));
+			sw.setPw("pw");
 			int id = SocialWorkersDAO.insertSocialWorker(sw);
 			System.out.println("SocialWorker: "+ id );
 		}
