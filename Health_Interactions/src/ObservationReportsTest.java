@@ -129,7 +129,7 @@ public class ObservationReportsTest {
 	public void testGetObservationTypes() {
 		List<ObservationType> ot = ObservationTypeDAO.getAllObservationTypes();
 		System.out.println("Ob number: " + ot.size() );
-		assertTrue( ot.size() == 10 );
+		assertTrue( ot.size() == 11 );
 	}
 	@Test
 	public void testGetDietObservationsBetween() {

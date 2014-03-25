@@ -15,13 +15,13 @@ public class LogInDAO {
 	 * @param pw - The password they enter
 	 * @return
 	 */
-	public static boolean allowLogIn( int user, String pw ) {
+	public static String allowLogIn( int user, String pw ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			conn = JDBCConnection.getConnection();
-			String query = "SELECT * FROM patients p, physicians phy, social_workers sw ";
+			String query = "SELECT * FROM patients p ";
 			query += "where ( p.pid = ? AND p.password = ? ) OR ( phy.phy_id = ? AND phy.password = ? ) ";
 			query += "OR ( sw.sid = ? AND sw.password = ? )";
 			ps = conn.prepareStatement(query);
@@ -32,7 +32,21 @@ public class LogInDAO {
 			}
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				return true;
+				return "Patient";
+			}
+			conn = JDBCConnection.getConnection();
+			query = "SELECT * FROM patients p, physicians phy, social_workers sw ";
+			query += "where ( p.pid = ? AND p.password = ? ) OR ( phy.phy_id = ? AND phy.password = ? ) ";
+			query += "OR ( sw.sid = ? AND sw.password = ? )";
+			ps = conn.prepareStatement(query);
+			index = 1;
+			for ( int i = 0; i < 3; i++ ) {
+				ps.setInt( index++, user);
+				ps.setString(index++, pw);
+			}
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				return "Patient";
 			}
 		} catch (SQLException e) {
 			System.out.println(e.toString());

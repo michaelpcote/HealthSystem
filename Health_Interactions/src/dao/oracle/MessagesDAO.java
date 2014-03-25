@@ -26,8 +26,8 @@ public class MessagesDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT p.fname, p.lname, m.to, m.from, m.mid, m.message FROM patients p, messages m ;";
-    		query += "WHERE m.to = ? AND m.viewed = 0 AND p.pid = m.from";
+    		String query = "SELECT p.fname, p.lname, m.to, m.from_patient, m.mid, m.message FROM patients p, messages m ";
+    		query += "WHERE m.to_patient = ? AND m.viewed = 0 AND p.pid = m.from_patient";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		rs = ps.executeQuery();
@@ -36,8 +36,8 @@ public class MessagesDAO {
     			m.setFrom(rs.getInt("mid"));
     			m.setFromFirstName(rs.getString("fname"));
     			m.setFromLastName(rs.getString("lname"));
-    			m.setFrom(rs.getInt("from"));
-    			m.setTo(rs.getInt("to"));
+    			m.setFrom(rs.getInt("from_patient"));
+    			m.setTo(rs.getInt("to_patient"));
     			messages.add(m);
     		}
     		if ( messages.size() > 0 ) {
@@ -64,8 +64,8 @@ public class MessagesDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT p.fname, p.lname, m.to, m.from, m.mid, m.message FROM patients p, messages m ;";
-    		query += "WHERE m.to = ? AND p.pid = m.from";
+    		String query = "SELECT p.fname, p.lname, m.to_patient, m.from_patient, m.mid, m.message FROM patients p, messages m ";
+    		query += "WHERE m.to = ? AND p.pid = m.from_patient";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		rs = ps.executeQuery();
@@ -74,8 +74,8 @@ public class MessagesDAO {
     			m.setFrom(rs.getInt("mid"));
     			m.setFromFirstName(rs.getString("fname"));
     			m.setFromLastName(rs.getString("lname"));
-    			m.setFrom(rs.getInt("from"));
-    			m.setTo(rs.getInt("to"));
+    			m.setFrom(rs.getInt("from_patient"));
+    			m.setTo(rs.getInt("to_patient"));
     			messages.add(m);
     		}
     		if ( messages.size() > 0 ) {
@@ -125,7 +125,7 @@ public class MessagesDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "INSERT INTO messages( from, to, message ) VALUES ( ?, ?, ? )";
+    		String query = "INSERT INTO messages( from_patient, to_patient, message ) VALUES ( ?, ?, ? )";
             // Create a Statement object for sending SQL statements to the database.
     		// Statement: The object used for executing a static SQL statement and returning the results it produces.
     		ps = conn.prepareStatement(query);

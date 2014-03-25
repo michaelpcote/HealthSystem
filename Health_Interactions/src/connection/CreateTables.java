@@ -33,21 +33,21 @@ public class CreateTables {
     				
     				//DEPENDENT TABLES
     				//These have to be dropped first
-    				//statement.executeUpdate("DROP TABLE prescriptions");
-					//statement.executeUpdate("DROP TABLE messages");
+    				statement.executeUpdate("DROP TABLE prescriptions");
+					statement.executeUpdate("DROP TABLE messages");
 					statement.executeUpdate("DROP TABLE social_w_patients");
     				statement.executeUpdate("DROP TABLE alerts");
     				statement.executeUpdate("DROP TABLE cond_obser_relationships"); 
 					statement.executeUpdate("DROP TABLE health_supporter");
     				statement.executeUpdate("DROP TABLE health_friends");
-    				statement.executeUpdate("DROP TABLE observations");
+    				statement.executeUpdate("DROP TABLE observations"); 
     				statement.executeUpdate("DROP TABLE patient_conditions");
     				statement.executeUpdate("DROP TABLE patients");
     				statement.executeUpdate("DROP TABLE observation_types");
     				
     				//INDEPENDENT TABLES TO DROP
-    				//statement.executeUpdate("DROP SEQUENCE prescription_seq");
-					//statement.executeUpdate("DROP SEQUENCE message_seq");
+    				statement.executeUpdate("DROP SEQUENCE prescription_seq");
+					statement.executeUpdate("DROP SEQUENCE message_seq");
     				statement.executeUpdate("DROP SEQUENCE observations_seq");
 					statement.executeUpdate("DROP SEQUENCE obs_type_seq");
     				statement.executeUpdate("DROP SEQUENCE observation_categories_seq");
@@ -295,13 +295,13 @@ public class CreateTables {
 					
 					statement.executeUpdate("CREATE TABLE messages ("+
 							"mid NUMBER(19),"+
-							"from NUMBER(19),"+
-							"to NUMBER(19),"+
-							"message varchar(700),"+
+							"from_patient NUMBER(19),"+
+							"to_patient NUMBER(19),"+
+							"message varchar(350),"+
 							"viewed int DEFAULT 0,"+
 							"PRIMARY KEY ( mid ),"+
-							"FOREIGN KEY ( from ) REFERENCES patients( pid ),"+
-							"FOREIGN KEY ( to ) REFERENCES patients( pid )"+
+							"FOREIGN KEY ( from_patient ) REFERENCES patients( pid ),"+
+							"FOREIGN KEY ( to_patient ) REFERENCES patients( pid )"+
 						")");
 					
 					statement.executeUpdate("CREATE SEQUENCE message_seq "+
@@ -320,14 +320,14 @@ public class CreateTables {
 					
 					statement.executeUpdate("CREATE TABLE prescriptions ("+
 							"prescription NUMBER(19),"+
-							"for NUMBER(19),"+
+							"for_pid NUMBER(19),"+
 							"phone varchar(20),"+
 							"drug_name varchar(75),"+
 							"dosage int,"+
 							"start_date date,"+
 							"end_date date,"+
 							"PRIMARY KEY ( prescription ),"+
-							"FOREIGN KEY ( for ) REFERENCES patients( pid )"+
+							"FOREIGN KEY ( for_pid ) REFERENCES patients( pid )"+
 						")");
 					
 					statement.executeUpdate("CREATE SEQUENCE prescription_seq "+
@@ -336,7 +336,7 @@ public class CreateTables {
 					
 					
 					statement.executeUpdate("CREATE OR REPLACE TRIGGER prescription_trigger "+
-								"BEFORE INSERT ON messages "+
+								"BEFORE INSERT ON prescriptions "+
 								"FOR EACH ROW "+
 								"BEGIN "+
 								"IF :new.prescription IS NULL THEN "+

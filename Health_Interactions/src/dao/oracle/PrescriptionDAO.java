@@ -49,7 +49,7 @@ public class PrescriptionDAO {
         PreparedStatement ps = null;
         try {
         	conn = JDBCConnection.getConnection();
-        	String query = "UPDATE prescriptions SET for = ?, phone = ?, drug_name = ?, dosage = ?, ";
+        	String query = "UPDATE prescriptions SET for_pid = ?, phone = ?, drug_name = ?, dosage = ?, ";
         	query += " start_date = ?, end_date = ? WHERE prescription = ?";
         	ps = conn.prepareStatement(query);
         	int index = 1;

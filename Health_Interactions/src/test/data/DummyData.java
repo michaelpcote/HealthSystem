@@ -22,25 +22,26 @@ import beans.SocialWorker;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		/*
+		
 		addPatients();
 		addPhysicians();
 		addSocialWorkers();
-		assignPatientsToSocialWorker();
-		addPatientConditions();
-		addPatientDietObservations();
+		assignPatientsToSocialWorker(); 
+		addPatientConditions(); 
+		addPatientDietObservations(); 
 		addPatientWeightObservations();
 		addPatientExerciseObservations();
 		addPatientBloodPressureObservations();
 		addOxygenSaturationObservations();
-		addPatientExerciseToleranceObservations();
-		addPainObservations();
+		addPatientExerciseToleranceObservations(); 
+		addThreshold();
+		addPainObservations(); 
 		addContractionObservations();
-		addTemperatureObservations();
+		addTemperatureObservations(); 
 		addLotsOfPatientBloodPressureObservations();
 		createPatientTable();
-		addTwoPatientsWithHighDiet();*/
-		addThreshold();
+		addTwoPatientsWithHighDiet();
+		
 	}
 	
 	public static void addThreshold() {
@@ -54,19 +55,21 @@ public class DummyData {
 	 		// Create a Statement object for sending SQL statements to the database.
 			// Statement: The object used for executing a static SQL statement and returning the results it produces.
 			statement = connection.createStatement();
-            statement.executeUpdate("CREATE OR REPLACE TRIGGER temperature_trigger "+
-				"AFTER INSERT ON temperature "+
-            	"IF ( UPPER(NEW.rating ) > 7 "+
+            statement.executeUpdate("CREATE OR REPLACE TRIGGER pain_trigger "+
+				"AFTER INSERT ON pain "+
+            	"FOR EACH ROW "+
 				"BEGIN "+
-            	"INSERT INTO alerts VALUES ( observations_seq.currval, getdate(), 0, 1 ) "+
-				"END; " +
-				"END IF;");
+            	//"IF :new.rating  > 7 THEN "+
+				"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+				"VALUES ( observations_seq.currval, to_date(SYSDATE), '0', '1' ) "+
+				//"END IF; "+
+				"END;");
 		} catch(SQLException e) {
     		e.printStackTrace();
 		} catch(Exception e) {
     		e.printStackTrace();
 	 	} finally {
-			// Close resultSet, statement and connection.
+			System.out.println("Trigger Success");
 			
 		}
 	}
