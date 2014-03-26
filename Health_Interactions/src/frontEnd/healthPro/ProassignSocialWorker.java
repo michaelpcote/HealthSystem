@@ -1,68 +1,59 @@
 package frontEnd.healthPro;
 
+import java.util.List;
 import java.util.Scanner;
+
+import dao.oracle.PhysiciansDAO;
+import dao.oracle.SocialWorkersDAO;
+import frontEnd.utility.Utility;
+import beans.Patient;
+import beans.Physician;
+import beans.SocialWorker;
 
 public class ProassignSocialWorker {
 
-	int pid;
-	int[] social_pids;
-	int social_choice;
-	int[] patient_pids;
-	int patient_choice;
-	
-	public ProassignSocialWorker(int pid) {
-		this.pid = pid;
-	}
-	
-	public void drive() {
-		getSocialWorkers();
-		getSocialChoice();
-		getPatients();
-		getPatientChoice();
-		update();
+	public static void drive(Physician phys) {
+		SocialWorker sw = getWorker();
+		Patient patient = getPatient(sw);
+		
+		updateDB(sw, patient);
 	}
 
-	private void getSocialWorkers() {
-		// TODO link with cote
-		// workers = ;
-	}
-	
-	private void getSocialChoice() {
-		System.out.println("Select the social worker assign:");
-		for (int i=0; i<social_pids.length; i++) {
-			System.out.println(i + " -- " + getSocialName(social_pids[i]));
-		}
-		Scanner scan = new Scanner(System.in);
-		social_choice = scan.nextInt();
-		scan.close();
-	}
-	
-	private String getSocialName(int social_id) {
-		// TODO link with cote
-		return null;
-	}
-	
-	private void getPatients() {
-		// TODO link with cote
-		// patients_pid = ;
-	}
-	
-	private void getPatientChoice() {
-		System.out.println("Select the patient to assign " + getSocialName(social_choice) + " to:");
-		for (int i=0; i<patient_pids.length; i++) {
-			System.out.println(i + " -- " + getPatientName(i));
-		}
-		Scanner scan = new Scanner(System.in);
-		patient_choice = scan.nextInt();
-		scan.close();
+	/**
+	 * Updates the database with the newly selected assignment of the social worker
+	 * with the patient.
+	 * @param sw
+	 * @param patient
+	 */
+	private static void updateDB(SocialWorker sw, Patient patient) {
+		PhysiciansDAO.assignPatientToSocialWorker(patient, sw);;
 	}
 
-	private String getPatientName(int i) {
-		// TODO link with cote
-		return null;
+	/**
+	 * Gets the patient the physician will assign the social worker to.
+	 * @return Patient to be assigned
+	 */
+	private static Patient getPatient(SocialWorker sw) {
+		System.out.println("Select the Patient to assign the social worker to: ");
+		List<Patient> list = SocialWorkersDAO.getPossiblePatientsForSocialWorker(sw);
+		for (int i=0; i<list.size(); i++) {
+			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
+		}
+		int choice = Utility.getValidChoice(list.size());
+		return list.get(choice);
 	}
-	
-	private void update() {
-		// TODO link with cote
+
+	/**
+	 * Gets the social worker the physician wants to assign.
+	 * @return Social Worker
+	 */
+	private static SocialWorker getWorker() {
+		System.out.println("Select the Social Worker to assign a patient to: ");
+		List<SocialWorker> list = SocialWorkersDAO.getAllSocialWorkers();
+		for (int i=0; i<list.size(); i++) {
+			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
+		}
+		int choice = Utility.getValidChoice(list.size());
+		return list.get(choice);
 	}
 }
