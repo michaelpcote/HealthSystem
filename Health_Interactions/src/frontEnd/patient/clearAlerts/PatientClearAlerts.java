@@ -1,14 +1,20 @@
 package frontEnd.patient.clearAlerts;
 
+import dao.oracle.AlertsDAO;
+import beans.Patient;
+
+/**
+ * Clears alerts for a patient
+ * @author cmnelso5
+ *
+ */
 public class PatientClearAlerts {
 
-	int pid;
-	
-	PatientClearAlerts(int pid) {
-		this.pid = pid;
-	}
-	
-	public void drive() {
-		//TODO link with cote
+	/**
+	 * clears alerts for a given patient.
+	 * @param patient
+	 */
+	public static void drive(Patient patient) {
+		AlertsDAO.clearViewedAlerts(patient);
 	}
 }
