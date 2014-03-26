@@ -26,7 +26,8 @@ public class ObservationReportsTest {
 	@Test
 	public void testDietAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(1);
-		String diet = ObservationReportsDAO.averageAmount(ot, 1, 3);
+		int[] arr = {1,3};
+		String diet = ObservationReportsDAO.averageAmount(ot, arr);
 		System.out.println( "Diet: " + diet );
 	}
 	
@@ -63,7 +64,8 @@ public class ObservationReportsTest {
 	@Test
 	public void testWeightAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
-		String weight = ObservationReportsDAO.averageAmount(ot, 1, 2, 3, 4);
+		int[] arr = {1,2,3,4};
+		String weight = ObservationReportsDAO.averageAmount(ot, arr);
 		System.out.println("Weight: "+ weight );
 	}
 	
@@ -72,7 +74,8 @@ public class ObservationReportsTest {
 	@Test
 	public void tesBloodPressureAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		String weight = ObservationReportsDAO.averageAmount(ot, 1, 2, 3, 4);
+		int[] arr = {1,2,3,4};
+		String weight = ObservationReportsDAO.averageAmount(ot, arr);
 		System.out.println("Blood Pressure Average: "+ weight );
 	}
 	

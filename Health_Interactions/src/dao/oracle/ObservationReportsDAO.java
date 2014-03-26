@@ -21,7 +21,7 @@ public class ObservationReportsDAO {
 	 * @return an String - it will return the name of the column that is an int and the value like
 	 * "colname:value,colname:value" one column and value for each integer column
 	 */
-	public static String averageAmount(ObservationType ot, int ... patient_conditions) {
+	public static String averageAmount(ObservationType ot, int[] patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
 			return null;
 		}
