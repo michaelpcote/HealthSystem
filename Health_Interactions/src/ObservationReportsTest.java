@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -26,8 +27,10 @@ public class ObservationReportsTest {
 	@Test
 	public void testDietAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(1);
-		int[] arr = {1,3};
-		String diet = ObservationReportsDAO.averageAmount(ot, arr);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(3);
+		String diet = ObservationReportsDAO.averageAmount(ot, list);
 		System.out.println( "Diet: " + diet );
 	}
 	
@@ -64,8 +67,12 @@ public class ObservationReportsTest {
 	@Test
 	public void testWeightAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
-		int[] arr = {1,2,3,4};
-		String weight = ObservationReportsDAO.averageAmount(ot, arr);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String weight = ObservationReportsDAO.averageAmount(ot, list);
 		System.out.println("Weight: "+ weight );
 	}
 	
@@ -74,8 +81,12 @@ public class ObservationReportsTest {
 	@Test
 	public void tesBloodPressureAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		int[] arr = {1,2,3,4};
-		String weight = ObservationReportsDAO.averageAmount(ot, arr);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String weight = ObservationReportsDAO.averageAmount(ot, list);
 		System.out.println("Blood Pressure Average: "+ weight );
 	}
 	

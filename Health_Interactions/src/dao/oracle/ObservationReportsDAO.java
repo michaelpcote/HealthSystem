@@ -17,12 +17,12 @@ public class ObservationReportsDAO {
 	/**
 	 * Find the average of an integer column
 	 * @param ot - An observation type - should have an integer
-	 * @param patient_conditions takes a variable number of integers representing observation types
+	 * @param patient_conditions takes a variable number of integers representing patient conditions
 	 * @return an String - it will return the name of the column that is an int and the value like
 	 * "colname:value,colname:value" one column and value for each integer column
 	 */
-	public static String averageAmount(ObservationType ot, int[] patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
+	public static String averageAmount(ObservationType ot, List<Integer> patient_conditions) {
+		if ( patient_conditions.size() == 0 ) {
 			return null;
 		}
 		String averages = "";
@@ -46,14 +46,14 @@ public class ObservationReportsDAO {
 				String query = "SELECT AVG(u."+name+") AS avg FROM " + database + " u";
 				query += ", observations o, patient_conditions pc WHERE ";
 				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ? ";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < patient_conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				try {
 					conn = JDBCConnection.getConnection();
 					ps = conn.prepareStatement(query);
-					for ( int j = 0; j < patient_conditions.length; j++ ) {
-						ps.setInt( (j + 1), patient_conditions[j]);
+					for ( int j = 0; j < patient_conditions.size(); j++ ) {
+						ps.setInt( (j + 1), patient_conditions.get(j));
 					}
 					rs = ps.executeQuery();
 					if ( rs.next() ) {

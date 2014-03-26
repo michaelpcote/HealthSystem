@@ -1,17 +1,17 @@
 package beans;
 
-public class PatientConditions {
+public class PatientCondition {
 	private int condition;
 	private String description;
 	
 	/**
 	 * An empty constructor
 	 */
-	public PatientConditions() {
+	public PatientCondition() {
 		
 	}
 	
-	public PatientConditions( String description ) {
+	public PatientCondition( String description ) {
 		this.description = description;
 	}
 

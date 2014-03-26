@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import dao.oracle.PatientConditionsDAO;
 import beans.Patient;
-import beans.PatientConditions;
+import beans.PatientCondition;
 
 public class PatientConditionsTest {
 
@@ -22,13 +22,13 @@ public class PatientConditionsTest {
 
 	@Test
 	public void testGetAllPatientConditions() {
-		List<PatientConditions> pcs = PatientConditionsDAO.getAllConditionTypes();
+		List<PatientCondition> pcs = PatientConditionsDAO.getAllConditionTypes();
 		assertTrue( pcs.size() == 4 );
 	}
 	
 	@Test
 	public void testGetAllPatientsWithConditions() {
-		List<PatientConditions> pcs = PatientConditionsDAO.getAllConditionTypes();
+		List<PatientCondition> pcs = PatientConditionsDAO.getAllConditionTypes();
 		List<Patient> patients = PatientConditionsDAO.getAllPatientsWithCondition(pcs.get(0).getCondition());
 		assertTrue( patients.size() == 50 );
 		patients = PatientConditionsDAO.getAllPatientsWithCondition(pcs.get(1).getCondition());

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Patient;
-import beans.PatientConditions;
+import beans.PatientCondition;
 import connection.JDBCConnection;
 
 public class PatientConditionsDAO {
@@ -38,17 +38,17 @@ public class PatientConditionsDAO {
 	 * Get a list of all possible patient condition types
 	 * @return
 	 */
-	public static List<PatientConditions> getAllConditionTypes() {
+	public static List<PatientCondition> getAllConditionTypes() {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ArrayList<PatientConditions> conditions = new ArrayList<PatientConditions>();
+		ArrayList<PatientCondition> conditions = new ArrayList<PatientCondition>();
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement("SELECT * FROM condition_types");
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
-				PatientConditions condition = new PatientConditions();
+				PatientCondition condition = new PatientCondition();
 				condition.setCondition(rs.getInt("cid"));
 				condition.setDescription(rs.getString("description"));
 				conditions.add( condition );
