@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import connection.JDBCConnection;
+import dao.oracle.HealthFriendsDAO;
 import dao.oracle.ObservationTypeDAO;
 import dao.oracle.ObservationDAO;
 import dao.oracle.PatientConditionsDAO;
@@ -40,7 +41,7 @@ public class DummyData {
 		addLotsOfPatientBloodPressureObservations();
 		createPatientTable();
 		addTwoPatientsWithHighDiet();
-		
+		addPatientHealthFriends();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -393,6 +394,19 @@ public class DummyData {
 				ObservationDAO.addPatientObservation(patient, o, ot, "temp:"+i);
 				System.out.println( String.valueOf(i) + " temperature observation");
 			} 
+		}
+	}
+	
+	public static void addPatientHealthFriends() {
+		PatientDAO pdao = new PatientDAO();
+		Patient patient = pdao.getPatient(2);
+		List<Patient> patients = HealthFriendsDAO.findHealthFriend(patient);
+		System.out.println("2 patient size: " + patients.size());
+		for ( int i = 0; i < patients.size(); i ++ ) {
+			if ( i % 4 == 0 ) {
+				HealthFriendsDAO.addHealthFriend(patient, patients.get(i));
+				System.out.println("Added healthfriend "+ patients.get(i).getPid());
+			}
 		}
 	}
 	

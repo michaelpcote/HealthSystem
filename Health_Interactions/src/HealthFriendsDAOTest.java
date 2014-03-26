@@ -33,5 +33,30 @@ public class HealthFriendsDAOTest {
 		patients = HealthFriendsDAO.findHealthFriend(patient);
 		System.out.println("2 patient size: " + patients.size());
 	}
+	
+	@Test
+	public void testFindHealthFriendsAddedSince() {
+		Patient patient = pdao.getPatient(2);
+		List<Patient> patients = HealthFriendsDAO.findHealthFriend(patient);
+		int count = HealthFriendsDAO.healthFriendsAddedSince(patient, "2014-03-01");
+		System.out.println(count);
+		
+	}
+	
+	@Test
+	public void testFindHealthFriendsSameCity() {
+		Patient patient = pdao.getPatient(2);
+		List<Patient> patients = HealthFriendsDAO.healthFriendsSameCity(patient);
+		System.out.println(patients.size());
+		
+	}
+	
+	@Test
+	public void testFindHealthFriendsByDate() {
+		Patient patient = pdao.getPatient(2);
+		List<Patient> patients = HealthFriendsDAO.listHealthFriendsByDate(patient);
+		System.out.println(patients.size());
+		
+	}
 
 }

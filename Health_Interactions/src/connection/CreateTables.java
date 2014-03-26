@@ -38,8 +38,7 @@ public class CreateTables {
 					statement.executeUpdate("DROP TABLE social_w_patients");
     				statement.executeUpdate("DROP TABLE alerts");
     				statement.executeUpdate("DROP TABLE cond_obser_relationships"); 
-					statement.executeUpdate("DROP TABLE health_supporter");
-    				statement.executeUpdate("DROP TABLE health_friends");
+					statement.executeUpdate("DROP TABLE health_friends");
     				statement.executeUpdate("DROP TABLE observations"); 
     				statement.executeUpdate("DROP TABLE patient_conditions");
     				statement.executeUpdate("DROP TABLE patients");
@@ -52,8 +51,7 @@ public class CreateTables {
 					statement.executeUpdate("DROP SEQUENCE obs_type_seq");
     				statement.executeUpdate("DROP SEQUENCE observation_categories_seq");
 					statement.executeUpdate("DROP SEQUENCE conditions_cid_seq");
-    				statement.executeUpdate("DROP TABLE health_supporter_type");
-					statement.executeUpdate("DROP SEQUENCE patients_pid_seq");
+    				statement.executeUpdate("DROP SEQUENCE patients_pid_seq");
     				statement.executeUpdate("DROP TABLE sex");
     				statement.executeUpdate("DROP TABLE condition_types");
     				statement.executeUpdate("DROP TABLE observation_categories");
@@ -317,23 +315,7 @@ public class CreateTables {
 						"FOREIGN KEY ( pid ) REFERENCES Patients(pid),"+
 						"FOREIGN KEY ( hf_pid ) REFERENCES Patients( pid )"+
 					")");
-					
-					statement.executeUpdate("CREATE TABLE health_supporter_type ("+
-						"supporter_type int,"+
-						"description VARCHAR (150) NOT NULL,"+
-						"PRIMARY KEY ( supporter_type)"+
-					")");
-					
-					statement.executeUpdate("CREATE TABLE health_supporter ("+
-						"sid NUMBER(19),"+
-						"supporter_type int,"+
-						"first_name VARCHAR (50),"+
-						"last_name VARCHAR (50),"+
-						"clinic VARCHAR (150),"+
-						"PRIMARY KEY ( sid ),"+
-						"FOREIGN KEY ( supporter_type ) REFERENCES health_supporter_type ( supporter_type )"+
-					")");
-					
+										
 					statement.executeUpdate("CREATE TABLE alerts ("+
 							"oid NUMBER(19),"+
 							"alert_date date,"+
@@ -342,7 +324,17 @@ public class CreateTables {
 							"PRIMARY KEY ( oid ),"+
 							"FOREIGN KEY ( oid ) REFERENCES observations ( oid )"+
 						")");
-					
+					/*
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER other_alert_trigger "+
+							"AFTER INSERT ON alerts "+
+			            	"FOR EACH ROW "+
+							"BEGIN "+
+			            	"IF :new.systolic > 140 OR :new.diastolic > 90 THEN "+
+							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
+							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
+							"END IF; "+
+							"END;");
+					*/
 					statement.executeUpdate("CREATE TABLE messages ("+
 							"mid NUMBER(19),"+
 							"from_patient NUMBER(19),"+
