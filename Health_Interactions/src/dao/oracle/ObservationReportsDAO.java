@@ -181,8 +181,8 @@ public class ObservationReportsDAO {
 	 * @param patient_conditions
 	 * @return List of patients with that blood pressure
 	 */
-	public static List<Patient> getPatientsWithHighest(ObservationType ot, int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
+	public static List<Patient> getPatientsWithHighest(ObservationType ot, List<Integer> patient_conditions) {
+		if ( patient_conditions.size() == 0 ) {
 			return null;
 		}
 		String database = ot.getTable_name();
@@ -207,14 +207,14 @@ public class ObservationReportsDAO {
 					query += ") AND ";
 				}
 				query += "( pc.cid = ? ";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < patient_conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				query += ") AND (u."+names[i]+") = ";
 				query += "(SELECT MAX( u2."+names[i]+" ) FROM "+ database+" u2, ";
 				query += "observations o2, patient_conditions pc WHERE ";
 				query += "u2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < patient_conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				query += ") )";
@@ -227,11 +227,11 @@ public class ObservationReportsDAO {
 							ps.setDouble(index++, patients.get(j).getPid());
 						}
 					}
-					for ( int j = 0; j < (patient_conditions.length ); j++ ) {
-						ps.setInt( index++, patient_conditions[j]);
+					for ( int j = 0; j < (patient_conditions.size() ); j++ ) {
+						ps.setInt( index++, patient_conditions.get(j));
 					}
-					for ( int j = patient_conditions.length; j < (patient_conditions.length * 2); j++ ) {
-						ps.setInt( index++, patient_conditions[j - patient_conditions.length]);
+					for ( int j = patient_conditions.size(); j < (patient_conditions.size() * 2); j++ ) {
+						ps.setInt( index++, patient_conditions.get(j - patient_conditions.size()));
 					}
 					rs = ps.executeQuery();
 					if ( patients == null ) {
@@ -257,11 +257,11 @@ public class ObservationReportsDAO {
 	 * variable number of patient conditions. If the observation type that is passed in has two 
 	 * integer columns, then the list will contain patients that have the highest of one or the other.
 	 * If the same person has the highest in both columns, only a single patient will be returned.
-	 * @param patient_conditions
+	 * @param conditions
 	 * @return List of patients with that blood pressure
 	 */
-	public static List<Patient> getPatientsWithLowest(ObservationType ot, int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
+	public static List<Patient> getPatientsWithLowest(ObservationType ot, List<Integer> conditions) {
+		if ( conditions.size() == 0 ) {
 			return null;
 		}
 		String database = ot.getTable_name();
@@ -286,14 +286,14 @@ public class ObservationReportsDAO {
 					query += ") AND ";
 				}
 				query += "( pc.cid = ? ";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				query += ") AND (u."+names[i]+") = ";
 				query += "(SELECT MIN( u2."+names[i]+" ) FROM "+ database+" u2, ";
 				query += "observations o2, patient_conditions pc WHERE ";
 				query += "u2.oid = o2.oid AND o2.pid = pc.pid AND ( pc.cid = ? ";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				query += ") )";
@@ -306,11 +306,11 @@ public class ObservationReportsDAO {
 							ps.setDouble(index++, patients.get(j).getPid());
 						}
 					}
-					for ( int j = 0; j < (patient_conditions.length ); j++ ) {
-						ps.setInt( index++, patient_conditions[j]);
+					for ( int j = 0; j < (conditions.size() ); j++ ) {
+						ps.setInt( index++, conditions.get(j));
 					}
-					for ( int j = patient_conditions.length; j < (patient_conditions.length * 2); j++ ) {
-						ps.setInt( index++, patient_conditions[j - patient_conditions.length]);
+					for ( int j = conditions.size(); j < (conditions.size() * 2); j++ ) {
+						ps.setInt( index++, conditions.get(j - conditions.size()));
 					}
 					rs = ps.executeQuery();
 					if ( patients == null ) {
