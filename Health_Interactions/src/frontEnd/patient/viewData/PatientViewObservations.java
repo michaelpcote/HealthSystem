@@ -31,10 +31,20 @@ public class PatientViewObservations {
 		showObservations(patient, ot, startdate, enddate);
 	}
 	
+	/**
+	 * Shows the observations to the user
+	 * @param patient
+	 * @param ot
+	 * @param startdate
+	 * @param enddate
+	 */
 	private static void showObservations(Patient patient, ObservationType ot,
 			String startdate, String enddate) {
 		String info = updateDB(patient, ot, startdate, enddate);
-		
+		String[] list = info.split(",");
+		for (int i=0; i<list.length; i++) {
+			System.out.println(list[i]);
+		}
 	}
 
 	/**
