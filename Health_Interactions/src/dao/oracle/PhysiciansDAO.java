@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import beans.Patient;
-import beans.Physicians;
+import beans.Physician;
 import beans.SocialWorker;
 import connection.JDBCConnection;
 
@@ -16,7 +16,7 @@ public class PhysiciansDAO {
 	 * Inserts a physician into the db
 	 * @param patient
 	 */
-	public static int insertPhysician( Physicians physician ) {
+	public static int insertPhysician( Physician physician ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

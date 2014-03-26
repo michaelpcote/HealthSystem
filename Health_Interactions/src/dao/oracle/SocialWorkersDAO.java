@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.Patient;
-import beans.Physicians;
+import beans.Physician;
 import beans.SocialWorker;
 import connection.JDBCConnection;
 

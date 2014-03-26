@@ -1,6 +1,6 @@
 package beans;
 
-public class Physicians {
+public class Physician {
 	
 	private int pid = -1;
 	private String fname = null;
@@ -8,7 +8,7 @@ public class Physicians {
 	private String clinic = null;
 	private String pw = null;
 	
-	public Physicians() {
+	public Physician() {
 		
 	}
 

@@ -17,7 +17,7 @@ import dao.oracle.SocialWorkersDAO;
 import beans.Observation;
 import beans.ObservationType;
 import beans.Patient;
-import beans.Physicians;
+import beans.Physician;
 import beans.SocialWorker;
 
 public class DummyData {
@@ -77,7 +77,7 @@ public class DummyData {
 	}
 	
 	public static void addPhysicians() {
-		Physicians phy = new Physicians();
+		Physician phy = new Physician();
 		for ( int i = 0; i < 10; i++ ) {
 			phy.setClinic("WakeMed");
 			phy.setFname("Scooter");
