@@ -23,7 +23,7 @@ public class PatientConditionsDAO {
 	 * @param patient
 	 * @param condition int
 	 */
-	public void designatePatient( Patient patient, int condition ) {
+	public static void designatePatient( Patient patient, int condition ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {

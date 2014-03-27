@@ -65,19 +65,19 @@ public class AlertsDAO {
 	public static void clearViewedAlerts( Patient patient ) {
 		Connection conn = null;
         PreparedStatement ps = null;
-       try {
-        	conn = JDBCConnection.getConnection();
-        	String query = "UPDATE alerts a SET a.alert_active = 0 WHERE a.oid = ( SELECT a2.oid FROM alerts a2, observations o ";
-        	query += "WHERE a2.viewed = 1 AND a2.alert_active = 1 AND ";
-        	query += "a2.oid = o.oid AND o.pid = ? )";
-    		ps = conn.prepareStatement(query);
-    		ps.setDouble( 1, patient.getPid());
-    		ps.executeQuery();
-        } catch(SQLException e) {
-           	e.printStackTrace();
-        } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
-		}
+        String or = getViewedAlerts( patient );
+        if ( ! or.equals("")) {
+	        try {
+	        	conn = JDBCConnection.getConnection();
+	        	String query = "UPDATE alerts SET alert_active = 0 WHERE " + or;
+	    		ps = conn.prepareStatement(query);
+	    		ps.executeQuery();
+	        } catch(SQLException e) {
+	           	e.printStackTrace();
+	        } finally {
+				JDBCConnection.closeConnection(conn, ps, null);
+			}
+        }
 	}
 	
 	/**
@@ -132,5 +132,38 @@ public class AlertsDAO {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
     	return numberOfAlerts;
+    }
+	
+	/**
+	 * Returns a list of all viewed alerts for a patient
+	 * @param patient - The patient to view alerts for
+	 * @return A comma delimited string of the alerts
+	 */
+	private static String getViewedAlerts( Patient patient ) {
+		Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String or = "";
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+    		String query = "SELECT a.oid FROM alerts a, ";
+    		query += "observations o where a.alert_active = 1 AND a.oid = o.oid AND o.pid = ? ";
+    		query += "AND a.viewed = 1";
+			ps = conn.prepareStatement(query);
+    		ps.setDouble( 1, patient.getPid());
+    		rs = ps.executeQuery();
+    		if ( rs.next() ) {
+    			or += "alerts.oid = "+rs.getInt("oid");
+    		}
+    		while ( rs.next() ) {
+    			or += " OR alerts.oid = " + rs.getInt("oid");
+    		}
+    	} catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+        return or;
     }
 }

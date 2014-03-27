@@ -22,9 +22,10 @@ public class AlertDAOTest {
 
 	@Test
 	public void testViewAlerts() {
-		Patient patient = pdao.getPatient(24);
+		Patient patient = pdao.getPatient(30);
 		String alerts = AlertsDAO.viewNonClearedAlerts(patient);
 		System.out.println(alerts);
+		patient = pdao.getPatient(30);
 		AlertsDAO.clearViewedAlerts(patient);
 		alerts = AlertsDAO.viewNonClearedAlerts(patient);
 		System.out.println(alerts);
