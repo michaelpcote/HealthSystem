@@ -24,7 +24,7 @@ import beans.SocialWorker;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		/*
+		
 		addPatients();
 		addPhysicians();
 		addSocialWorkers();
@@ -42,10 +42,11 @@ public class DummyData {
 		addLotsOfPatientBloodPressureObservations();
 		createPatientTable();
 		addTwoPatientsWithHighDiet();
-		addPatientHealthFriends(); */
-		additionalHealthFriends(); /*
+		addPatientHealthFriends();
+		additionalHealthFriends();
 		moreHealthFriends(); 
-		anotherHealthFriends(); */
+		anotherHealthFriends();
+		System.out.println("-----\nDONE.");
 	}
 	
 	@SuppressWarnings("deprecation")

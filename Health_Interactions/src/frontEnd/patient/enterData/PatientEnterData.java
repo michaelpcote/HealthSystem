@@ -56,8 +56,8 @@ public class PatientEnterData {
 		for (int i=0; i<fields.size(); i++) {
 			ObservationDataField field = fields.get(i);
 			System.out.println(field.getDescription() + "(" + field.getType() + "):  ");
+			Scanner scan = new Scanner(System.in);
 			while (true) { //loops in case user enters string when int requested
-				Scanner scan = new Scanner(System.in);
 				String input = scan.nextLine();
 				if (!(field.getType() == "int" && !Utility.isInt(input))) {
 					if (i != 0) {
@@ -66,7 +66,6 @@ public class PatientEnterData {
 					ret += field.getName();
 					ret += ":";
 					ret += input;
-					scan.close();
 					break;
 				}
 			}

@@ -176,7 +176,6 @@ public class PatientAddObservationType {
 				System.out.println("ERROR - Name must be less than 50 character.");
 			}
 			else {
-				scan.close();
 				return name;
 			}
 		}
