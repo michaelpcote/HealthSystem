@@ -2,7 +2,6 @@ package frontEnd.patient.enterData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import dao.oracle.ObservationTypeDAO;
 import frontEnd.utility.Utility;
@@ -51,8 +50,6 @@ public class PatientAddObservationType {
 		//field info
 		List<ObservationDataField> fields = getFieldInfo();		//additional_info, col_names_types
 		
-		//TODO get value_choice string
-		/*
 		//value_choices
 		for (int i=0; i<fields.size(); i++) {
 			if (fields.get(i).getValueChoices() != null) {
@@ -60,7 +57,6 @@ public class PatientAddObservationType {
 				break;
 			}
 		}
-		*/
 		
 		//col_name_types, add_info
 		column_names_types = getNamesTypes(fields);
@@ -72,6 +68,16 @@ public class PatientAddObservationType {
 		ot.setDisplay_name(display_name);
 		ot.setTable_name(table_name);
 		ot.setValue_choices(value_choices);
+		
+		ot.setOcid(23);
+		
+		System.out.println(additional_info);
+		System.out.println(value_choices);
+		System.out.println(display_name);
+		System.out.println(table_name);
+		System.out.println(column_names_types);
+		
+		
 		return ot;
 	}
 
@@ -127,29 +133,55 @@ public class PatientAddObservationType {
 			if (i != 0) {
 				System.out.println("Enter yes to enter another field for this observation type: ");
 				String answer = Utility.getInput();
-				if (answer.toLowerCase().startsWith("y")) {
+				if (!answer.toLowerCase().startsWith("y")) {
 					return fields;
 				}
 			}
 			System.out.println("Enter the field name");
 			String add_info_field = Utility.getInput();
+			String col_name_field = getDbName(add_info_field);
 			System.out.println("Enter yes if this is an integer input (else will be String): ");
 			String line = Utility.getInput();
 			String type;
+			boolean isInt = false;
 			if (line.toLowerCase().startsWith("y")) {
 				type = "int";
+				isInt = true;
 			}
 			else {
 				type = "String";
 			}
 			
-			//TODO get value choices
-			//value_choie = ;
-			String col_name_field = getDbName(add_info_field);
+			String value_choice = "";
+			System.out.println("Does this field have a threshhold value? ");
+			if (Utility.getInput().toLowerCase().startsWith("y")) {
+				value_choice += col_name_field;
+				value_choice += ":";
+				value_choice += type;
+				value_choice += ":";
+				value_choice += getValueChoice(isInt);
+				System.out.println(value_choice);
+			}
 			
-			ObservationDataField field = new ObservationDataField(col_name_field, add_info_field, type);
+			ObservationDataField field = new ObservationDataField(col_name_field, add_info_field, type, value_choice);
 			fields.add(field);
 			i++;
+		}
+	}
+
+	private static String getValueChoice(boolean isInt) {
+		String ret = "";
+		if (isInt) {
+			System.out.println("Enter the minimum: ");
+			ret += Utility.getValidChoice(214748364);
+			ret +=",";
+			System.out.println("Enter the maximum: ");
+			ret += Utility.getValidChoice(214748364);
+			return ret;
+		}
+		else {
+			System.out.println("Enter a comma seperated list of possible values without spaces after the comma (Happy,Sad,Confused)");
+			return Utility.getInput();
 		}
 	}
 
@@ -170,14 +202,8 @@ public class PatientAddObservationType {
 	private static String getDisplayName() {
 		while (true) {
 			System.out.println("Enter the name of the observation: ");
-			Scanner scan = new Scanner(System.in);
-			String name = scan.nextLine();
-			if (name.length() > 50) {
-				System.out.println("ERROR - Name must be less than 50 character.");
-			}
-			else {
-				return name;
-			}
+			String name = Utility.getInput();
+			return name;
 		}
 	}
 }

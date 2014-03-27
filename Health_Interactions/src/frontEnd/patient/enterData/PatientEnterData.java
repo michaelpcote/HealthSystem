@@ -1,7 +1,6 @@
 package frontEnd.patient.enterData;
 
 import java.util.List;
-import java.util.Scanner;
 
 import dao.oracle.ObservationDAO;
 import dao.oracle.ObservationTypeDAO;
@@ -19,7 +18,7 @@ public class PatientEnterData {
 	 * @param Patient that is logged and will be prompted.
 	 */
 	public static void drive(Patient patient) {
-		ObservationType ot = getObservationType();
+		ObservationType ot = getObservationType(patient);
 		Observation obs = createObservation(ot, patient.getPid());
 		String observations = makeObsString(obs, ot);
 		
@@ -39,6 +38,7 @@ public class PatientEnterData {
 		Observation obs = new Observation();
 		obs.setPid(pid);
 		obs.setType_id(ot.getType_id());
+		obs.setDate_Observed(Utility.getDate("observation"));
 		return obs;
 	}
 
@@ -51,14 +51,15 @@ public class PatientEnterData {
 	 */
 	private static String makeObsString(Observation obs, ObservationType ot) {
 		System.out.println("Please enter the following data in the correct form:");
-		String ret = null; 
+		String ret = "";
 		List<ObservationDataField> fields = Utility.getFields(ot);
 		for (int i=0; i<fields.size(); i++) {
 			ObservationDataField field = fields.get(i);
 			System.out.println(field.getDescription() + "(" + field.getType() + "):  ");
-			Scanner scan = new Scanner(System.in);
-			while (true) { //loops in case user enters string when int requested
-				String input = scan.nextLine();
+			
+			// gets input, loops if requesting an int but did not get one.
+			while (true) {
+				String input = Utility.getInput();
 				if (!(field.getType() == "int" && !Utility.isInt(input))) {
 					if (i != 0) {
 						ret += ",";
@@ -77,8 +78,8 @@ public class PatientEnterData {
 	 * Interacts with user and returns the ObservationType of his choosing.
 	 * @return ObservationType of the observation to be added.
 	 */
-	private static ObservationType getObservationType() {
-		List<ObservationType> list = ObservationTypeDAO.getAllObservationTypes();
+	private static ObservationType getObservationType(Patient patient) {
+		List<ObservationType> list = ObservationTypeDAO.getObservationTypesForPatient(patient);
 		System.out.println("Please select the Observation Type of the observation you would like to add.\n");
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getDisplay_name());

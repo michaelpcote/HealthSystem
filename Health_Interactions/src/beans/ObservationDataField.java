@@ -5,11 +5,13 @@ public class ObservationDataField {
 	private String name;
 	private String description;
 	private String type;
+	private String value_choices;
 	
-	public ObservationDataField(String name, String description, String type) {
+	public ObservationDataField(String name, String description, String type, String value_choices) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
+		this.value_choices = value_choices;
 	}
 
 	/**
@@ -31,5 +33,9 @@ public class ObservationDataField {
 	 */
 	public String getType() {
 		return type;
+	}
+
+	public String getValueChoices() {
+		return value_choices;
 	}
 }

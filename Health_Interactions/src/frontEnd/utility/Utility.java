@@ -9,13 +9,14 @@ import beans.ObservationType;
 
 public class Utility {
 
+	static Scanner scan = new Scanner(System.in);
+	
 	public static int getValidChoice(int size) {
-		Scanner scan = new Scanner(System.in);
 		while (true) {
 			try {
 				int choice = scan.nextInt();
+				scan.nextLine();
 				if (choice >= 0 && choice < size) {
-					scan.close();
 					return choice;
 				}
 				else {
@@ -29,8 +30,6 @@ public class Utility {
 	}
 	
 	public static String getInput() {
-		Scanner scan = new Scanner(System.in);
-		scan.close();
 		return scan.nextLine();
 	}
 		
@@ -43,7 +42,7 @@ public class Utility {
 			String name = temp[0];
 			String type = temp[1];
 			String description = descriptions[i];
-			ObservationDataField field = new ObservationDataField(name, description, type);
+			ObservationDataField field = new ObservationDataField(name, description, null, type);
 			list.add(field);
 		}
 		return list;
@@ -59,5 +58,23 @@ public class Utility {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Gets a date from the user.
+	 * @param the date the user wants
+	 * @return
+	 */
+	public static String getDate(String when) {
+		while (true) {
+			System.out.println("Enter the " + when + " date (in form yyyy-mm-dd): ");
+			String date = getInput();
+			if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
+				return date;
+			}
+			else {
+				System.out.println("Incorrect date format \""+date+"\" (need yyyy-mm-dd).");
+			}
+		}
 	}
 }

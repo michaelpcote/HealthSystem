@@ -25,8 +25,8 @@ public class PatientViewObservations {
 	 */
 	public static void drive(Patient patient) {
 		ObservationType ot = getObservationType(patient);
-		String startdate = getDate("start");
-		String enddate = getDate("end");
+		String startdate = Utility.getDate("start");
+		String enddate = Utility.getDate("end");
 		
 		showObservations(patient, ot, startdate, enddate);
 	}
@@ -40,28 +40,20 @@ public class PatientViewObservations {
 	 */
 	private static void showObservations(Patient patient, ObservationType ot,
 			String startdate, String enddate) {
-		String info = updateDB(patient, ot, startdate, enddate);
+		String info = getObservations(patient, ot, startdate, enddate);
 		String[] list = info.split(",");
-		for (int i=0; i<list.length; i++) {
-			System.out.println(list[i]);
+		if (list.length == 1) {
+			System.out.println("No observations recorded.");
 		}
-	}
+		else {
+			for (int i=0; i<list.length; i++) {
+				String[] split = list[i].split(":");
+				for (int j=0; j<split.length; j++) {
+					System.out.print(split[j] + " -- ");
+				}
+				System.out.println();
+			}
 
-	/**
-	 * Gets a date from the user.
-	 * @param the date the user wants
-	 * @return
-	 */
-	private static String getDate(String when) {
-		while (true) {
-			System.out.println("Enter the " + when + " date of the Observation window (in form yyyy-mm-dd");
-			String date = Utility.getInput();
-			if (date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-				return date;
-			}
-			else {
-				System.out.println("Incorrect date format \""+date+"\" (need yyyy-mm-dd).");
-			}
 		}
 	}
 
@@ -89,7 +81,7 @@ public class PatientViewObservations {
 	 * @param startdate of report
 	 * @param enddate of reporrt
 	 */
-	public static String updateDB(Patient patient, ObservationType ot, String startdate, String enddate) {
+	public static String getObservations(Patient patient, ObservationType ot, String startdate, String enddate) {
 		return ObservationReportsDAO.getObservationsBetween(patient, ot, startdate, enddate);
 	}
 	

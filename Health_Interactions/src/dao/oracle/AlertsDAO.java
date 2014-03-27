@@ -48,7 +48,6 @@ public class AlertsDAO {
     			answer += ",You have a " + rs.getString("display_name") + " alert from " + date.toString();
     		}
     		if ( ! or.equals("")) {
-	    		System.out.println(or);
 	    		recordViewedAlerts(or);
     		}
     	} catch(SQLException e) {
