@@ -44,8 +44,19 @@ public class HealthFriendsDAOTest {
 	}
 	
 	@Test
+	public void testCheckHealthFriends() {
+		Patient patient = pdao.getPatient(82);
+		HealthFriendsDAO.checkHealthFriends(patient);
+		System.out.println("Check DONE");
+		patient = pdao.getPatient(82);
+		HealthFriendsDAO.checkHealthFriends(patient);
+		System.out.println("Check DONE");
+		
+	}
+	
+	@Test
 	public void testFindHealthFriendsSameCity() {
-		Patient patient = pdao.getPatient(2);
+		Patient patient = pdao.getPatient(5);
 		List<Patient> patients = HealthFriendsDAO.healthFriendsSameCity(patient);
 		for ( int i = 0; i < patients.size(); i++ ) {
 			System.out.println("Patient 2 HF same city: " + patients.get(i).getPid());

@@ -71,4 +71,35 @@ public class PhysiciansDAO {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
 	}
+	
+	/**
+	 * Assign a patient to a social worker
+	 * @param p - The patient
+	 * @param sw - The social worker
+	 */
+	public static Physician getPhysician( int physician ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Physician p = new Physician();
+		try {
+			conn = JDBCConnection.getConnection();
+			String query = "SELECT * from physicians where phy_id = ?";
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setInt(index++, physician);
+			rs = ps.executeQuery();
+			if ( rs.next() ) {
+				p.setClinic(rs.getString("clinic"));
+				p.setFname(rs.getString("fname"));
+				p.setLname(rs.getString("lname"));
+				p.setPid(rs.getInt("phy_id"));
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+		return p;
+	}
 }
