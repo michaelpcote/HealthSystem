@@ -166,7 +166,7 @@ public class ProViewAgrrReport {
 		System.out.println("Select the following for the highest values of an observation.");
 		List<Integer> conditions = getPatientConditions();
 		ObservationType ot = getObsType();
-		String output = ObservationReportsDAO.averageAmount(ot, conditions);
+		String output = ObservationReportsDAO.highestAmount(ot, conditions);
 		printOutput(output);				
 	}
 
@@ -177,7 +177,7 @@ public class ProViewAgrrReport {
 		System.out.println("Select the following for the lowest values of an observation.");
 		List<Integer> conditions = getPatientConditions();
 		ObservationType ot = getObsType();
-		String output = ObservationReportsDAO.averageAmount(ot, conditions);
+		String output = ObservationReportsDAO.lowestAmount(ot, conditions);
 		printOutput(output);		
 	}
 
@@ -201,7 +201,7 @@ public class ProViewAgrrReport {
 		String[] lines = output.split(",");
 		for (int i=0; i<lines.length; i++) {
 			String[] fields = lines[i].split(":");
-			System.out.println("Average " + fields[0] + ":  " + fields[1]);
+			System.out.println(fields[0] + ":  " + fields[1]);
 		}
 	}
 	
@@ -234,6 +234,7 @@ public class ProViewAgrrReport {
 			if (!ans.toLowerCase().startsWith("y")) {
 				return conditions;
 			}
+			System.out.println("Enter the condition: ");
 		}
 	}
 	

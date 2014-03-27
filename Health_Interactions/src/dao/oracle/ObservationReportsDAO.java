@@ -10,6 +10,7 @@ import java.util.List;
 
 import beans.ObservationType;
 import beans.Patient;
+import beans.PatientCondition;
 import connection.JDBCConnection;
 
 /**
@@ -80,8 +81,8 @@ public class ObservationReportsDAO {
 	 * @param patient_conditions
 	 * @return
 	 */
-	public static String lowestAmount(ObservationType ot, int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
+	public static String lowestAmount(ObservationType ot, List<Integer> patient_conditions) {
+		if ( patient_conditions.size() == 0 ) {
 			return null;
 		}
 		String lowest = "";
@@ -105,14 +106,14 @@ public class ObservationReportsDAO {
 				String query = "SELECT MIN(u."+name+") AS minimum FROM " + database + " u";
 				query += ", observations o, patient_conditions pc WHERE ";
 				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < patient_conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				try {
 					conn = JDBCConnection.getConnection();
 					ps = conn.prepareStatement(query);
-					for ( int j = 0; j < patient_conditions.length; j++ ) {
-						ps.setInt( (j + 1), patient_conditions[j]);
+					for ( int j = 0; j < patient_conditions.size(); j++ ) {
+						ps.setInt( (j + 1), patient_conditions.get(j));
 					}
 					rs = ps.executeQuery();
 					if ( rs.next() ) {
@@ -135,8 +136,8 @@ public class ObservationReportsDAO {
 	 * @param patient_conditions
 	 * @return
 	 */
-	public static String highestAmount(ObservationType ot, int ... patient_conditions) {
-		if ( patient_conditions.length == 0 ) {
+	public static String highestAmount(ObservationType ot, List<Integer> patient_conditions) {
+		if ( patient_conditions.size() == 0 ) {
 			return null;
 		}
 		String highest = "";
@@ -160,14 +161,14 @@ public class ObservationReportsDAO {
 				String query = "SELECT MAX(u."+name+") AS maximum FROM " + database + " u";
 				query += ", observations o, patient_conditions pc WHERE ";
 				query += "u.oid = o.oid AND o.pid = pc.pid AND pc.cid = ?";
-				for ( int j = 1; j < patient_conditions.length; j++ ) {
+				for ( int j = 1; j < patient_conditions.size(); j++ ) {
 					query += "OR pc.cid = ? ";
 				}
 				try {
 					conn = JDBCConnection.getConnection();
 					ps = conn.prepareStatement(query);
-					for ( int j = 0; j < patient_conditions.length; j++ ) {
-						ps.setInt( (j + 1), patient_conditions[j]);
+					for ( int j = 0; j < patient_conditions.size(); j++ ) {
+						ps.setInt( (j + 1), patient_conditions.get(j));
 					}
 					rs = ps.executeQuery();
 					if ( rs.next() ) {

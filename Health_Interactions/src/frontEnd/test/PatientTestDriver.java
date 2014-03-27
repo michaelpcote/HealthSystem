@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.oracle.PatientDAO;
 import beans.Patient;
+import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.patient.clearAlerts.PatientClearAlerts;
 import frontEnd.patient.connection.PatientFindHealthFriend;
 import frontEnd.patient.connection.PatientFindHealthFriendAtRisk;
@@ -16,13 +17,24 @@ import frontEnd.patient.viewData.PatientViewObservations;
 public class PatientTestDriver {
 
 	public static void main(String[] args) {
-		clearAlerts();
+		//clearAlerts();
 		//viewObservations();
 		//viewHealthFriends();
 		//findNewHealthFriend();
 		//findHealthFriendAtRisk();
+		enterData();
 	}
 	
+
+	
+	private static void enterData() {
+		PatientDAO pdao = new PatientDAO();
+		Patient p = pdao.getPatient(2);	
+		PatientEnterData.drive(p);
+	}
+
+
+
 	private static void findHealthFriendAtRisk() {
 		PatientDAO pdao = new PatientDAO();
 		Patient p = pdao.getPatient(2);	

@@ -23,8 +23,8 @@ public class ProPrescribeMedication {
 		Patient patient = getPatient();
 		String drug_name = getDrugName();
 		int dosage = getDosage();
-		String start = getDate("start");
-		String end = getDate("end");
+		String start = Utility.getDate("start");
+		String end = Utility.getDate("end");
 		String phone = getPhone();
 		
 		Prescription p = new Prescription();
@@ -77,16 +77,7 @@ public class ProPrescribeMedication {
 	 */
 	public static int getDosage() {
 		System.out.println("Enter the dosage in mg: ");
-		while (true) {
-			Scanner scan = new Scanner(System.in);
-			try {
-				scan.close();
-				return scan.nextInt();
-			}
-			catch (Exception e) {
-				System.out.println("Not a number.  Enter again: ");
-			}
-		}
+		return Utility.getValidChoice(214748364);
 	}
 
 	/**

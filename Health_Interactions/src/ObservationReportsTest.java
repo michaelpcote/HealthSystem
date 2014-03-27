@@ -129,28 +129,49 @@ public class ObservationReportsTest {
 	@Test
 	public void testLowestWeight() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
-		String weight = ObservationReportsDAO.lowestAmount(ot, 1, 2, 3, 4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String weight = ObservationReportsDAO.lowestAmount(ot, list);
 		System.out.println( "THe lowest weight is: "+ weight );
 	}
 	
 	@Test
 	public void testLowestBloodPressure() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		String bp = ObservationReportsDAO.lowestAmount(ot, 1, 2, 3, 4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+
+		String bp = ObservationReportsDAO.lowestAmount(ot, list);
 		System.out.println( "Lowest BP: " + bp );
 	}
 	
 	@Test
 	public void testHighestBloodPressureAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		String bp = ObservationReportsDAO.highestAmount(ot, 1, 2, 3, 4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String bp = ObservationReportsDAO.highestAmount(ot, list);
 		System.out.println( "Highest BP: " + bp );
 	}
 	
 	@Test
 	public void testHighesetWeight() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
-		String weight = ObservationReportsDAO.highestAmount(ot, 1, 2, 3, 4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String weight = ObservationReportsDAO.highestAmount(ot, list);
 		System.out.println("THe highest weight is: "+ weight );
 	}
 	
