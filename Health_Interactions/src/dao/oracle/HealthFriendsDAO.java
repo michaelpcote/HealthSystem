@@ -144,7 +144,7 @@ public class HealthFriendsDAO {
     		// Statement: The object used for executing a static SQL statement and returning the results it produces.
     		ps = conn.prepareStatement("SELECT p.pid, p.fname, p.lname, p.address, p.city, p.state, "+ 
 					   "p.zip, p.dob, p.sex, p.public_status, p.password FROM patients p, health_friends "+
-    				   "hf WHERE hf.pid = ? AND p.pid = hf.pid ORDER BY hf.date_added");
+    				   "hf WHERE hf.pid = ? AND p.pid = hf.hf_pid ORDER BY hf.date_added");
     		ps.setDouble( 1, patient.getPid());
     		rs = ps.executeQuery();
     		return PatientDAO.loadPatients(rs);
@@ -184,6 +184,63 @@ public class HealthFriendsDAO {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
     	return null;
+    }
+	
+	/**
+	 * Return a list of patients with a health friend that has no alerts
+	 * @param patient
+	 * @return
+	 */
+	public static List<Patient> viewPatientsWithHealthFriendsNoAlerts() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+            // Create a Statement object for sending SQL statements to the database.
+    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    		String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, ";
+    		query += "p.public_status, p.password FROM patients p, health_friends hf WHERE hf.pid = p.pid AND 0 = ( SELECT COUNT( a.oid ) ";
+    		query += "FROM alerts a, observations o WHERE hf.hf_pid = o.pid AND o.oid = a.oid AND ";
+    		query += "a.alert_active = 1 )";
+    		ps = conn.prepareStatement(query);
+    		rs = ps.executeQuery();
+    		return PatientDAO.loadPatients(rs);
+    	} catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+    	return null;
+    }
+	
+	public static int lingeringAlertCount(Patient patient) {
+		Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int numberOfAlerts = 0;
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+            // Create a Statement object for sending SQL statements to the database.
+    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    		String query = "SELECT COUNT(a.alert_active) as numalerts FROM alerts a, health_friends hf, observations o ";
+    		query += "WHERE ( hf.pid = ? AND hf.pid = o.pid AND o.oid = a.oid AND a.alert_active = 1 ) OR ";
+    		query += "( hf.pid = ? AND hf.hf_pid = o.pid AND o.oid = a.oid AND a.alert_active = 1 )";
+    		ps = conn.prepareStatement(query);
+    		ps.setDouble( 1, patient.getPid());
+    		ps.setDouble( 2, patient.getPid());
+    		rs = ps.executeQuery();
+    		if ( rs.next() ) {
+    			numberOfAlerts = rs.getInt("numalerts");
+    		}
+    	} catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+    	return numberOfAlerts;
     }
 }
 

@@ -17,29 +17,35 @@ public class AlertsDAO {
 	 * @param patient - The patient to view alerts for
 	 * @return A comma delimited string of the alerts
 	 */
-	public static String viewAlerts( Patient patient ) {
+	public static String viewNonClearedAlerts( Patient patient ) {
 		Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         String answer = "";
+        String or = "";
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT a.alert_date, ot.display_name FROM alerts a, ";
-    		query += "observations o, observation_types ot where a.viewed = 0 AND a.oid = o.oid AND o.pid = ? ";
+    		String query = "SELECT a.alert_date, ot.display_name, a.oid FROM alerts a, ";
+    		query += "observations o, observation_types ot where a.alert_active = 1 AND a.oid = o.oid AND o.pid = ? ";
     		query += "AND o.type_id = ot.type_id";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		rs = ps.executeQuery();
     		if ( rs.next() ) {
     			Date date = rs.getDate("alert_date");
-    			answer += "You have a " + rs.getString("display_name") + " from " + date.toString();
+    			or += "alerts.oid = "+rs.getInt("oid");
+    			answer += "You have a " + rs.getString("display_name") + " alert from " + date.toString();
     		}
     		while ( rs.next() ) {
+    			or += " OR alerts.oid = " + rs.getInt("oid");
     			Date date = rs.getDate("alert_date");
-    			answer += ",You have a " + rs.getString("display_name") + " from " + date.toString();
+    			answer += ",You have a " + rs.getString("display_name") + " alert from " + date.toString();
     		}
-    		recordViewedAlerts(patient);
+    		if ( ! or.equals("")) {
+	    		System.out.println(or);
+	    		recordViewedAlerts(or);
+    		}
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
@@ -55,12 +61,14 @@ public class AlertsDAO {
 	public static void clearViewedAlerts( Patient patient ) {
 		Connection conn = null;
         PreparedStatement ps = null;
-        try {
+       try {
         	conn = JDBCConnection.getConnection();
-    		String query = "UPDATE alerts a SET a.alert_active = 0 WHERE a.oid = o.oid AND o.pid = ? ";
-    		query += "AND a.viewed = 1";
+        	String query = "UPDATE alerts a SET a.alert_active = 0 WHERE a.oid = ( SELECT a2.oid FROM alerts a2, observations o ";
+        	query += "WHERE a2.viewed = 1 AND a2.alert_active = 1 AND ";
+        	query += "a2.oid = o.oid AND o.pid = ? )";
     		ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
+    		ps.executeQuery();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {
@@ -73,14 +81,14 @@ public class AlertsDAO {
 	 * views unread alerts
 	 * @param patient - The patient to mark alerts viewed for
 	 */
-	private static void recordViewedAlerts( Patient patient ) {
+	private static void recordViewedAlerts( String or ) {
 		Connection conn = null;
         PreparedStatement ps = null;
         try {
         	conn = JDBCConnection.getConnection();
-    		String query = "UPDATE alerts a SET a.viewed = 1 WHERE a.oid = o.oid AND o.pid = ? ";
+    		String query = "UPDATE alerts SET viewed = 1 WHERE " + or;
     		ps = conn.prepareStatement(query);
-    		ps.setDouble( 1, patient.getPid());
+    		ps.execute();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {

@@ -37,9 +37,8 @@ public class HealthFriendsDAOTest {
 	@Test
 	public void testFindHealthFriendsAddedSince() {
 		Patient patient = pdao.getPatient(2);
-		List<Patient> patients = HealthFriendsDAO.findHealthFriend(patient);
 		int count = HealthFriendsDAO.healthFriendsAddedSince(patient, "2014-03-01");
-		System.out.println(count);
+		System.out.println("Patient 2 HF Since: " + count);
 		
 	}
 	
@@ -47,16 +46,33 @@ public class HealthFriendsDAOTest {
 	public void testFindHealthFriendsSameCity() {
 		Patient patient = pdao.getPatient(2);
 		List<Patient> patients = HealthFriendsDAO.healthFriendsSameCity(patient);
-		System.out.println(patients.size());
-		
+		for ( int i = 0; i < patients.size(); i++ ) {
+			System.out.println("Patient 2 HF same city: " + patients.get(i).getPid());
+		}
 	}
 	
 	@Test
 	public void testFindHealthFriendsByDate() {
 		Patient patient = pdao.getPatient(2);
 		List<Patient> patients = HealthFriendsDAO.listHealthFriendsByDate(patient);
-		System.out.println(patients.size());
-		
+		for ( int i = 0; i < patients.size(); i++ ) {
+			System.out.println("Patient 2 HF by Date: " + patients.get(i).getPid());
+		}
+	}
+	
+	@Test
+	public void testFindPatientsWithNoHealthFriendAlerts() {
+		List<Patient> patients = HealthFriendsDAO.viewPatientsWithHealthFriendsNoAlerts();
+		for ( int i = 0; i < patients.size(); i++ ) {
+			System.out.println("Patient with no hf alerts: " + patients.get(i).getPid());
+		}
+	}
+	
+	@Test
+	public void testAlertNumber() {
+		Patient patient = pdao.getPatient(2);
+		int num = HealthFriendsDAO.lingeringAlertCount(patient);
+		System.out.println("Lingering alerts: " + num );
 	}
 
 }

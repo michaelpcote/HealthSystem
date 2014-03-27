@@ -2,6 +2,7 @@ package test.data;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -23,7 +24,7 @@ import beans.SocialWorker;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		
+		/*
 		addPatients();
 		addPhysicians();
 		addSocialWorkers();
@@ -41,7 +42,10 @@ public class DummyData {
 		addLotsOfPatientBloodPressureObservations();
 		createPatientTable();
 		addTwoPatientsWithHighDiet();
-		addPatientHealthFriends();
+		addPatientHealthFriends(); */
+		additionalHealthFriends(); /*
+		moreHealthFriends(); 
+		anotherHealthFriends(); */
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -409,5 +413,82 @@ public class DummyData {
 			}
 		}
 	}
+	
+	public static void additionalHealthFriends() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+         try {
+        	 conn = JDBCConnection.getConnection();
+        	 for ( int i = 3; i < 21; i++ ) {
+        		 String query = null;
+        		 Date date = null;
+        		 String d = null;
+        		 if ( i < 10 ) {
+        			 d = "2014-02-0"+Integer.valueOf(i);
+        		 } else {
+        			 d = "2014-02-"+Integer.valueOf(i);
+        		 }
+        		 date = Date.valueOf(d);
+        		 query = "INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 2, ?, ? )";
+        		 System.out.println(query);
+        		 ps = conn.prepareStatement(query);
+        		 ps.setInt( 1, i );
+        		 ps.setDate( 2, date );
+        		 ps.execute();
+        	}
+         } catch(SQLException e) {
+            	e.printStackTrace();
+         } finally {
+ 			JDBCConnection.closeConnection(conn, ps, null);
+ 		}
+		System.out.println("Tables added");
+	}
+	
+	public static void moreHealthFriends() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+         try {
+        	 conn = JDBCConnection.getConnection();
+        	 String query = null;
+        	 Date date = null;
+    		 String d = null;
+    		 d = "2014-01-03";
+    		 date = Date.valueOf(d);
+    		 query = "INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 3, 5, ? )";
+    		 System.out.println(query);
+    		 ps = conn.prepareStatement(query);
+    		 ps.setDate( 1, date );
+    		 ps.execute();	 
+         } catch(SQLException e) {
+            	e.printStackTrace();
+         } finally {
+ 			JDBCConnection.closeConnection(conn, ps, null);
+ 		}
+		System.out.println("More health friends added");
+	}
+	
+	public static void anotherHealthFriends() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+         try {
+        	 conn = JDBCConnection.getConnection();
+        	 String query = null;
+        	 Date date = null;
+    		 String d = null;
+    		 d = "2014-01-03";
+    		 date = Date.valueOf(d);
+    		 query = "INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 7, 79, ? )";
+    		 System.out.println(query);
+    		 ps = conn.prepareStatement(query);
+    		 ps.setDate( 1, date );
+    		 ps.execute();	 
+         } catch(SQLException e) {
+            	e.printStackTrace();
+         } finally {
+ 			JDBCConnection.closeConnection(conn, ps, null);
+ 		}
+		System.out.println("another More health friends added");
+	}
+	
 	
 }
