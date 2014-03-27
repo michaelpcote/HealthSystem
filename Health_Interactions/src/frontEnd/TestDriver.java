@@ -13,18 +13,17 @@ import frontEnd.patient.viewData.PatientViewObservations;
 public class TestDriver {
 
 	public static void main(String[] args) {
-		//clearAlerts();
-		
+		clearAlerts();
+		//viewObservations();
 	}
 	
-	public void viewObservations() {
+	public static void viewObservations() {
 		PatientDAO pdao = new PatientDAO();
 		Patient p = pdao.getPatient(30);
-		
-
+		PatientViewObservations.drive(p);
 	}
 	
-	public void clearAlerts() {
+	public static void clearAlerts() {
 		PatientDAO pdao = new PatientDAO();
 		Patient p = pdao.getPatient(30);
 		PatientViewAlerts.drive(p);
