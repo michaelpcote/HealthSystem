@@ -11,6 +11,11 @@ import beans.Patient;
 import beans.PatientCondition;
 import connection.JDBCConnection;
 
+/**
+ * A class that handles everything for patient conditions.
+ * @author SG0214981
+ *
+ */
 public class PatientConditionsDAO {
 
 	/**

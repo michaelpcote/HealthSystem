@@ -12,6 +12,11 @@ import beans.Physician;
 import beans.SocialWorker;
 import connection.JDBCConnection;
 
+/**
+ * This class will handle all interactions for social workers.
+ * @author SG0214981
+ *
+ */
 public class SocialWorkersDAO {
 	
 	/**

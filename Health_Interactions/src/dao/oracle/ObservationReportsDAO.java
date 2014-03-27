@@ -12,6 +12,11 @@ import beans.ObservationType;
 import beans.Patient;
 import connection.JDBCConnection;
 
+/**
+ * This class will handle all of the different reports required.
+ * @author SG0214981
+ *
+ */
 public class ObservationReportsDAO {
 
 	/**
@@ -124,6 +129,12 @@ public class ObservationReportsDAO {
 		return lowest;
 	}
 	
+	/**
+	 * Get the highest number associated with an integer column of an observation type
+	 * @param ot
+	 * @param patient_conditions
+	 * @return
+	 */
 	public static String highestAmount(ObservationType ot, int ... patient_conditions) {
 		if ( patient_conditions.length == 0 ) {
 			return null;
@@ -542,6 +553,11 @@ public class ObservationReportsDAO {
 		return observations;
 	}
 	
+	/**
+	 * Create the headers for a database
+	 * @param names
+	 * @return
+	 */
 	private static String createHeaders(String[] names) {
 		String headers = names[0];
 		for ( int i = 1; i < names.length; i++ ) {
@@ -550,6 +566,11 @@ public class ObservationReportsDAO {
 		return headers;
 	}
 
+	/**
+	 * Get the column names
+	 * @param columnInfo
+	 * @return
+	 */
 	private static String[] parseColumnNames(String columnInfo) {
 		String both[] = columnInfo.split(",");
 		String names[] = new String[both.length];
@@ -560,6 +581,11 @@ public class ObservationReportsDAO {
 		return names;
 	}
 	
+	/**
+	 * Get the column types
+	 * @param columnInfo
+	 * @return
+	 */
 	private static String[] parseColumnTypes(String columnInfo) {
 		String both[] = columnInfo.split(",");
 		String values[] = new String[both.length];

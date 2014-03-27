@@ -11,6 +11,11 @@ import beans.Patient;
 import beans.Message;
 import connection.JDBCConnection;
 
+/**
+ * A class that will handle passing messages between health friends.
+ * @author SG0214981
+ *
+ */
 public class MessagesDAO {
 
 	/**

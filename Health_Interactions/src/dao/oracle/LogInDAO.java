@@ -7,6 +7,11 @@ import java.sql.SQLException;
 
 import connection.JDBCConnection;
 
+/**
+ * A class to handle log ins.
+ * @author SG0214981
+ *
+ */
 public class LogInDAO {
 
 	/**

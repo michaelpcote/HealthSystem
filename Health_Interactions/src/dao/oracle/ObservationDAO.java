@@ -13,8 +13,17 @@ import beans.Patient;
 
 import connection.JDBCConnection;
 
+/**
+ * A class to handle observations
+ * @author SG0214981
+ *
+ */
 public class ObservationDAO {
 	
+	/**
+	 * This method will add a category such as behavior, psychological, etc.
+	 * @param description - behavior, psychological, etc.
+	 */
 	public static void addCategoryType(String description) {
 		Connection conn = null;
         PreparedStatement ps = null;
@@ -33,6 +42,12 @@ public class ObservationDAO {
 		}
     }
 	
+	/**
+	 * This method will add relationships between a observation type and a condition. For example, requiring
+	 * that HIV records blood pressure now as well.
+	 * @param cid - The patient condition
+	 * @param type_id - The observation type
+	 */
 	public static void addConditionCategoryRelationship(int cid, int type_id) {
 		Connection conn = null;
         PreparedStatement ps = null;
@@ -120,6 +135,11 @@ public class ObservationDAO {
 		}
 	}
 	
+	/**
+	 * A private method to get the column names
+	 * @param columnInfo
+	 * @return
+	 */
 	private static String[] parseColumnNames(String columnInfo) {
 		String both[] = columnInfo.split(",");
 		String names[] = new String[both.length];
@@ -130,6 +150,11 @@ public class ObservationDAO {
 		return names;
 	}
 	
+	/**
+	 * A private method to get the column types.
+	 * @param columnInfo
+	 * @return
+	 */
 	private static String[] parseColumnTypes(String columnInfo) {
 		String both[] = columnInfo.split(",");
 		String values[] = new String[both.length];

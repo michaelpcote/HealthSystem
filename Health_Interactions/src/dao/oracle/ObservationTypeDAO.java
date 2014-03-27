@@ -11,9 +11,17 @@ import beans.ObservationType;
 import beans.Patient;
 import connection.JDBCConnection;
 
+/**
+ * This class handles all database transactions for getting and creating observation types
+ * @author SG0214981
+ *
+ */
 public class ObservationTypeDAO {
 
-	
+	/**
+	 * Get a list of all observation types.
+	 * @return - Create a list of all observation types
+	 */
 	public static List<ObservationType> getAllObservationTypes() {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -43,6 +51,11 @@ public class ObservationTypeDAO {
 		return ob_types;
 	}
 	
+	/**
+	 * Get a specific observation type
+	 * @param type_id
+	 * @return - the observation
+	 */
 	public static ObservationType getObservationType( int type_id ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -73,6 +86,11 @@ public class ObservationTypeDAO {
 		return null;
 	}
 	
+	/**
+	 * Get all observation types that a patient is associated with
+	 * @param patient
+	 * @return the list of observations
+	 */
 	public static List<ObservationType> getObservationTypesForPatient(Patient patient) {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -112,6 +130,10 @@ public class ObservationTypeDAO {
 		return ob_types;
 	}
 	
+	/**
+	 * Add a new observation type
+	 * @param ot
+	 */
 	public static void addNewObservationType( ObservationType ot ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -136,6 +158,10 @@ public class ObservationTypeDAO {
 		}
 	}
 	
+	/**
+	 * Insert the new observation type into the database.
+	 * @param ot
+	 */
 	private static void createTable(ObservationType ot) {
 		Connection conn = null;
 		PreparedStatement ps = null;

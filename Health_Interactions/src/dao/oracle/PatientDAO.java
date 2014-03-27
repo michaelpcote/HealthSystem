@@ -12,6 +12,11 @@ import beans.ObservationType;
 import beans.Patient;
 import connection.JDBCConnection;
 
+/**
+ * This class handles all interactions with patients in the db.
+ * @author SG0214981
+ *
+ */
 public class PatientDAO {
 
 	//Empty constructor
@@ -47,6 +52,10 @@ public class PatientDAO {
 		return pid;
 	}
 	
+	/**
+	 * Get a list of all patients
+	 * @return
+	 */
 	public static List<Patient> viewAllPatients() {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -121,6 +130,11 @@ public class PatientDAO {
 		return ps;
 	}
 
+	/**
+	 * Get a single patient by their ID
+	 * @param i
+	 * @return
+	 */
 	public Patient getPatient(int i) {
 		Connection conn = null;
 		PreparedStatement ps = null;

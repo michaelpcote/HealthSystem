@@ -215,32 +215,6 @@ public class HealthFriendsDAO {
     	return null;
     }
 	
-	public static int lingeringAlertCount(Patient patient) {
-		Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        int numberOfAlerts = 0;
-        try {
-        	// Get a connection to the specified JDBC URL.
-    		conn = JDBCConnection.getConnection();
-            // Create a Statement object for sending SQL statements to the database.
-    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
-    		String query = "SELECT COUNT(a.alert_active) as numalerts FROM alerts a, health_friends hf, observations o ";
-    		query += "WHERE ( hf.pid = ? AND hf.pid = o.pid AND o.oid = a.oid AND a.alert_active = 1 ) OR ";
-    		query += "( hf.pid = ? AND hf.hf_pid = o.pid AND o.oid = a.oid AND a.alert_active = 1 )";
-    		ps = conn.prepareStatement(query);
-    		ps.setDouble( 1, patient.getPid());
-    		ps.setDouble( 2, patient.getPid());
-    		rs = ps.executeQuery();
-    		if ( rs.next() ) {
-    			numberOfAlerts = rs.getInt("numalerts");
-    		}
-    	} catch(SQLException e) {
-           	e.printStackTrace();
-        } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
-		}
-    	return numberOfAlerts;
-    }
+	
 }
 

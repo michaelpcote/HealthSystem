@@ -12,6 +12,11 @@ import beans.Patient;
 import beans.Prescription;
 import connection.JDBCConnection;
 
+/**
+ * This class will handle all interactions between the beans and db for prescriptions
+ * @author SG0214981
+ *
+ */
 public class PrescriptionDAO {
 
 	/**
