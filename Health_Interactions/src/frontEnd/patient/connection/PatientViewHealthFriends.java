@@ -17,6 +17,11 @@ public class PatientViewHealthFriends {
 	 */
 	public static void drive(Patient patient) {
 		List<Patient> list = HealthFriendsDAO.listHealthFriendsByDate(patient);
+		if (list.size() == 0) {
+			System.out.println("You have no Health Friends you loser.");
+			return;
+		}
+		System.out.println("Health Friends: ");
 		for (int i=0; i<list.size(); i++) {
 			Patient curr = list.get(i);
 			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname());

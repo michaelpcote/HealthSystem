@@ -172,7 +172,7 @@ public class HealthFriendsDAO {
     		conn = JDBCConnection.getConnection();
             // Create a Statement object for sending SQL statements to the database.
     		// Statement: The object used for executing a static SQL statement and returning the results it produces.
-    		String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status ";
+    		String query = "SELECT DISTINCT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status, p.password ";
     		query += "FROM patients p, health_friends hf, alerts a, observations o WHERE hf.pid = ? AND hf.hf_pid = p.pid AND ";
     		query += "o.pid = p.pid AND a.oid = o.oid AND a.alert_active = 1";
     		ps = conn.prepareStatement(query);

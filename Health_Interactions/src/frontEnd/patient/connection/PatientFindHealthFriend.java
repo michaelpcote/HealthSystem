@@ -21,17 +21,20 @@ public class PatientFindHealthFriend {
 	 */
 	public static void drive(Patient patient) {
 		List<Patient> list = HealthFriendsDAO.findHealthFriend(patient);
+		System.out.println("Possible Health Friends to add: ");
+		if (list.size() == 0) {
+			System.out.println("There are currently no possible Health Friends for you to add.");
+			return;
+		}
 		for (int i=0; i<list.size(); i++) {
 			Patient curr = list.get(i);
 			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname());
 		}
 		System.out.println("Would you like to add one of these Health Friends (yes/no): ");
 		if (Utility.getInput().toLowerCase().startsWith("y")) {
-			while (true) {
 				System.out.println("Enter the number of the health friend you would like to add: ");
 				int choice = Utility.getValidChoice(list.size());
 				HealthFriendsDAO.addHealthFriend(patient, list.get(choice));
-			}
 		}
 	}
 }

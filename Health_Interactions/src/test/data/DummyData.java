@@ -24,7 +24,7 @@ import beans.SocialWorker;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		/*
+	
 		addPatients();
 		addPhysicians();
 		addSocialWorkers();
@@ -46,7 +46,7 @@ public class DummyData {
 		additionalHealthFriends(); 
 		moreHealthFriends(); 
 		anotherHealthFriends(); 
-		createAlertsForPatient(); */
+		createAlertsForPatient();
 		createOldAlertForPatient();
 	}
 	
@@ -109,7 +109,7 @@ public class DummyData {
 			patient.setState("NC");
 			patient.setZip("27529");
 			patient.setFname( String.valueOf(i));
-			patient.setLname("Cote'");
+			patient.setLname("Cote");
 			patient.setSex(1);
 			Date date = Date.valueOf("1979-03-03");
 			date.setMonth(-i);
