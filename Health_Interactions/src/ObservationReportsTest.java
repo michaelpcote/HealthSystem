@@ -43,7 +43,12 @@ public class ObservationReportsTest {
 	@Test
 	public void testGetPatientListHighDiet() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(1);
-		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, 1,2,3,4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, list);
 		System.out.println( "High Diet #: " + patients.size() );
 	}
 	
@@ -93,14 +98,24 @@ public class ObservationReportsTest {
 	@Test
 	public void testHighestBloodPressure() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, 1,2,3,4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithHighest(ot, list);
 		System.out.println( "High BP #: "+patients.size() );
 	}
 	
 	@Test
 	public void testLowesetBloodPressure() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
-		List<Patient> patients = ObservationReportsDAO.getPatientsWithLowest(ot, 1,2,3,4);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		List<Patient> patients = ObservationReportsDAO.getPatientsWithLowest(ot, list);
 		System.out.println( "Low BP #: "+patients.size() );
 	}
 	/*
