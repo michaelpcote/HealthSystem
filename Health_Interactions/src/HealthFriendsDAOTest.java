@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import beans.Patient;
+import dao.oracle.AlertsDAO;
 import dao.oracle.HealthFriendsDAO;
 import dao.oracle.PatientDAO;
 
@@ -71,7 +72,7 @@ public class HealthFriendsDAOTest {
 	@Test
 	public void testAlertNumber() {
 		Patient patient = pdao.getPatient(2);
-		int num = HealthFriendsDAO.lingeringAlertCount(patient);
+		int num = AlertsDAO.lingeringAlertCount(patient);
 		System.out.println("Lingering alerts: " + num );
 	}
 
