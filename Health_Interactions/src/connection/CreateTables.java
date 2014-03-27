@@ -324,17 +324,7 @@ public class CreateTables {
 							"PRIMARY KEY ( oid ),"+
 							"FOREIGN KEY ( oid ) REFERENCES observations ( oid )"+
 						")");
-					/*
-					statement.executeUpdate("CREATE OR REPLACE TRIGGER other_alert_trigger "+
-							"AFTER INSERT ON alerts "+
-			            	"FOR EACH ROW "+
-							"BEGIN "+
-			            	"IF :new.systolic > 140 OR :new.diastolic > 90 THEN "+
-							"INSERT INTO alerts ( oid, alert_date, viewed, alert_active ) "+
-							"VALUES ( :new.oid, to_date(SYSDATE), 0, 1 ); "+
-							"END IF; "+
-							"END;");
-					*/
+					
 					statement.executeUpdate("CREATE TABLE messages ("+
 							"mid NUMBER(19),"+
 							"from_patient NUMBER(19),"+

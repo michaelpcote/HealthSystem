@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.Message;
 import beans.Patient;
 import connection.JDBCConnection;
 
@@ -214,6 +215,57 @@ public class HealthFriendsDAO {
 		}
     	return null;
     }
+	
+	public static void checkHealthFriends( Patient patient ) {
+		Connection conn = null;
+		Connection conn2 = null;
+        PreparedStatement ps = null;
+        PreparedStatement ps2 = null;
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+    		conn2 = JDBCConnection.getConnection();
+            // Create a Statement object for sending SQL statements to the database.
+    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    		String query = "SELECT DISTINCT hf.pid FROM health_friends hf ";
+    		query += "WHERE hf.hf_pid = ? AND 5 <= ( SELECT ";
+    		query += "COUNT(*) FROM observations o, alerts a WHERE hf.pid = o.pid AND ";
+    		query += " o.oid = a.oid AND a.alert_active = 1 )";
+    		ps = conn.prepareStatement(query);
+    		ps.setDouble(1, patient.getPid());
+    		rs = ps.executeQuery();
+    		while ( rs.next() ) {
+    			Message m = new Message();
+    			m.setFrom(rs.getInt("pid"));
+    			m.setTo((int) patient.getPid());
+    			m.setMessage("I have 5 or more alerts that I have not viewed and cleared. Please help me!");
+    			MessagesDAO.sendMessageTo(m);
+    		}
+    		query = "SELECT DISTINCT hf.pid FROM health_friends hf ";
+    		query += "WHERE hf.hf_pid = ? AND 0 <> ( SELECT ";
+    		query += "COUNT(*) FROM observations o, alerts a WHERE hf.pid = o.pid AND ";
+    		query += " o.oid = a.oid AND a.alert_active = 1 AND a.alert_date < ? )";
+    		Date date = new Date( System.currentTimeMillis() - 7*24*60*60*1000 );
+    		ps2 = conn2.prepareStatement(query);
+    		ps2.setDouble(1,  patient.getPid());
+    		ps2.setDate( 2, date );
+    		rs2 = ps2.executeQuery();
+    		while ( rs2.next() ) { 
+    			Message m = new Message();
+    			m.setFrom(rs2.getInt("pid"));
+    			m.setTo((int) patient.getPid());
+    			m.setMessage("I have an old alert that I have not viewed and cleared. Please help me!");
+    			MessagesDAO.sendMessageTo(m);
+    		}
+        } catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+			JDBCConnection.closeConnection(conn2, ps2, rs2);
+		}
+	}
 	
 	
 }

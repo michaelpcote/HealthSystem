@@ -24,7 +24,7 @@ import beans.SocialWorker;
 public class DummyData {
 	
 	public static void main(String[] args) {
-		
+		/*
 		addPatients();
 		addPhysicians();
 		addSocialWorkers();
@@ -43,12 +43,51 @@ public class DummyData {
 		createPatientTable();
 		addTwoPatientsWithHighDiet();
 		addPatientHealthFriends();
-		additionalHealthFriends();
+		additionalHealthFriends(); 
 		moreHealthFriends(); 
-		anotherHealthFriends();
-		System.out.println("-----\nDONE.");
+		anotherHealthFriends(); 
+		createAlertsForPatient(); */
+		createOldAlertForPatient();
 	}
 	
+	private static void createAlertsForPatient() {
+		PatientDAO pdao = new PatientDAO();
+		Patient p = pdao.getPatient(2);
+		ObservationType ot = ObservationTypeDAO.getObservationType(7);
+		for ( int i = 0; i < 5; i++ ) {
+			Observation o = new Observation();
+			Date date = Date.valueOf("2014-05-16");
+			date.setMonth(-i);
+			o.setDate_Observed(date);
+			o.setHours(23);
+			o.setMinutes(47);
+			int pain =  10;
+			ObservationDAO.addPatientObservation(p, o, ot, "rating:"+pain);
+			System.out.println( String.valueOf(i) + " pain observation");
+		}
+		
+	}
+	
+	private static void createOldAlertForPatient() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+            // Create a Statement object for sending SQL statements to the database.
+    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    		String query = "UPDATE alerts a SET a.alert_date = ? WHERE a.oid = 235";
+    		Date date = Date.valueOf("2014-01-01");
+    		ps = conn.prepareStatement(query);
+    		ps.setDate(1, date);
+    		ps.execute();
+        } catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+	}
+
 	@SuppressWarnings("deprecation")
 	public static void addPatients() {
 		PatientDAO pdao = new PatientDAO();
