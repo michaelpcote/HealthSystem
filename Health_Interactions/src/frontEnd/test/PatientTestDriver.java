@@ -20,9 +20,9 @@ public class PatientTestDriver {
 		//clearAlerts();
 		//viewObservations();
 		//viewHealthFriends();
-		//findNewHealthFriend();
+		findNewHealthFriend();
 		//findHealthFriendAtRisk();
-		enterData();
+		//enterData();
 	}
 	
 

@@ -27,12 +27,13 @@ public class HealthFriendsDAO {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
     		String query = "SELECT p.pid, p.password, p.fname, p.lname, p.address, p.city, p.state, p.zip, ";
-    		query += "p.dob, p.sex, p.public_status FROM patients p WHERE p.pid <> ? AND p.public_status = 'yes' AND ";
-    		query += "p.pid IN ( SELECT pc.pid FROM patient_conditions pc WHERE pc.cid IN ( SELECT ";
-    		query += "pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) )";
+            query += "p.dob, p.sex, p.public_status FROM patients p WHERE p.pid <> ? AND p.public_status = 'yes' AND ";
+            query += "p.pid IN ( SELECT pc.pid FROM patient_conditions pc, health_friends hf WHERE hf.pid = ? AND ";
+            query += "pc.pid <> hf.hf_pid AND pc.cid IN ( SELECT pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) )";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		ps.setDouble( 2, patient.getPid());
+    		ps.setDouble( 3, patient.getPid());
     		rs = ps.executeQuery();
     		return PatientDAO.loadPatients(rs);
     	} catch(SQLException e) {
