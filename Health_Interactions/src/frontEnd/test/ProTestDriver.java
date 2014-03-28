@@ -14,10 +14,10 @@ public class ProTestDriver {
 
 	public static void main(String[] args) {
 		//viewPatientInfo();
-		//viewPrescription();
+		viewPrescription();
 		//addPrescription();
 		//assignSocial();
-		aggrReports();
+		//aggrReports();
 	}
 	
 	private static void aggrReports() {
