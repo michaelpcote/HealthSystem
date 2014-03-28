@@ -67,7 +67,7 @@ public class ProPrescribeMedication {
 	 * @return date given
 	 */
 	public static String getDate(String str) {
-		System.out.println("Enter the " + str + " date (");
+		System.out.println("Enter the " + str + " date: ");
 		return Utility.getInput();
 	}
 

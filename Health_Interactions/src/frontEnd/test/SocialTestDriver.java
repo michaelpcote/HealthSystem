@@ -7,15 +7,22 @@ import beans.SocialWorker;
 import dao.oracle.PatientDAO;
 import dao.oracle.PhysiciansDAO;
 import dao.oracle.SocialWorkersDAO;
+import frontEnd.socialWorker.SocialScheduleMeeting;
 import frontEnd.socialWorker.SocialViewPatientData;
 
 public class SocialTestDriver {
 
 	public static void main(String[] args) {
 		//viewSocial();
-		//viewPatients();
+		assignPatient();
+		makeAppointment();
 	}
 	
+	private static void makeAppointment() {
+		SocialWorker sw = SocialWorkersDAO.getSocialWorker(112);
+		SocialScheduleMeeting.drive(sw);
+	}
+
 	private static void viewSocial() {
 		List<SocialWorker> list = SocialWorkersDAO.getAllSocialWorkers();
 		for (int i=0; i<list.size(); i++) {
@@ -23,7 +30,7 @@ public class SocialTestDriver {
 		}
 	}
 
-	public static void viewPatients() {
+	public static void assignPatient() {
 		SocialWorker sw = SocialWorkersDAO.getSocialWorker(112);
 		PatientDAO pdao = new PatientDAO();
 		Patient patient = pdao.getPatient(45);

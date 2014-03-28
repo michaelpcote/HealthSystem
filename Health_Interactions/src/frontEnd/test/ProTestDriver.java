@@ -10,6 +10,7 @@ import frontEnd.healthPro.ProAssignOtToCondition;
 import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.healthPro.ProViewPatientInfo;
 import frontEnd.healthPro.ProassignSocialWorker;
+import frontEnd.healthPro.prescriptions.ProEditPrescription;
 import frontEnd.healthPro.prescriptions.ProPrescribeMedication;
 import frontEnd.healthPro.prescriptions.ProViewPrescription;
 import frontEnd.socialWorker.SocialViewPatientData;
@@ -20,11 +21,17 @@ public class ProTestDriver {
 		//viewPatientInfo();
 		//viewPrescription();
 		//addPrescription();
-		assignSocial();
+		editPrescription();
+		//assignSocial();
 		//aggrReports();
 		//assignObsToCondition();
 	}
 	
+	private static void editPrescription() {
+		ProEditPrescription.drive();
+		ProViewPrescription.drive();
+	}
+
 	private static void assignObsToCondition() {
 		ProAssignOtToCondition.drive();
 	}

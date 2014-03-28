@@ -37,10 +37,10 @@ public class PatientAddObservationType {
 	 * @return ObservationType that is created.
 	 */
 	private static ObservationType getInfo() {
-		String display_name; 		//user view 	"Diet"
-		String table_name; 			//db view 		"diet"
-		String additional_info; 	//user view 	"What food,amount"
-		String column_names_types;	//db_view 		"food_type:String,calories:int"
+		String display_name; 			//user view 	"Diet"
+		String table_name; 				//db view 		"diet"
+		String additional_info; 		//user view 	"What food,amount"
+		String column_names_types;		//db_view 		"food_type:String,calories:int"
 		String value_choices = "";		//threshold  	"calories:int:0,200"
 		
 		//display name, table name
@@ -68,15 +68,12 @@ public class PatientAddObservationType {
 		ot.setDisplay_name(display_name);
 		ot.setTable_name(table_name);
 		ot.setValue_choices(value_choices);
-		
-		ot.setOcid(23);
-		
-		System.out.println(additional_info);
-		System.out.println(value_choices);
-		System.out.println(display_name);
-		System.out.println(table_name);
-		System.out.println(column_names_types);
-		
+				
+		System.out.println("add_info -- " +additional_info);
+		System.out.println("value_choices -- " + value_choices);
+		System.out.println("display_name -- " + display_name);
+		System.out.println("table_name -- " + table_name);
+		System.out.println("cols_names_types -- " + column_names_types);
 		
 		return ot;
 	}
@@ -140,16 +137,18 @@ public class PatientAddObservationType {
 			System.out.println("Enter the field name");
 			String add_info_field = Utility.getInput();
 			String col_name_field = getDbName(add_info_field);
+			
 			System.out.println("Enter yes if this is an integer input (else will be String): ");
 			String line = Utility.getInput();
 			String type;
-			boolean isInt = false;
+			boolean isInt;
 			if (line.toLowerCase().startsWith("y")) {
 				type = "int";
 				isInt = true;
 			}
 			else {
 				type = "String";
+				isInt = false;
 			}
 			
 			String value_choice = "";
@@ -160,7 +159,6 @@ public class PatientAddObservationType {
 				value_choice += type;
 				value_choice += ":";
 				value_choice += getValueChoice(isInt);
-				System.out.println(value_choice);
 			}
 			
 			ObservationDataField field = new ObservationDataField(col_name_field, add_info_field, type, value_choice);
@@ -169,6 +167,11 @@ public class PatientAddObservationType {
 		}
 	}
 
+	/**
+	 * Gets the 3rd section of "calories:int:0,200" or "mood:String:Happy,Sad,Confused"
+	 * @param isInt if the type is an integer, else is string
+	 * @return 3rd section of string.
+	 */
 	private static String getValueChoice(boolean isInt) {
 		String ret = "";
 		if (isInt) {
@@ -200,10 +203,7 @@ public class PatientAddObservationType {
 	 * @return the String.
 	 */
 	private static String getDisplayName() {
-		while (true) {
 			System.out.println("Enter the name of the observation: ");
-			String name = Utility.getInput();
-			return name;
-		}
+			return Utility.getInput();
 	}
 }

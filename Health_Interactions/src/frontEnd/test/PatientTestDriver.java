@@ -20,9 +20,14 @@ public class PatientTestDriver {
 		//clearAlerts();
 		//viewObservations();
 		//viewHealthFriends();
-		findNewHealthFriend();
+		//findNewHealthFriend();
 		//findHealthFriendAtRisk();
 		//enterData();
+		newObsType();
+	}
+
+	private static void newObsType() {
+		PatientAddObservationType.drive();
 	}
 
 	private static void enterData() {

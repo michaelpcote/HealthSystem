@@ -95,7 +95,7 @@ public class PrescriptionDAO {
     		rs = ps.executeQuery();
     		while ( rs.next() ) {
     			Prescription pre = new Prescription();
-    			pre.setPid(rs.getInt("prescription"));
+    			pre.setPrescription_num(rs.getInt("prescription"));
     			pre.setFname(rs.getString("fname"));
     			pre.setLname(rs.getString("lname"));
     			pre.setDrug_name(rs.getString("drug_name"));

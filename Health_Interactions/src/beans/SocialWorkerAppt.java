@@ -6,7 +6,7 @@ public class SocialWorkerAppt {
 
 	private int sid = -1;
 	private int pid = -1;
-	private Date appt_date = null;
+	private String appt_date = null;
 	private int hour = -1;
 	private int minutes = -1;
 	
@@ -45,15 +45,15 @@ public class SocialWorkerAppt {
 	/**
 	 * @return the appt_date
 	 */
-	public Date getAppt_date() {
+	public String getAppt_date() {
 		return appt_date;
 	}
 
 	/**
-	 * @param appt_date the appt_date to set
+	 * @param appt_date2 the appt_date to set
 	 */
-	public void setAppt_date(Date appt_date) {
-		this.appt_date = appt_date;
+	public void setAppt_date(String appt_date2) {
+		this.appt_date = appt_date2;
 	}
 
 	/**

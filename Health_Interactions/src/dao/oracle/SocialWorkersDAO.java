@@ -176,7 +176,7 @@ public class SocialWorkersDAO {
 			int index = 1;
 			ps.setInt(index++, swa.getSid());
 			ps.setInt(index++, swa.getPid());
-			ps.setDate(index++, swa.getAppt_date());
+			ps.setString(index++, swa.getAppt_date());
 			ps.setString(index++, swa.getHour()+":"+swa.getMinutes());
 			ps.execute();
     	} catch (SQLException e) {
@@ -203,7 +203,7 @@ public class SocialWorkersDAO {
 				SocialWorkerAppt swa = new SocialWorkerAppt();
 				swa.setSid(rs.getInt("sid"));
 				swa.setPid(rs.getInt("pid"));
-				swa.setAppt_date(rs.getDate("appt_date"));
+				swa.setAppt_date(rs.getString("appt_date"));
 				swa.setTime(rs.getString("appt_time"));
 				workers.add(swa);
 			}
