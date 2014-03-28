@@ -86,7 +86,7 @@ public class PrescriptionDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT pre.for_pid, pre.phone, pre.drug_name, pre.dosage, pre.start_date, pre.end_date, ";
+    		String query = "SELECT pre.prescription, pre.for_pid, pre.phone, pre.drug_name, pre.dosage, pre.start_date, pre.end_date, ";
     		query += "p.fname, p.lname FROM patients p, prescriptions pre WHERE p.pid = ? AND ";
     		query += "p.pid = pre.for_pid";
 			ps = conn.prepareStatement(query);
@@ -95,6 +95,7 @@ public class PrescriptionDAO {
     		rs = ps.executeQuery();
     		while ( rs.next() ) {
     			Prescription pre = new Prescription();
+    			pre.setPid(rs.getInt("prescription"));
     			pre.setFname(rs.getString("fname"));
     			pre.setLname(rs.getString("lname"));
     			pre.setDrug_name(rs.getString("drug_name"));
