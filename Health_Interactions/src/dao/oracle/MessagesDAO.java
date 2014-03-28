@@ -31,7 +31,7 @@ public class MessagesDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT p.fname, p.lname, m.to, m.from_patient, m.mid, m.message FROM patients p, messages m ";
+    		String query = "SELECT p.fname, p.lname, m.to_patient, m.from_patient, m.mid, m.message FROM patients p, messages m ";
     		query += "WHERE m.to_patient = ? AND m.viewed = 0 AND p.pid = m.from_patient";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
@@ -70,7 +70,7 @@ public class MessagesDAO {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
     		String query = "SELECT p.fname, p.lname, m.to_patient, m.from_patient, m.mid, m.message FROM patients p, messages m ";
-    		query += "WHERE m.to = ? AND p.pid = m.from_patient";
+    		query += "WHERE m.to_patient = ? AND p.pid = m.from_patient";
 			ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		rs = ps.executeQuery();
