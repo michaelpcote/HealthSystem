@@ -3,10 +3,13 @@ package frontEnd.test;
 import java.util.List;
 
 import beans.Patient;
+import beans.Physician;
 import beans.SocialWorker;
 import dao.oracle.PatientDAO;
+import dao.oracle.PhysiciansDAO;
 import dao.oracle.SocialWorkersDAO;
 import frontEnd.healthPro.ProAssignOtToCondition;
+import frontEnd.healthPro.ProScheduleMeeting;
 import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.healthPro.ProViewPatientInfo;
 import frontEnd.healthPro.ProassignSocialWorker;
@@ -21,12 +24,18 @@ public class ProTestDriver {
 		//viewPatientInfo();
 		//viewPrescription();
 		//addPrescription();
-		editPrescription();
+		//editPrescription();
 		//assignSocial();
 		//aggrReports();
 		//assignObsToCondition();
+		makeAppt();
 	}
 	
+	private static void makeAppt() {
+		Physician phys = PhysiciansDAO.getPhysician(1);
+		ProScheduleMeeting.drive(phys);	
+	}
+
 	private static void editPrescription() {
 		ProEditPrescription.drive();
 		ProViewPrescription.drive();

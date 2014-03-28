@@ -118,7 +118,7 @@ public class PhysiciansDAO {
 			int index = 1;
 			ps.setInt(index++, pa.getPhy_id());
 			ps.setInt(index++, pa.getPid());
-			ps.setDate(index++, pa.getAppt_date());
+			ps.setString(index++, pa.getAppt_date());
 			ps.setString(index++, pa.getHour()+":"+pa.getMinutes());
 			ps.execute();
     	} catch (SQLException e) {
@@ -145,7 +145,7 @@ public class PhysiciansDAO {
 				PhysicianAppt phy = new PhysicianAppt();
 				phy.setPhy_id(rs.getInt("phy_id"));
 				phy.setPid(rs.getInt("pid"));
-				phy.setAppt_date(rs.getDate("appt_date"));
+				phy.setAppt_date(rs.getString("appt_date"));
 				phy.setTime(rs.getString("appt_time"));
 				physicians.add(phy);
 			}

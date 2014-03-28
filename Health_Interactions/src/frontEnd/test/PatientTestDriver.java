@@ -8,6 +8,7 @@ import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.patient.clearAlerts.PatientClearAlerts;
 import frontEnd.patient.connection.PatientFindHealthFriend;
 import frontEnd.patient.connection.PatientFindHealthFriendAtRisk;
+import frontEnd.patient.connection.PatientNumHealthFriendsAdded;
 import frontEnd.patient.connection.PatientSendMessage;
 import frontEnd.patient.connection.PatientViewHealthFriends;
 import frontEnd.patient.connection.PatientViewMessages;
@@ -26,7 +27,15 @@ public class PatientTestDriver {
 		//findHealthFriendAtRisk();
 		//enterData();
 		//newObsType();
-		sendViewMessage();
+		//sendViewMessage();
+		viewFriendsSince();
+	
+	}
+
+	private static void viewFriendsSince() {
+		PatientDAO pdao = new PatientDAO();
+		Patient p1 = pdao.getPatient(2);	
+		PatientNumHealthFriendsAdded.drive(p1);
 	}
 
 	private static void sendViewMessage() {

@@ -14,7 +14,7 @@ public class SocialTestDriver {
 
 	public static void main(String[] args) {
 		//viewSocial();
-		assignPatient();
+		//assignPatient();
 		makeAppointment();
 	}
 	
