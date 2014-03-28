@@ -21,7 +21,7 @@ import dao.oracle.SocialWorkersDAO;
 public class SampleData {
 
 	public static void main(String[] args ) {
-		addPatients();
+		/*addPatients();
 		givePatientsConditions();
 		addPhysicians();
 		addHealthFriends();
@@ -30,7 +30,8 @@ public class SampleData {
 		addAkaziObservation();
 		addNshettyObservations();
 		addMTranObservations();
-		addSocialWorkers();
+		addSocialWorkers();*/
+		additionalObservations();
 	}
 	
 	public static void addPatients() {
@@ -280,6 +281,7 @@ public class SampleData {
 		ObservationDAO.addPatientObservation(patient, o, ot, "mood:Neutral");
 		System.out.println( String.valueOf(index++) + " mood observation");
 		
+		
 		ot = ObservationTypeDAO.getObservationType(10);
 		o = new Observation();
 		date = Date.valueOf("2013-04-05");
@@ -391,8 +393,42 @@ public class SampleData {
 		o.setMinutes(00);
 		ObservationDAO.addPatientObservation(patient, o, ot, "rating:8");
 		System.out.println( String.valueOf(index++) + " pain observation");
+		
+		ot = ObservationTypeDAO.getObservationType(8);
+		o = new Observation();
+		date = Date.valueOf("2013-04-05");
+		o.setDate_Observed(date);
+		o.setHours(21);
+		o.setMinutes(00);
+		ObservationDAO.addPatientObservation(patient, o, ot, "mood:Happy");
+		System.out.println( String.valueOf(index++) + " mood observation");
 	}
 	
+	//Add mtran observations
+		public static void additionalObservations() {
+			int index = 13;
+			PatientDAO pdao = new PatientDAO();
+			Patient patient = pdao.getPatient(7);
+			ObservationType ot = ObservationTypeDAO.getObservationType(7);
+			Observation o = new Observation();
+			Date date = Date.valueOf("2013-04-06");
+			o.setDate_Observed(date);
+			o.setHours(13);
+			o.setMinutes(00);
+			ObservationDAO.addPatientObservation(patient, o, ot, "rating:8");
+			System.out.println( String.valueOf(index++) + " pain observation");
+			
+			ot = ObservationTypeDAO.getObservationType(8);
+			o = new Observation();
+			date = Date.valueOf("2013-04-05");
+			o.setDate_Observed(date);
+			o.setHours(21);
+			o.setMinutes(00);
+			ObservationDAO.addPatientObservation(patient, o, ot, "mood:Happy");
+			System.out.println( String.valueOf(index++) + " mood observation");
+		}
+		
+		
 	public static void addSocialWorkers() {
 		SocialWorker sw = new SocialWorker();
 		for ( int i = 0; i < 5; i++ ) {

@@ -347,57 +347,77 @@ public class ObservationReportsDAO {
 	
 	
 	/**
-	 * Select the mood that has been chosen the most
+	 * Select the value that has been chosen the most
 	 * @return
 	 */
-	public static String mostOccurringMood() {
+	public static String mostOccurringStringValue(ObservationType ot, List<Integer> patient_conditions) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String mood = null;
-		String query = "SELECT m.mood FROM mood m GROUP BY m.mood HAVING COUNT(*) = "
-				+"( SELECT MAX(moodcount) FROM "
-				+"(SELECT COUNT(*) AS moodcount FROM mood2 GROUP BY m2.mood";
+		String choices = ot.getValue_choices();
+		String[] choicesInfo = parseChoices(choices);
+		String col = choicesInfo[0];
+		String mostPopular = "";
+		if ( choices == null || choices.equals("") || !choicesInfo[1].equals("String") ) {
+			return "Not applicable";
+		}
+		String db = ot.getTable_name();
+		String query = "SELECT "+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
+				+"( SELECT MAX(colcounter) FROM "
+				+"(SELECT COUNT(*) AS colcounter FROM "+db+" u2 GROUP BY u2."+col + ") )";
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				mood = rs.getString("mood");
+				mostPopular += rs.getString(col);
+			}
+			while ( rs.next() ) {
+				mostPopular += ","+rs.getString(col);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
 			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return mood;
+		return mostPopular;
 	}
 	
 	/**
 	 * Select the mood that has been chosen the least
 	 * @return
 	 */
-	public static String leastOccurringMood() {
+	public static String leastOccurringStringValue(ObservationType ot, List<Integer> patient_conditions) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String mood = null;
-		String query = "SELECT m.mood FROM mood m GROUP BY m.mood HAVING COUNT(*) = "
-				+"( SELECT MIN(moodcount) FROM "
-				+"(SELECT COUNT(*) AS moodcount FROM mood2 GROUP BY m2.mood";
+		String choices = ot.getValue_choices();
+		String[] choicesInfo = parseChoices(choices);
+		String col = choicesInfo[0];
+		String leastPopular = "";
+		if ( choices == null || choices.equals("") || !choicesInfo[1].equals("String") ) {
+			return "Not applicable";
+		}
+		String db = ot.getTable_name();
+		String query = "SELECT "+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
+				+"( SELECT MIN(colcounter) FROM "
+				+"(SELECT COUNT(*) AS colcounter FROM "+db+" u2 GROUP BY u2."+col + ") )";
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
-				mood = rs.getString("mood");
+				leastPopular += rs.getString(col);
+			}
+			while ( rs.next() ) {
+				leastPopular += ","+rs.getString(col);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
 			JDBCConnection.closeConnection(conn, ps, rs);
 		}
-		return mood;
+		return leastPopular;
 	}
 	
 	/**
@@ -595,6 +615,11 @@ public class ObservationReportsDAO {
 			values[i] = combo[1];
 		}
 		return values;
+	}
+	
+	private static String[] parseChoices(String valueChoices) {
+		String choiceInfo[] = valueChoices.split(":");
+		return choiceInfo;
 	}
 	
 }

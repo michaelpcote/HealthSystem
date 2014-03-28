@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import beans.Patient;
 import beans.Physician;
+import beans.PhysicianAppt;
 import beans.SocialWorker;
+import beans.SocialWorkerAppt;
 import connection.JDBCConnection;
 
 /**
@@ -101,5 +105,55 @@ public class PhysiciansDAO {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
 		return p;
+	}
+	
+	public static void createAppt( PhysicianAppt pa ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String query = "INSERT INTO doctor_appt ( phy_id, pid, appt_date, appt_time ) VALUES ";
+		query += "( ?, ?, ?, ? )";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setInt(index++, pa.getPhy_id());
+			ps.setInt(index++, pa.getPid());
+			ps.setDate(index++, pa.getAppt_date());
+			ps.setString(index++, pa.getHour()+":"+pa.getMinutes());
+			ps.execute();
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+	}
+	
+	public static List<PhysicianAppt> viewPhysicianApptRequest(Patient patient) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<PhysicianAppt> physicians = new ArrayList<PhysicianAppt>();
+		String query = "SELECT da.phy_id, da.pid, da.appt_date, da.appt_time FROM doctor_appt da ";
+		query += "WHERE da.pid = ?";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setDouble(index++, patient.getPid());
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				PhysicianAppt phy = new PhysicianAppt();
+				phy.setPhy_id(rs.getInt("phy_id"));
+				phy.setPid(rs.getInt("pid"));
+				phy.setAppt_date(rs.getDate("appt_date"));
+				phy.setTime(rs.getString("appt_time"));
+				physicians.add(phy);
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+		return physicians;
 	}
 }

@@ -186,12 +186,12 @@ public class SocialWorkersDAO {
 		}
 	}
 	
-	public static List<SocialWorkerAppt> getSocialWorkerApptRequest(Patient patient) {
+	public static List<SocialWorkerAppt> viewSocialWorkerApptRequest(Patient patient) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ArrayList<SocialWorkerAppt> workers = new ArrayList<SocialWorkerAppt>();
-		String query = "SELECT swa.sid, swa.pid, swa.appt_date, swa.appt_time FROM socialworker_appt ";
+		String query = "SELECT swa.sid, swa.pid, swa.appt_date, swa.appt_time FROM socialworker_appt swa ";
 		query += "WHERE swa.pid = ?";
 		try {
 			conn = JDBCConnection.getConnection();

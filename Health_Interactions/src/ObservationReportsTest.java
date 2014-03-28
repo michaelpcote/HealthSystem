@@ -70,6 +70,21 @@ public class ObservationReportsTest {
 	}
 	
 	@Test
+	public void testMostOccuringValue() {
+		PatientDAO pdao = new PatientDAO();
+		ObservationType ot = ObservationTypeDAO.getObservationType(8);
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		String popular = ObservationReportsDAO.mostOccurringStringValue(ot, list);
+		System.out.println( "Most Popular: "+ popular );
+		String least = ObservationReportsDAO.leastOccurringStringValue(ot, list);
+		System.out.println( "Least Popular: "+ least );
+	}
+	
+	@Test
 	public void testWeightAverageAmount() {
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
 		List<Integer> list = new ArrayList<Integer>();
