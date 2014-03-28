@@ -33,8 +33,8 @@ public class ProViewAgrrReport {
 		System.out.println("2 -- Highest of an observation");
 		System.out.println("3 -- Get patients with highest of an observation");
 		System.out.println("4 -- Get patients with lowest of an observation");
-		System.out.println("5 -- Most occuring mood");
-		System.out.println("6 -- Least occuring mood");
+		System.out.println("5 -- Most occuring data field");
+		System.out.println("6 -- Least occuring data field");
 		System.out.println("7 -- Number of observations made by a patient");
 		System.out.println("8 -- Number of observations made of an observation type");
 		System.out.println("9 -- Number Observations during a period");
@@ -53,9 +53,9 @@ public class ProViewAgrrReport {
 		} else if (choice == 4) {
 			patientsWithLowest();
 		} else if (choice == 5) {
-			mostOccuringMood();
+			mostOccuringString();
 		} else if (choice == 6) {
-			leastOccuringMood();
+			leastOccuringString();
 		} else if (choice == 7) {
 			numObsPatient();
 		} else if (choice == 8) {
@@ -126,15 +126,24 @@ public class ProViewAgrrReport {
 	/**
 	 * Least occurring mood.
 	 */
-	private static void leastOccuringMood() {
-		System.out.println("The least occuring mood is: " + ObservationReportsDAO.leastOccurringMood());
+	private static void leastOccuringString() {
+		System.out.println("Select the following for the least occuring values of an observation type:");
+		List<Integer> conditions = getPatientConditions();
+		ObservationType ot = getObsType();
+		String output = ObservationReportsDAO.leastOccurringStringValue(ot, conditions);
+		printOutput(output);
+
 	}
 
 	/**
 	 * Most occurring mood.
 	 */
-	private static void mostOccuringMood() {
-		System.out.println("The most occuring mood is: " + ObservationReportsDAO.mostOccurringMood());
+	private static void mostOccuringString() {
+		System.out.println("Select the following for the most occuring values of an observation type:");
+		List<Integer> conditions = getPatientConditions();
+		ObservationType ot = getObsType();
+		String output = ObservationReportsDAO.mostOccurringStringValue(ot, conditions);
+		printOutput(output);
 	}
 
 	/**

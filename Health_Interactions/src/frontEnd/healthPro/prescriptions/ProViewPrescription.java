@@ -28,6 +28,9 @@ public class ProViewPrescription {
 		}
 		int choice = Utility.getValidChoice(list.size());
 		List<Prescription> prescriptions = PrescriptionDAO.getAllPrescriptions(list.get(choice));
+		if (prescriptions.size() == 0) {
+			System.out.println("Patient has no prescriptions prescribed.");
+		}
 		printPrescriptions(prescriptions);
 	}
 

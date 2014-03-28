@@ -17,8 +17,8 @@ public class ProTestDriver {
 
 	public static void main(String[] args) {
 		//viewPatientInfo();
-		viewPrescription();
-		//addPrescription();
+		//viewPrescription();
+		addPrescription();
 		//assignSocial();
 		//aggrReports();
 	}
@@ -38,7 +38,9 @@ public class ProTestDriver {
 		
 	}
 	private static void addPrescription() {
-		ProPrescribeMedication.drive();		
+		viewPrescription();
+		ProPrescribeMedication.drive();
+		viewPrescription();
 	}
 
 	private static void viewPrescription() {
