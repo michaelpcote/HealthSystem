@@ -10,11 +10,13 @@ import beans.Observation;
 import beans.ObservationType;
 import beans.Patient;
 import beans.Physician;
+import beans.SocialWorker;
 import dao.oracle.ObservationDAO;
 import dao.oracle.ObservationTypeDAO;
 import dao.oracle.PatientConditionsDAO;
 import dao.oracle.PatientDAO;
 import dao.oracle.PhysiciansDAO;
+import dao.oracle.SocialWorkersDAO;
 
 public class SampleData {
 
@@ -24,7 +26,11 @@ public class SampleData {
 		addPhysicians();
 		addHealthFriends();
 		addSheldonObservations();
-		
+		addGeorgeObservation();
+		addAkaziObservation();
+		addNshettyObservations();
+		addMTranObservations();
+		addSocialWorkers();
 	}
 	
 	public static void addPatients() {
@@ -385,6 +391,17 @@ public class SampleData {
 		o.setMinutes(00);
 		ObservationDAO.addPatientObservation(patient, o, ot, "rating:8");
 		System.out.println( String.valueOf(index++) + " pain observation");
+	}
+	
+	public static void addSocialWorkers() {
+		SocialWorker sw = new SocialWorker();
+		for ( int i = 0; i < 5; i++ ) {
+			sw.setFname("Laura");
+			sw.setLname("Cote");
+			sw.setPw("pw");
+			int id = SocialWorkersDAO.insertSocialWorker(sw);
+			System.out.println("SocialWorker: "+ id );
+		}
 	}
 	
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import beans.Patient;
 import beans.Physician;
 import beans.SocialWorker;
+import beans.SocialWorkerAppt;
 import connection.JDBCConnection;
 
 /**
@@ -115,11 +116,12 @@ public class SocialWorkersDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		SocialWorker sw = new SocialWorker();
-		String query = "SELECT sw.password, sw.fname, sw.lname, sw.sid FROM social_workers WHERE";
+		String query = "SELECT sw.password, sw.fname, sw.lname, sw.sid FROM social_workers sw WHERE";
 		query += " sw.sid = ?";
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement(query);
+			ps.setInt(1, sid);
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				sw.setSid(rs.getInt("sid"));
@@ -161,5 +163,55 @@ public class SocialWorkersDAO {
 			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return null;
+	}
+	
+	public static void createAppt( SocialWorkerAppt swa ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String query = "INSERT INTO socialworker_appt ( sid, pid, appt_date, appt_time ) VALUES ";
+		query += "( ?, ?, ?, ? )";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setInt(index++, swa.getSid());
+			ps.setInt(index++, swa.getPid());
+			ps.setDate(index++, swa.getAppt_date());
+			ps.setString(index++, swa.getHour()+":"+swa.getMinutes());
+			ps.execute();
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+	}
+	
+	public static List<SocialWorkerAppt> getSocialWorkerApptRequest(Patient patient) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<SocialWorkerAppt> workers = new ArrayList<SocialWorkerAppt>();
+		String query = "SELECT swa.sid, swa.pid, swa.appt_date, swa.appt_time FROM socialworker_appt ";
+		query += "WHERE swa.pid = ?";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setDouble(index++, patient.getPid());
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				SocialWorkerAppt swa = new SocialWorkerAppt();
+				swa.setSid(rs.getInt("sid"));
+				swa.setPid(rs.getInt("pid"));
+				swa.setAppt_date(rs.getDate("appt_date"));
+				swa.setTime(rs.getString("appt_time"));
+				workers.add(swa);
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+		return workers;
 	}
 }

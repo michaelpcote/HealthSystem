@@ -33,7 +33,9 @@ public class CreateTables {
     				
     				//DEPENDENT TABLES
     				//These have to be dropped first
-    				statement.executeUpdate("DROP TABLE prescriptions");
+    				statement.executeUpdate("DROP TABLE doctor_appt");
+					statement.executeUpdate("DROP TABLE socialworker_appt");
+					statement.executeUpdate("DROP TABLE prescriptions");
 					statement.executeUpdate("DROP TABLE messages");
 					statement.executeUpdate("DROP TABLE social_w_patients");
     				statement.executeUpdate("DROP TABLE alerts");
@@ -45,6 +47,7 @@ public class CreateTables {
     				statement.executeUpdate("DROP TABLE observation_types");
     				
     				//INDEPENDENT TABLES TO DROP
+    				statement.executeUpdate("DROP SEQUENCE appt_seq");
     				statement.executeUpdate("DROP SEQUENCE prescription_seq");
 					statement.executeUpdate("DROP SEQUENCE message_seq");
     				statement.executeUpdate("DROP SEQUENCE observations_seq");
@@ -361,6 +364,51 @@ public class CreateTables {
 							"PRIMARY KEY ( prescription ),"+
 							"FOREIGN KEY ( for_pid ) REFERENCES patients( pid )"+
 						")");
+					
+					statement.executeUpdate("CREATE TABLE doctor_appt ("+
+							"appt_id NUMBER(19),"+
+							"phy_pid NUMBER(19),"+
+							"patient_pid NUMBER(19),"+
+							"appt_date varchar(75),"+
+							"appt_time varchar(10),"+
+							"PRIMARY KEY ( appt_id ),"+
+							"FOREIGN KEY ( phy_pid ) REFERENCES physicians( phy_id ),"+
+							"FOREIGN KEY ( patient_pid ) REFERENCES patients( pid )"+
+						")");
+					
+					statement.executeUpdate("CREATE TABLE socialworker_appt ("+
+							"appt_id NUMBER(19),"+
+							"sid NUMBER(19),"+
+							"pid NUMBER(19),"+
+							"appt_date varchar(75),"+
+							"appt_time varchar(10),"+
+							"PRIMARY KEY ( appt_id ),"+
+							"FOREIGN KEY ( sid ) REFERENCES social_workers( sid ),"+
+							"FOREIGN KEY ( pid ) REFERENCES patients( pid )"+
+						")");
+					
+					statement.executeUpdate("CREATE SEQUENCE appt_seq "+
+							"START WITH 1 "+
+							"INCREMENT BY 1"); 
+					
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER doc_appt_trigger "+
+								"BEFORE INSERT ON doctor_appt "+
+								"FOR EACH ROW "+
+								"BEGIN "+
+								"IF :new.appt_id IS NULL THEN "+
+								"SELECT appt_seq.nextval INTO :new.appt_id FROM DUAL; "+
+								"END IF; " +
+								"END;");
+					
+					statement.executeUpdate("CREATE OR REPLACE TRIGGER sw_appt_trigger "+
+							"BEFORE INSERT ON socialworker_appt "+
+							"FOR EACH ROW "+
+							"BEGIN "+
+							"IF :new.appt_id IS NULL THEN "+
+							"SELECT appt_seq.nextval INTO :new.appt_id FROM DUAL; "+
+							"END IF; " +
+							"END;");
 					
 					statement.executeUpdate("CREATE SEQUENCE prescription_seq "+
 							"START WITH 1 "+
