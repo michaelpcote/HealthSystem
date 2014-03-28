@@ -174,7 +174,7 @@ public class PhysiciansDAO {
 				PhysicianAppt phy = new PhysicianAppt();
 				phy.setPhy_id(rs.getInt("phy_id"));
 				phy.setPid(rs.getInt("pid"));
-				phy.setAppt_date(rs.getDate("appt_date"));
+				phy.setAppt_date(rs.getString("appt_date"));
 				phy.setTime(rs.getString("appt_time"));
 				physicians.add(phy);
 			}
