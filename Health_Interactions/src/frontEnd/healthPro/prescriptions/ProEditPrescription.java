@@ -36,7 +36,7 @@ public class ProEditPrescription {
 			System.out.println("2 -- Dosage");
 			System.out.println("3 -- Start date");
 			System.out.println("4 -- End date");
-			int choice = Utility.getValidChoice(4);
+			int choice = Utility.getValidChoice(5);
 			if (choice == 0) {
 				p.setPhone(ProPrescribeMedication.getPhone());
 			} else if (choice == 1) {

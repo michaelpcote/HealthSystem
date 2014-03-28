@@ -66,6 +66,7 @@ public class PrescriptionDAO {
         	ps.setDate( index++, pre.getStartDate() );
         	ps.setDate( index++, pre.getEndDate());
         	ps.setInt( index++, pre.getPrescription_num());
+        	ps.execute();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {
