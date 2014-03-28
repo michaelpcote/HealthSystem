@@ -54,6 +54,7 @@ public class ProassignSocialWorker {
 			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
 		}
 		int choice = Utility.getValidChoice(list.size());
+		System.out.println("id ////// " + list.get(choice).getSid());
 		return list.get(choice);
 	}
 }

@@ -37,7 +37,7 @@ public class ProViewAgrrReport {
 		System.out.println("6 -- Least occuring mood");
 		System.out.println("7 -- Number of observations made by a patient");
 		System.out.println("8 -- Number of observations made of an observation type");
-		System.out.println("9 -- Observations during a period");
+		System.out.println("9 -- Number Observations during a period");
 		System.out.println("10 -- Observations for a patient during a period");
 		
 		int choice = Utility.getValidChoice(10);

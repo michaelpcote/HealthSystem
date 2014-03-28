@@ -24,16 +24,12 @@ public class PatientTestDriver {
 		//findHealthFriendAtRisk();
 		//enterData();
 	}
-	
 
-	
 	private static void enterData() {
 		PatientDAO pdao = new PatientDAO();
 		Patient p = pdao.getPatient(2);	
 		PatientEnterData.drive(p);
 	}
-
-
 
 	private static void findHealthFriendAtRisk() {
 		PatientDAO pdao = new PatientDAO();
