@@ -200,7 +200,6 @@ public class ObservationTypeDAO {
 					query += " ) )";
 				}
 			}
-			System.out.println(query);
 			ps = conn.prepareStatement(query);
 			ps.execute();
 		} catch (SQLException e) {

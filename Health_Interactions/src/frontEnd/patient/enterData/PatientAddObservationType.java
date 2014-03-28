@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.oracle.ObservationTypeDAO;
+import dao.oracle.PatientConditionsDAO;
 import frontEnd.utility.Utility;
 import beans.ObservationDataField;
 import beans.ObservationType;
+import beans.PatientCondition;
 
 /**
  * Patient adds an observation type
@@ -42,10 +44,14 @@ public class PatientAddObservationType {
 		String additional_info; 		//user view 	"What food,amount"
 		String column_names_types;		//db_view 		"food_type:String,calories:int"
 		String value_choices = "";		//threshold  	"calories:int:0,200"
+		int ocid;						//obs. category
 		
 		//display name, table name
 		display_name = getDisplayName();
 		table_name = getDbName(display_name);
+		
+		//Observation category
+		ocid = getCategory();
 		
 		//field info
 		List<ObservationDataField> fields = getFieldInfo();		//additional_info, col_names_types
@@ -68,7 +74,8 @@ public class PatientAddObservationType {
 		ot.setDisplay_name(display_name);
 		ot.setTable_name(table_name);
 		ot.setValue_choices(value_choices);
-				
+		ot.setOcid(ocid);
+		
 		System.out.println("add_info -- " +additional_info);
 		System.out.println("value_choices -- " + value_choices);
 		System.out.println("display_name -- " + display_name);
@@ -76,6 +83,15 @@ public class PatientAddObservationType {
 		System.out.println("cols_names_types -- " + column_names_types);
 		
 		return ot;
+	}
+
+	private static int getCategory() {
+		List<PatientCondition> list = PatientConditionsDAO.getAllConditionTypes();
+		System.out.println("Enter the Patient Conditoin you would like to add the Observation Type under: ");
+		for (int i=0; i<list.size(); i++) {
+			System.out.println(i +" -- "+ list.get(i).getDescription());
+		}
+		return Utility.getValidChoice(list.size());		
 	}
 
 	/**

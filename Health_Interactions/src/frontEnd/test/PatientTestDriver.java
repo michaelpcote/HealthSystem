@@ -18,16 +18,17 @@ public class PatientTestDriver {
 
 	public static void main(String[] args) {
 		//clearAlerts();
-		//viewObservations();
+		viewObservations();
 		//viewHealthFriends();
 		//findNewHealthFriend();
 		//findHealthFriendAtRisk();
 		//enterData();
-		newObsType();
+		//newObsType();
 	}
 
 	private static void newObsType() {
 		PatientAddObservationType.drive();
+		enterData();
 	}
 
 	private static void enterData() {
