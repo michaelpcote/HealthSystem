@@ -24,7 +24,7 @@ public class PatientViewHealthFriends {
 		System.out.println("Health Friends: ");
 		for (int i=0; i<list.size(); i++) {
 			Patient curr = list.get(i);
-			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname());
+			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname() + " " + curr.getPid());
 		}
 	}
 }

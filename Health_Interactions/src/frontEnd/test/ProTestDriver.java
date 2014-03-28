@@ -20,9 +20,9 @@ public class ProTestDriver {
 		//viewPatientInfo();
 		//viewPrescription();
 		//addPrescription();
-		//assignSocial();
+		assignSocial();
 		//aggrReports();
-		assignObsToCondition();
+		//assignObsToCondition();
 	}
 	
 	private static void assignObsToCondition() {
@@ -36,7 +36,7 @@ public class ProTestDriver {
 	private static void assignSocial() {
 		ProassignSocialWorker.drive();
 		System.out.println("\n\nRESULTS:\n\n");
-		SocialWorker sw = SocialWorkersDAO.getSocialWorker(111); // assigned 5
+		SocialWorker sw = SocialWorkersDAO.getSocialWorker(112);
 		List<Patient> list = SocialWorkersDAO.getPatientsForSocialWorker(sw);
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(list.get(i).getLname() + ", " + list.get(i).getFname());

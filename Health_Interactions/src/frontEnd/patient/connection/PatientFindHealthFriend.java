@@ -28,7 +28,7 @@ public class PatientFindHealthFriend {
 		}
 		for (int i=0; i<list.size(); i++) {
 			Patient curr = list.get(i);
-			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname());
+			System.out.println(i + " -- " + curr.getLname() + "," + curr.getFname() + " " + curr.getPid());
 		}
 		System.out.println("Would you like to add one of these Health Friends (yes/no): ");
 		if (Utility.getInput().toLowerCase().startsWith("y")) {
