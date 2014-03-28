@@ -7,8 +7,8 @@ public class JDBCConnection {
 	// Specify JDBC URL
 	private static final String JDBC_URL = "jdbc:oracle:thin:@ora.csc.ncsu.edu:1521:orcl";
 	// Specify database login details
-	private static String userName = "mpcote";
-	private static String password = "001008199";
+	private static String userName = "cmnelso5";
+	private static String password = "001054886";
 	
 	public static Connection getConnection() {
 		Connection connection = null;

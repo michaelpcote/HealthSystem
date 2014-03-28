@@ -156,4 +156,33 @@ public class PhysiciansDAO {
 		}
 		return physicians;
 	}
+	
+	public static List<PhysicianAppt> viewApptForPhysician(int phy_id ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<PhysicianAppt> physicians = new ArrayList<PhysicianAppt>();
+		String query = "SELECT da.phy_id, da.pid, da.appt_date, da.appt_time FROM doctor_appt da ";
+		query += "WHERE da.phy_id = ?";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setDouble(index++, phy_id);
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				PhysicianAppt phy = new PhysicianAppt();
+				phy.setPhy_id(rs.getInt("phy_id"));
+				phy.setPid(rs.getInt("pid"));
+				phy.setAppt_date(rs.getDate("appt_date"));
+				phy.setTime(rs.getString("appt_time"));
+				physicians.add(phy);
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+		return physicians;
+	}
 }
