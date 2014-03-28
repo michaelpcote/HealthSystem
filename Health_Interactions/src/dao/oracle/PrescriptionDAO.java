@@ -28,7 +28,7 @@ public class PrescriptionDAO {
         PreparedStatement ps = null;
         try {
         	conn = JDBCConnection.getConnection();
-        	String query = "INSERT INTO prescriptions ( for, phone, drug_name, dosage, start_date, end_date )";
+        	String query = "INSERT INTO prescriptions ( for_pid, phone, drug_name, dosage, start_date, end_date )";
         	query += " VALUES ( ?, ?, ?, ?, ?, ? )";
         	ps = conn.prepareStatement(query);
         	int index = 1;
@@ -38,6 +38,7 @@ public class PrescriptionDAO {
         	ps.setInt( index++, pre.getDosage());
         	ps.setDate( index++, pre.getStartDate() );
         	ps.setDate( index++, pre.getEndDate());
+        	ps.execute();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {
