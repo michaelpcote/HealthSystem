@@ -38,7 +38,7 @@ public class MessagesDAO {
     		rs = ps.executeQuery();
     		while ( rs.next() ) {
     			Message m = new Message( rs.getString("message"));
-    			m.setFrom(rs.getInt("mid"));
+    			m.setMid(rs.getInt("mid"));
     			m.setFromFirstName(rs.getString("fname"));
     			m.setFromLastName(rs.getString("lname"));
     			m.setFrom(rs.getInt("from_patient"));
@@ -76,7 +76,7 @@ public class MessagesDAO {
     		rs = ps.executeQuery();
     		while ( rs.next() ) {
     			Message m = new Message( rs.getString("message"));
-    			m.setFrom(rs.getInt("mid"));
+    			m.setMid(rs.getInt("mid"));
     			m.setFromFirstName(rs.getString("fname"));
     			m.setFromLastName(rs.getString("lname"));
     			m.setFrom(rs.getInt("from_patient"));
@@ -102,9 +102,9 @@ public class MessagesDAO {
 		Connection conn = null;
         PreparedStatement ps = null;
         try {
-        	String query = "UPDATE messages m SET m.viewed = 1 WHERE m.mid = ?";
+        	String query = "UPDATE messages SET viewed = 1 WHERE mid = ?";
         	for ( int i = 1; i < messages.size(); i++ ) {
-        		query += " OR m.mid = ?";
+        		query += " OR mid = ?";
         	}
         	conn = JDBCConnection.getConnection();
         	ps = conn.prepareStatement(query);
@@ -112,7 +112,7 @@ public class MessagesDAO {
         	for ( int i = 0; i < messages.size(); i++ ) {
         		ps.setInt(index++, messages.get(i).getMid());
         	}
-        	ps.execute();
+        	ps.executeUpdate();
         } catch(SQLException e) {
            	e.printStackTrace();
         } finally {

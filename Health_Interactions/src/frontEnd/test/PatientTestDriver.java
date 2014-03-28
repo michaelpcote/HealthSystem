@@ -31,10 +31,10 @@ public class PatientTestDriver {
 
 	private static void sendViewMessage() {
 		PatientDAO pdao = new PatientDAO();
-		Patient p1 = pdao.getPatient(2);	
-		Patient p2 = pdao.getPatient(3);
+		Patient p1 = pdao.getPatient(4);	
+		Patient p2 = pdao.getPatient(1);
 		
-		PatientSendMessage.drive(p1);
+		//PatientSendMessage.drive(p1);
 		PatientViewMessages.drive(p2);
 	}
 

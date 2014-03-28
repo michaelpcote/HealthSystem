@@ -26,12 +26,13 @@ public class HealthFriendsDAO {
         try {
         	// Get a connection to the specified JDBC URL.
     		conn = JDBCConnection.getConnection();
-    		String query = "SELECT p.pid, p.password, p.fname, p.lname, p.address, p.city, p.state, p.zip, ";
-            query += "p.dob, p.sex, p.public_status FROM patients p, health_friends hf WHERE p.pid <> ? ";
-            query += "AND p.public_status = 'yes' AND hf.pid = ? AND p.pid <> hf.hf_pid AND ";
+    		String query = "SELECT DISTINCT p.pid, p.password, p.fname, p.lname, p.address, p.city, p.state, p.zip, ";
+            query += "p.dob, p.sex, p.public_status FROM patients p WHERE p.pid <> ? ";
+            query += "AND p.public_status = 'yes' AND ";
             query += "p.pid IN ( SELECT pc.pid FROM patient_conditions pc WHERE ";
-            query += "pc.cid IN ( SELECT pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) )";
-			ps = conn.prepareStatement(query);
+            query += "pc.cid IN ( ( SELECT pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) EXCEPT ( SELECT ";
+            query += "hf.hf_pid FROM health_friends hf WHERE hf.pid = ? ) ) )";
+            ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		ps.setDouble( 2, patient.getPid());
     		ps.setDouble( 3, patient.getPid());
@@ -42,6 +43,7 @@ public class HealthFriendsDAO {
         } finally {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
+        
         return null;
     }
 	
