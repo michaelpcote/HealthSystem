@@ -207,6 +207,10 @@ public class ProViewAgrrReport {
 	 * @param output
 	 */
 	private static void printOutput(String output) {
+		if (output == null || output == "") {
+			System.out.println("No data was found for those parameters.");
+			return;
+		}
 		String[] lines = output.split(",");
 		for (int i=0; i<lines.length; i++) {
 			String[] fields = lines[i].split(":");
@@ -219,6 +223,10 @@ public class ProViewAgrrReport {
 	 * @param list
 	 */
 	private static void printPatients(List<Patient> list) {
+		if (list == null) {
+			System.out.println("No data was found for those parameters.");
+			return;
+		}
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(list.get(i).getLname()+ "," + list.get(i).getFname());
 		}

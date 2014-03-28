@@ -26,9 +26,9 @@ public class ProTestDriver {
 		//addPrescription();
 		//editPrescription();
 		//assignSocial();
-		//aggrReports();
+		aggrReports();
 		//assignObsToCondition();
-		makeAppt();
+		//makeAppt();
 	}
 	
 	private static void makeAppt() {
