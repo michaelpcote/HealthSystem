@@ -22,11 +22,11 @@ public class PatientTestDriver {
 		//clearAlerts();
 		//viewObservations();
 		//viewHealthFriends();
-		//findNewHealthFriend();
+		findNewHealthFriend();
 		//findHealthFriendAtRisk();
 		//enterData();
 		//newObsType();
-		sendViewMessage();
+		//sendViewMessage();
 	}
 
 	private static void sendViewMessage() {

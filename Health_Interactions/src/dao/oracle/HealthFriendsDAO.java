@@ -28,10 +28,10 @@ public class HealthFriendsDAO {
     		conn = JDBCConnection.getConnection();
     		String query = "SELECT DISTINCT p.pid, p.password, p.fname, p.lname, p.address, p.city, p.state, p.zip, ";
             query += "p.dob, p.sex, p.public_status FROM patients p WHERE p.pid <> ? ";
-            query += "AND p.public_status = 'yes' AND ";
+            query += "AND p.public_status = 'yes' AND p.pid NOT IN ( SELECT hf.hf_pid FROM health_friends hf ";
+            query += "WHERE hf.pid = ? ) AND ";
             query += "p.pid IN ( SELECT pc.pid FROM patient_conditions pc WHERE ";
-            query += "pc.cid IN ( ( SELECT pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) EXCEPT ( SELECT ";
-            query += "hf.hf_pid FROM health_friends hf WHERE hf.pid = ? ) ) )";
+            query += "pc.cid IN ( SELECT pc2.cid FROM patient_conditions pc2 WHERE pc2.pid = ? ) )";
             ps = conn.prepareStatement(query);
     		ps.setDouble( 1, patient.getPid());
     		ps.setDouble( 2, patient.getPid());
