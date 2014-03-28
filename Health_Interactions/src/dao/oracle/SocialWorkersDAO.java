@@ -214,4 +214,33 @@ public class SocialWorkersDAO {
 		}
 		return workers;
 	}
+	
+	public static List<SocialWorkerAppt> viewApptsForSocialWorker( int sw ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<SocialWorkerAppt> workers = new ArrayList<SocialWorkerAppt>();
+		String query = "SELECT swa.sid, swa.pid, swa.appt_date, swa.appt_time FROM socialworker_appt swa ";
+		query += "WHERE swa.sid = ? ";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			ps.setDouble(index++, sw );
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				SocialWorkerAppt swa = new SocialWorkerAppt();
+				swa.setSid(rs.getInt("sid"));
+				swa.setPid(rs.getInt("pid"));
+				swa.setAppt_date(rs.getString("appt_date"));
+				swa.setTime(rs.getString("appt_time"));
+				workers.add(swa);
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, null);
+		}
+		return workers;
+	}
 }

@@ -21,7 +21,7 @@ import dao.oracle.SocialWorkersDAO;
 public class SampleData {
 
 	public static void main(String[] args ) {
-		/*addPatients();
+		addPatients();
 		givePatientsConditions();
 		addPhysicians();
 		addHealthFriends();
@@ -30,7 +30,7 @@ public class SampleData {
 		addAkaziObservation();
 		addNshettyObservations();
 		addMTranObservations();
-		addSocialWorkers();*/
+		addSocialWorkers();
 		additionalObservations();
 	}
 	
