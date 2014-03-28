@@ -23,12 +23,12 @@ public class PatientTestDriver {
 		//clearAlerts();
 		//viewObservations();
 		//viewHealthFriends();
-		findNewHealthFriend();
+		//findNewHealthFriend();
 		//findHealthFriendAtRisk();
 		//enterData();
 		//newObsType();
-		//sendViewMessage();
-		viewFriendsSince();
+		sendViewMessage();
+		//viewFriendsSince();
 	
 	}
 
@@ -43,7 +43,7 @@ public class PatientTestDriver {
 		Patient p1 = pdao.getPatient(4);	
 		Patient p2 = pdao.getPatient(1);
 		
-		//PatientSendMessage.drive(p1);
+		PatientSendMessage.drive(p1);
 		PatientViewMessages.drive(p2);
 	}
 
