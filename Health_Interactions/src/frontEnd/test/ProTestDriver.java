@@ -6,6 +6,7 @@ import beans.Patient;
 import beans.SocialWorker;
 import dao.oracle.PatientDAO;
 import dao.oracle.SocialWorkersDAO;
+import frontEnd.healthPro.ProAssignOtToCondition;
 import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.healthPro.ProViewPatientInfo;
 import frontEnd.healthPro.ProassignSocialWorker;
@@ -18,11 +19,16 @@ public class ProTestDriver {
 	public static void main(String[] args) {
 		//viewPatientInfo();
 		//viewPrescription();
-		addPrescription();
+		//addPrescription();
 		//assignSocial();
 		//aggrReports();
+		assignObsToCondition();
 	}
 	
+	private static void assignObsToCondition() {
+		ProAssignOtToCondition.drive();
+	}
+
 	private static void aggrReports() {
 		while (true) {ProViewAgrrReport.drive();}
 	}

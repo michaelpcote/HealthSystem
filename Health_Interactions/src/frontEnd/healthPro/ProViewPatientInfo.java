@@ -32,7 +32,7 @@ public class ProViewPatientInfo {
 	 * Prints information on the given patient.
 	 * @param patient
 	 */
-	private static void printPatientInfo(Patient patient) {
+	public static void printPatientInfo(Patient patient) {
 		System.out.println(patient.getLname() + ", "+ patient.getFname());
 		System.out.println(patient.getSexAsString());
 		System.out.println(patient.getDobAsString());
