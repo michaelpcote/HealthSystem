@@ -202,7 +202,7 @@ public class PhysiciansDAO {
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
 				Physician phy = new Physician();
-				phy.setPid(rs.getInt("phy_pid"));
+				phy.setPid(rs.getInt("phy_id"));
 				phy.setClinic(rs.getString("clinic"));
 				phy.setFname(rs.getString("fname"));
 				phy.setLname(rs.getString("lname"));

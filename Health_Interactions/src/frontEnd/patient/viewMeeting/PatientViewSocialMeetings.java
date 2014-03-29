@@ -4,6 +4,7 @@ import java.util.List;
 
 import beans.Patient;
 import beans.PhysicianAppt;
+import beans.SocialWorker;
 import beans.SocialWorkerAppt;
 import dao.oracle.PhysiciansDAO;
 import dao.oracle.SocialWorkersDAO;
@@ -19,8 +20,9 @@ public class PatientViewSocialMeetings {
 		
 		for (int i=0; i<list.size(); i++) {
 			SocialWorkerAppt curr = list.get(i);
+			SocialWorker sw = SocialWorkersDAO.getSocialWorker(curr.getSid());
 			System.out.println("Appointment # " + i);
-			System.out.println("With: Dr. " + PhysiciansDAO.getPhysician(curr.getSid()).getLname());
+			System.out.println("With: " + sw.getLname() + ", " + sw.getFname());
 			System.out.println("Date:  " + curr.getAppt_date());
 			System.out.println("Time:  " + curr.getHour() + ":" + curr.getMinutes());
 			System.out.println();

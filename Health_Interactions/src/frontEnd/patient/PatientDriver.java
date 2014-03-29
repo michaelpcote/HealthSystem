@@ -39,6 +39,9 @@ public class PatientDriver {
 			} else if (choice == 5) {
 				PatientViewMeetingDriver.drive(p);
 			}
+			else if (choice == 6) {
+				return;
+			}
 		}
 	}
 }

@@ -18,6 +18,12 @@ public class Driver {
 		while (true) {
 			System.out.println("------WELCOME------");
 			System.out.println();
+			System.out.println("New User (yes/no)");
+			if (Utility.getInput().toLowerCase().startsWith("y")) {
+				int id = PatientRegister.drive();
+				System.out.println("You are now registered!!!");
+				System.out.println("Your login id number is:  " + id);
+			}
 			System.out.print("User ID number? ");
 			int id = Utility.getValidChoice(100000);
 			System.out.print("Password? ");

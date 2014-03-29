@@ -26,8 +26,8 @@ public class SocialWorkersDAOTest {
 	public void testGetPossiblePatients() {
 		List<SocialWorker> sws = SocialWorkersDAO.getAllSocialWorkers();
 		SocialWorker sw = sws.get(0);
-		List<Patient> patients = SocialWorkersDAO.getPossiblePatientsForSocialWorker(sw);
-		System.out.println( patients.size());
+		//List<Patient> patients = SocialWorkersDAO.getPossiblePatientsForSocialWorker(sw);
+		//System.out.println( patients.size());
 	}
 	
 	@Test

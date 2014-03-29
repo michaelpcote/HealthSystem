@@ -18,17 +18,12 @@ import connection.JDBCConnection;
  *
  */
 public class PatientDAO {
-
-	//Empty constructor
-	public PatientDAO() {
-		
-	}
 	
 	/**
 	 * Inserts into the db
 	 * @param patient
 	 */
-	public int insertPatient( Patient patient ) {
+	public static int insertPatient( Patient patient ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -114,7 +109,7 @@ public class PatientDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private PreparedStatement loadParameters(PreparedStatement ps, Patient patient) throws SQLException {
+	private static PreparedStatement loadParameters(PreparedStatement ps, Patient patient) throws SQLException {
 		int i = 1;
 		ps.setString(i++, patient.getPassword());
 		ps.setString(i++, patient.getFname());

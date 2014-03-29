@@ -1,7 +1,6 @@
 package frontEnd.healthPro;
 
 import java.util.List;
-import java.util.Scanner;
 
 import dao.oracle.PhysiciansDAO;
 import dao.oracle.SocialWorkersDAO;
@@ -54,7 +53,6 @@ public class ProAssignSocialWorker {
 			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
 		}
 		int choice = Utility.getValidChoice(list.size());
-		System.out.println("id ////// " + list.get(choice).getSid());
 		return list.get(choice);
 	}
 }
