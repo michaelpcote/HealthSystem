@@ -189,7 +189,7 @@ public class PhysiciansDAO {
 	 * Return all physicians
 	 * @return a list of all physicians
 	 */
-	public static List<PhysicianAppt> getAllPhysicians() {
+	public static List<Physician> getAllPhysicians() {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
