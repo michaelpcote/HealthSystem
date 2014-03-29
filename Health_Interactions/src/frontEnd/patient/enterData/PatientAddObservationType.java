@@ -89,11 +89,12 @@ public class PatientAddObservationType {
 
 	private static int getCategory() {
 		List<Category> list = ObservationDAO.getAllCategories();
-		System.out.println("Enter the Patient Conditoin you would like to add the Observation Type under: ");
+		System.out.println("Enter the Patient Condition you would like to add the Observation Type under: ");
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i +" -- "+ list.get(i).getDescription());
 		}
-		return Utility.getValidChoice(list.size());		
+		int index = Utility.getValidChoice(list.size());
+		return list.get(index).getOcid();
 	}
 
 	/**
