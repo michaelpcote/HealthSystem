@@ -109,7 +109,7 @@ public class PhysiciansDAO {
 	public static void createAppt( PhysicianAppt pa ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
-		String query = "INSERT INTO doctor_appt ( phy_id, pid, appt_date, appt_time ) VALUES ";
+		String query = "INSERT INTO doctor_appt ( phy_pid, patient_pid, appt_date, appt_time ) VALUES ";
 		query += "( ?, ?, ?, ? )";
 		try {
 			conn = JDBCConnection.getConnection();
@@ -142,8 +142,8 @@ public class PhysiciansDAO {
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
 				PhysicianAppt phy = new PhysicianAppt();
-				phy.setPhy_id(rs.getInt("phy_id"));
-				phy.setPid(rs.getInt("pid"));
+				phy.setPhy_id(rs.getInt("phy_pid"));
+				phy.setPid(rs.getInt("patient_pid"));
 				phy.setDateAppt_date(rs.getDate("appt_date"));
 				phy.setTime(rs.getString("appt_time"));
 				physicians.add(phy);
@@ -171,10 +171,42 @@ public class PhysiciansDAO {
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
 				PhysicianAppt phy = new PhysicianAppt();
-				phy.setPhy_id(rs.getInt("phy_id"));
-				phy.setPid(rs.getInt("pid"));
+				phy.setPhy_id(rs.getInt("phy_pid"));
+				phy.setPid(rs.getInt("patient_pid"));
 				phy.setDateAppt_date(rs.getDate("appt_date"));
 				phy.setTime(rs.getString("appt_time"));
+				physicians.add(phy);
+			}
+    	} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+		}
+		return physicians;
+	}
+	
+	/**
+	 * Return all physicians
+	 * @return a list of all physicians
+	 */
+	public static List<PhysicianAppt> getAllPhysicians() {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<Physician> physicians = new ArrayList<Physician>();
+		String query = "SELECT da.phy_id, da.password, da.fname, da.lname, da.clinic FROM physicians da ";
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement(query);
+			int index = 1;
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				Physician phy = new Physician();
+				phy.setPid(rs.getInt("phy_pid"));
+				phy.setClinic(rs.getString("clinic"));
+				phy.setFname(rs.getString("fname"));
+				phy.setLname(rs.getString("lname"));
+				phy.setPw(rs.getString("password"));
 				physicians.add(phy);
 			}
     	} catch (SQLException e) {

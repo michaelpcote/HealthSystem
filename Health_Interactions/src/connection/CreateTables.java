@@ -372,7 +372,7 @@ public class CreateTables {
 							"appt_id NUMBER(19),"+
 							"phy_pid NUMBER(19),"+
 							"patient_pid NUMBER(19),"+
-							"appt_date varchar(75),"+
+							"appt_date date,"+
 							"appt_time varchar(10),"+
 							"PRIMARY KEY ( appt_id ),"+
 							"FOREIGN KEY ( phy_pid ) REFERENCES physicians( phy_id ),"+
@@ -383,7 +383,7 @@ public class CreateTables {
 							"appt_id NUMBER(19),"+
 							"sid NUMBER(19),"+
 							"pid NUMBER(19),"+
-							"appt_date varchar(75),"+
+							"appt_date date,"+
 							"appt_time varchar(10),"+
 							"PRIMARY KEY ( appt_id ),"+
 							"FOREIGN KEY ( sid ) REFERENCES social_workers( sid ),"+
