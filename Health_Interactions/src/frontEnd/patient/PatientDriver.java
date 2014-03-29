@@ -24,7 +24,7 @@ public class PatientDriver {
 			System.out.println("5 -- View Meetings");
 			System.out.println("6 -- Logout");
 			
-			int choice = Utility.getValidChoice(6);
+			int choice = Utility.getValidChoice(7);
 			
 			if (choice == 0) {
 				PatientViewDataDriver.drive(p);
