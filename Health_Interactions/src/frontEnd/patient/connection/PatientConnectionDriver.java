@@ -13,9 +13,10 @@ public class PatientConnectionDriver {
 		System.out.println("3 -- View Messages");
 		System.out.println("4 -- View Number Of Health Friends Added Since A Date");
 		System.out.println("5 -- Send Health Friend a Message");
-		System.out.println("6 -- Go Back");
+		System.out.println("6 -- Find Health Friend in the Same City");
+		System.out.println("7 -- Go Back");
 		
-		int choice = Utility.getValidChoice(7);
+		int choice = Utility.getValidChoice(8);
 		
 		if (choice == 0) {
 			PatientViewHealthFriends.drive(p);
@@ -36,6 +37,9 @@ public class PatientConnectionDriver {
 			PatientSendMessage.drive(p);
 		}
 		else if (choice == 6) {
+			PatientViewHealthFriendSameCity.drive(p);
+		}
+		else if (choice == 7) {
 			return;
 		}
 	}

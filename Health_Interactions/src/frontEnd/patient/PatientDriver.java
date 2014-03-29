@@ -5,6 +5,7 @@ import frontEnd.patient.clearAlerts.PatientClearAlerts;
 import frontEnd.patient.connection.PatientConnectionDriver;
 import frontEnd.patient.enterData.PatientEnterDataDriver;
 import frontEnd.patient.viewData.PatientViewDataDriver;
+import frontEnd.patient.viewMeeting.PatientViewMeetingDriver;
 import frontEnd.utility.Utility;
 import beans.Patient;
 
@@ -20,6 +21,7 @@ public class PatientDriver {
 			System.out.println("2 -- Connection");
 			System.out.println("3 -- Clear Alerts");
 			System.out.println("4 -- View Prescriptions");
+			System.out.println("5 -- View Meetings");
 			System.out.println("5 -- Logout");
 			
 			int choice = Utility.getValidChoice(6);
@@ -35,7 +37,7 @@ public class PatientDriver {
 			} else if (choice == 4) {
 				PatientViewPrescriptions.drive(p);
 			} else if (choice == 5) {
-				return;
+				PatientViewMeetingDriver.drive(p);
 			}
 		}
 	}
