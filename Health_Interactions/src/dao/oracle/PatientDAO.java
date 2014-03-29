@@ -36,7 +36,7 @@ public class PatientDAO {
 		try {
 			conn = JDBCConnection.getConnection();
 			String query = "INSERT INTO patients ( password, fname, lname, address, city, state, zip,";
-			query += " dob, sex, public_status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+			query += " dob, sex, public_status, primary_physician ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			ps = conn.prepareStatement(query, new String[] {"pid"});
 			ps = loadParameters( ps, patient );
 			ps.executeUpdate();
@@ -126,6 +126,7 @@ public class PatientDAO {
 		ps.setDate(i++, (Date) patient.getDob());
 		ps.setInt(i++, patient.getSex());
 		ps.setString(i++, patient.getPublicStatus());
+		ps.setInt(i++, patient.getPrimaryPhysician());
 		//ps.executeUpdate();
 		return ps;
 	}

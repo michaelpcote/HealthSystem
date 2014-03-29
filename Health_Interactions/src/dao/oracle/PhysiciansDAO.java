@@ -184,4 +184,27 @@ public class PhysiciansDAO {
 		}
 		return physicians;
 	}
+	
+	/**
+	 * Get a list of all patients
+	 * @return
+	 */
+	public static List<Patient> getMyPatients( int phy_id ) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = JDBCConnection.getConnection();
+			ps = conn.prepareStatement("SELECT * FROM patients WHERE primary_physician = ?");
+			ps.setInt(1, phy_id);
+			rs = ps.executeQuery();
+			return PatientDAO.loadPatients(rs);
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		} finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+		}
+		//Should never reach
+		return null;
+	}
 }

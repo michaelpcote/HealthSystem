@@ -21,9 +21,9 @@ import dao.oracle.SocialWorkersDAO;
 public class SampleData {
 
 	public static void main(String[] args ) {
+		addPhysicians();
 		addPatients();
 		givePatientsConditions();
-		addPhysicians();
 		addHealthFriends();
 		addSheldonObservations();
 		addGeorgeObservation();
@@ -48,6 +48,7 @@ public class SampleData {
 		patient.setFname("Gary");
 		patient.setLname("George");
 		patient.setSex(1);
+		patient.setPrimaryPhysician(1);
 		Date date = Date.valueOf("1989-12-12");
 		patient.setDob(date);
 		int p = pdao.insertPatient(patient);
@@ -64,6 +65,7 @@ public class SampleData {
 		patient.setFname("Adnan");
 		patient.setLname("Kazi");
 		patient.setSex(2);
+		patient.setPrimaryPhysician(1);
 		date = Date.valueOf("1983-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -80,6 +82,7 @@ public class SampleData {
 		patient.setFname("Neha");
 		patient.setLname("Shetty");
 		patient.setSex(2);
+		patient.setPrimaryPhysician(2);
 		date = Date.valueOf("1974-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -96,6 +99,7 @@ public class SampleData {
 		patient.setFname("Sheldon");
 		patient.setLname("Cooper");
 		patient.setSex(1);
+		patient.setPrimaryPhysician(2);
 		date = Date.valueOf("1981-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -112,6 +116,7 @@ public class SampleData {
 		patient.setFname("Michael");
 		patient.setLname("Watson");
 		patient.setSex(1);
+		patient.setPrimaryPhysician(3);
 		date = Date.valueOf("1967-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -128,6 +133,7 @@ public class SampleData {
 		patient.setFname("Tom");
 		patient.setLname("Kerr");
 		patient.setSex(1);
+		patient.setPrimaryPhysician(3);
 		date = Date.valueOf("1974-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -144,6 +150,7 @@ public class SampleData {
 		patient.setFname("Maya");
 		patient.setLname("Tran");
 		patient.setSex(1);
+		patient.setPrimaryPhysician(4);
 		date = Date.valueOf("1977-12-12");
 		patient.setDob(date);
 		p = pdao.insertPatient(patient);
@@ -152,23 +159,23 @@ public class SampleData {
 	
 	public static void givePatientsConditions() {
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(1);
+		Patient patient = pdao.getPatient(5);
 		PatientConditionsDAO.designatePatient( patient, 1);
-		patient = pdao.getPatient(2);
-		PatientConditionsDAO.designatePatient( patient, 2);
-		PatientConditionsDAO.designatePatient( patient, 3);
-		patient = pdao.getPatient(3);
-		PatientConditionsDAO.designatePatient( patient, 2);
-		PatientConditionsDAO.designatePatient( patient, 3);
-		patient = pdao.getPatient(4);
-		PatientConditionsDAO.designatePatient( patient, 1);
-		PatientConditionsDAO.designatePatient( patient, 4);
-		patient = pdao.getPatient(5);
-		PatientConditionsDAO.designatePatient( patient, 4);
 		patient = pdao.getPatient(6);
 		PatientConditionsDAO.designatePatient( patient, 2);
-		PatientConditionsDAO.designatePatient( patient, 4);
+		PatientConditionsDAO.designatePatient( patient, 3);
 		patient = pdao.getPatient(7);
+		PatientConditionsDAO.designatePatient( patient, 2);
+		PatientConditionsDAO.designatePatient( patient, 3);
+		patient = pdao.getPatient(8);
+		PatientConditionsDAO.designatePatient( patient, 1);
+		PatientConditionsDAO.designatePatient( patient, 4);
+		patient = pdao.getPatient(9);
+		PatientConditionsDAO.designatePatient( patient, 4);
+		patient = pdao.getPatient(10);
+		PatientConditionsDAO.designatePatient( patient, 2);
+		PatientConditionsDAO.designatePatient( patient, 4);
+		patient = pdao.getPatient(11);
 		PatientConditionsDAO.designatePatient( patient, 3);
 	}
 	
@@ -214,23 +221,23 @@ public class SampleData {
         PreparedStatement ps = null;
         try {
         	conn = JDBCConnection.getConnection();
-        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 6, 2, ? )");
+        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 10, 6, ? )");
         	Date date = Date.valueOf("2013-04-01");
         	ps.setDate(1, date);
         	ps.execute();
-        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 6, 5, ? )");
+        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 10, 9, ? )");
         	date = Date.valueOf("2011-03-04");
         	ps.setDate(1, date);
         	ps.execute();
-        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 4, 1, ? )");
+        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 8, 5, ? )");
         	date = Date.valueOf("2012-10-12");
         	ps.setDate(1, date);
         	ps.execute();
-        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 4, 5, ? )");
+        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 8, 9, ? )");
         	date = Date.valueOf("2013-01-02");
         	ps.setDate(1, date);
         	ps.execute();
-        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 6, 1, ? )");
+        	ps = conn.prepareStatement("INSERT INTO health_friends ( pid, hf_pid, date_added ) VALUES ( 10, 5, ? )");
         	date = Date.valueOf("2011-05-04");
         	ps.setDate(1, date);
         	ps.execute();
@@ -244,7 +251,7 @@ public class SampleData {
 	public static void addSheldonObservations() {
 		int index = 1;
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(4);
+		Patient patient = pdao.getPatient(8);
 		ObservationType ot = ObservationTypeDAO.getObservationType(1);
 		Observation o = new Observation();
 		Date date = Date.valueOf("2013-04-05");
@@ -322,7 +329,7 @@ public class SampleData {
 	public static void addGeorgeObservation() {
 		int index = 9;
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(1);
+		Patient patient = pdao.getPatient(5);
 		ObservationType ot = ObservationTypeDAO.getObservationType(2);
 		Observation o = new Observation();
 		Date date = Date.valueOf("2013-04-05");
@@ -345,7 +352,7 @@ public class SampleData {
 	public static void addAkaziObservation() {
 		int index = 11;
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(1);
+		Patient patient = pdao.getPatient(6);
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
 		Observation o = new Observation();
 		Date date = Date.valueOf("2013-04-05");
@@ -368,7 +375,7 @@ public class SampleData {
 	public static void addNshettyObservations() {
 		int index = 13;
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(3);
+		Patient patient = pdao.getPatient(7);
 		ObservationType ot = ObservationTypeDAO.getObservationType(4);
 		Observation o = new Observation();
 		Date date = Date.valueOf("2013-04-06");
@@ -384,7 +391,7 @@ public class SampleData {
 	public static void addMTranObservations() {
 		int index = 13;
 		PatientDAO pdao = new PatientDAO();
-		Patient patient = pdao.getPatient(7);
+		Patient patient = pdao.getPatient(11);
 		ObservationType ot = ObservationTypeDAO.getObservationType(7);
 		Observation o = new Observation();
 		Date date = Date.valueOf("2013-04-06");
@@ -408,7 +415,7 @@ public class SampleData {
 		public static void additionalObservations() {
 			int index = 13;
 			PatientDAO pdao = new PatientDAO();
-			Patient patient = pdao.getPatient(7);
+			Patient patient = pdao.getPatient(11);
 			ObservationType ot = ObservationTypeDAO.getObservationType(7);
 			Observation o = new Observation();
 			Date date = Date.valueOf("2013-04-06");
