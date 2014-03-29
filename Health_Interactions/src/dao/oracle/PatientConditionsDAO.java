@@ -61,7 +61,7 @@ public class PatientConditionsDAO {
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return conditions;
 	}
@@ -100,7 +100,7 @@ public class PatientConditionsDAO {
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return patients;
 	}

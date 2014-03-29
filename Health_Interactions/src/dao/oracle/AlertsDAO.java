@@ -53,7 +53,7 @@ public class AlertsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
         return answer;
     }
@@ -129,7 +129,7 @@ public class AlertsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return numberOfAlerts;
     }
@@ -162,7 +162,7 @@ public class AlertsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
         return or;
     }

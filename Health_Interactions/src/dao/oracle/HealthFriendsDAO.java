@@ -41,7 +41,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
         
         return null;
@@ -97,7 +97,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return count;
     }
@@ -128,7 +128,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return null;
     }
@@ -157,7 +157,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return null;
     }
@@ -186,7 +186,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return null;
     }
@@ -215,7 +215,7 @@ public class HealthFriendsDAO {
     	} catch(SQLException e) {
            	e.printStackTrace();
         } finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
     	return null;
     }

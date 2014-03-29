@@ -6,7 +6,7 @@ public class PhysicianAppt {
 
 	private int phy_id = -1;
 	private int pid = -1;
-	private String appt_date = null;
+	private Date appt_date = null;
 	private int hour = -1;
 	private int minutes = -1;
 	
@@ -46,6 +46,11 @@ public class PhysicianAppt {
 	 * @return the appt_date
 	 */
 	public String getAppt_date() {
+		return appt_date.toString();
+	}
+	
+	
+	public Date getDateAppt_date() {
 		return appt_date;
 	}
 
@@ -53,7 +58,11 @@ public class PhysicianAppt {
 	 * @param appt_date2 the appt_date to set
 	 */
 	public void setAppt_date(String appt_date2) {
-		this.appt_date = appt_date2;
+		this.appt_date = Date.valueOf(appt_date2);
+	}
+	
+	public void setDateAppt_date( Date date ) {
+		this.appt_date = date;
 	}
 
 	/**

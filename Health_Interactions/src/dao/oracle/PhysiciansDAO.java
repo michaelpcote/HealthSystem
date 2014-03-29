@@ -101,7 +101,7 @@ public class PhysiciansDAO {
     	} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return p;
 	}
@@ -151,7 +151,7 @@ public class PhysiciansDAO {
     	} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return physicians;
 	}
@@ -180,7 +180,7 @@ public class PhysiciansDAO {
     	} catch (SQLException e) {
 			System.out.println(e.toString());
 		} finally {
-			JDBCConnection.closeConnection(conn, ps, null);
+			JDBCConnection.closeConnection(conn, ps, rs);
 		}
 		return physicians;
 	}

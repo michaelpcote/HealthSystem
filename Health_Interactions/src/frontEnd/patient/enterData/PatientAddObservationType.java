@@ -3,9 +3,11 @@ package frontEnd.patient.enterData;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.oracle.ObservationDAO;
 import dao.oracle.ObservationTypeDAO;
 import dao.oracle.PatientConditionsDAO;
 import frontEnd.utility.Utility;
+import beans.Category;
 import beans.ObservationDataField;
 import beans.ObservationType;
 import beans.PatientCondition;
@@ -86,7 +88,7 @@ public class PatientAddObservationType {
 	}
 
 	private static int getCategory() {
-		List<PatientCondition> list = PatientConditionsDAO.getAllConditionTypes();
+		List<Category> list = ObservationDAO.getAllCategories();
 		System.out.println("Enter the Patient Conditoin you would like to add the Observation Type under: ");
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i +" -- "+ list.get(i).getDescription());

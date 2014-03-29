@@ -1,16 +1,16 @@
 package dao.oracle;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import beans.Category;
 import beans.Observation;
 import beans.ObservationType;
 import beans.Patient;
-
 import connection.JDBCConnection;
 
 /**
@@ -41,6 +41,33 @@ public class ObservationDAO {
 			JDBCConnection.closeConnection(conn, ps, null);
 		}
     }
+	
+	public static List<Category> getAllCategories() {
+		Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Category> gories = new ArrayList<Category>();
+        try {
+        	// Get a connection to the specified JDBC URL.
+    		conn = JDBCConnection.getConnection();
+    		String query = "SELECT ocid, description FROM observation_categories";
+            // Create a Statement object for sending SQL statements to the database.
+    		// Statement: The object used for executing a static SQL statement and returning the results it produces.
+    		ps = conn.prepareStatement(query);
+    		rs = ps.executeQuery();
+    		while ( rs.next() ) {
+    			Category cat = new Category();
+    			cat.setDescription(rs.getString("description"));
+    			cat.setOcid(rs.getInt("ocid"));
+    			gories.add(cat);
+    		}
+    	} catch(SQLException e) {
+           	e.printStackTrace();
+        } finally {
+			JDBCConnection.closeConnection(conn, ps, rs);
+		}
+        return gories;
+	}
 	
 	/**
 	 * This method will add relationships between a observation type and a condition. For example, requiring

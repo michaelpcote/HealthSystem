@@ -6,7 +6,7 @@ public class SocialWorkerAppt {
 
 	private int sid = -1;
 	private int pid = -1;
-	private String appt_date = null;
+	private Date appt_date = null;
 	private int hour = -1;
 	private int minutes = -1;
 	
@@ -46,14 +46,14 @@ public class SocialWorkerAppt {
 	 * @return the appt_date
 	 */
 	public String getAppt_date() {
-		return appt_date;
+		return appt_date.toString();
 	}
 
 	/**
 	 * @param appt_date2 the appt_date to set
 	 */
 	public void setAppt_date(String appt_date2) {
-		this.appt_date = appt_date2;
+		this.appt_date = Date.valueOf(appt_date2);
 	}
 
 	/**
@@ -88,6 +88,14 @@ public class SocialWorkerAppt {
 		String[] time = string.split(":");
 		hour = Integer.valueOf(time[0]);
 		minutes = Integer.valueOf(time[1]);
+	}
+
+	public Date geDatetAppt_date() {
+		return appt_date;
+	}
+	
+	public Date setDateAppt_date(Date date) {
+		return appt_date = date;
 	}
 	
 	

@@ -3,7 +3,6 @@ package beans;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public class Observation {
 	private double oid = -1;
