@@ -15,6 +15,7 @@ public class Patient {
 	int sex = -1;
 	String publicStatus = null;
 	String password = null;
+	private int primaryPhysician = -1;
 	
 	/**
 	 * @return the password
@@ -159,5 +160,14 @@ public class Patient {
 
 	public void setSex(int sex) {
 		this.sex = sex;
+	}
+
+
+	public int getPrimaryPhysician() {
+		return primaryPhysician;
+	}
+	
+	public void setPrimaryPhysician(int phy_id) {
+		primaryPhysician = phy_id;
 	}
 }

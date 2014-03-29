@@ -69,6 +69,14 @@ public class CreateTables {
 						"PRIMARY KEY( sex_id )"+
 					")");
 					
+    				statement.executeUpdate("CREATE TABLE physicians ("+
+							"phy_id NUMBER(19),"+
+							"password varchar(50) NOT NULL,"+
+							"fname VARCHAR(30) NOT NULL,"+
+							"lname VARCHAR(30) NOT NULL,"+
+							"clinic VARCHAR(150) NOT NULL,"+
+							"PRIMARY KEY (phy_id)"+
+						")");
 					
 					statement.executeUpdate("CREATE TABLE patients ("+
 						"pid NUMBER(19),"+
@@ -81,20 +89,15 @@ public class CreateTables {
 						"zip VARCHAR(10) NOT NULL,"+
 						"dob date NOT NULL,"+
 						"sex NUMBER(3),"+
+						"primary_physician NUMBER(19),"+
 						"public_status VARCHAR(10),"+
 						"PRIMARY KEY (pid),"+
 						"FOREIGN KEY (sex) REFERENCES Sex( sex_id ),"+
+						"FOREIGN KEY (primary_physician) REFERENCES physicians( phy_id ),"+
 						"CHECK ( public_status = 'yes' OR public_status = 'no' )"+
 					")");
 					
-					statement.executeUpdate("CREATE TABLE physicians ("+
-							"phy_id NUMBER(19),"+
-							"password varchar(50) NOT NULL,"+
-							"fname VARCHAR(30) NOT NULL,"+
-							"lname VARCHAR(30) NOT NULL,"+
-							"clinic VARCHAR(150) NOT NULL,"+
-							"PRIMARY KEY (phy_id)"+
-						")");
+					
 					
 					statement.executeUpdate("CREATE TABLE social_workers ("+
 							"sid NUMBER(19),"+

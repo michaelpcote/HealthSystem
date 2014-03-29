@@ -25,7 +25,10 @@ public class Driver {
 			
 			String user = LogInDAO.allowLogIn(id, pwd);
 			
-			if (user.equals("Patient")) {
+			if ( user == null || user.equals("") ) {
+				System.out.println("Invalid login. Please try again.");
+				
+			} else if (user.equals("Patient")) {
 				Patient p = PatientDAO.getPatient(id);
 				PatientDriver.drive(p);
 			}
