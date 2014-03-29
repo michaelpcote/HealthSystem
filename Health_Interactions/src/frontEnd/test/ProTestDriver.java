@@ -12,7 +12,7 @@ import frontEnd.healthPro.ProAssignOtToCondition;
 import frontEnd.healthPro.ProScheduleMeeting;
 import frontEnd.healthPro.ProViewAgrrReport;
 import frontEnd.healthPro.ProViewPatientInfo;
-import frontEnd.healthPro.ProassignSocialWorker;
+import frontEnd.healthPro.ProAssignSocialWorker;
 import frontEnd.healthPro.prescriptions.ProEditPrescription;
 import frontEnd.healthPro.prescriptions.ProPrescribeMedication;
 import frontEnd.healthPro.prescriptions.ProViewPrescription;
@@ -50,7 +50,7 @@ public class ProTestDriver {
 	}
 
 	private static void assignSocial() {
-		ProassignSocialWorker.drive();
+		ProAssignSocialWorker.drive();
 		System.out.println("\n\nRESULTS:\n\n");
 		SocialWorker sw = SocialWorkersDAO.getSocialWorker(112);
 		List<Patient> list = SocialWorkersDAO.getPatientsForSocialWorker(sw);

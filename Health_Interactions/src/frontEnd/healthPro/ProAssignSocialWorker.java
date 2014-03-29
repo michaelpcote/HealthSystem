@@ -10,7 +10,7 @@ import beans.Patient;
 import beans.Physician;
 import beans.SocialWorker;
 
-public class ProassignSocialWorker {
+public class ProAssignSocialWorker {
 
 	public static void drive() {
 		SocialWorker sw = getWorker();
@@ -54,7 +54,6 @@ public class ProassignSocialWorker {
 			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
 		}
 		int choice = Utility.getValidChoice(list.size());
-		System.out.println("id ////// " + list.get(choice).getSid());
 		return list.get(choice);
 	}
 }
