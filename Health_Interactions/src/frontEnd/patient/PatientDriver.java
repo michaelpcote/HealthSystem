@@ -19,9 +19,10 @@ public class PatientDriver {
 			System.out.println("1 -- Enter Data");
 			System.out.println("2 -- Connection");
 			System.out.println("3 -- Clear Alerts");
-			System.out.println("4 -- Logout");
+			System.out.println("4 -- View Prescriptions");
+			System.out.println("5 -- Logout");
 			
-			int choice = Utility.getValidChoice(5);
+			int choice = Utility.getValidChoice(6);
 			
 			if (choice == 0) {
 				PatientViewDataDriver.drive(p);
@@ -32,6 +33,8 @@ public class PatientDriver {
 			} else if (choice == 3) {
 				PatientClearAlerts.drive(p);
 			} else if (choice == 4) {
+				PatientViewPrescriptions.drive(p);
+			} else if (choice == 5) {
 				return;
 			}
 		}
