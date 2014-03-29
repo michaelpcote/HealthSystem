@@ -2,6 +2,7 @@ package frontEnd.patient.connection;
 
 import java.util.List;
 
+import dao.oracle.HealthFriendsDAO;
 import dao.oracle.MessagesDAO;
 import frontEnd.utility.Utility;
 import beans.Message;
@@ -10,6 +11,7 @@ import beans.Patient;
 public class PatientViewMessages {
 
 	public static void drive(Patient p) {
+		HealthFriendsDAO.checkHealthFriends(p);
 		List<Message> list;
 		System.out.println("Enter yes to view only unread messages:");
 		if (Utility.getInput().toLowerCase().startsWith("y")) {

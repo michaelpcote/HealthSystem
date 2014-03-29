@@ -7,41 +7,43 @@ import beans.Physician;
 public class ProDriver {
 
 	public static void drive(Physician p) {
-		System.out.println("What would you like to do: ");
-		System.out.println("0 -- Prescription Options");
-		System.out.println("1 -- Assign Observation Type to Condition");
-		System.out.println("2 -- Assign Social Worker to Patient");
-		System.out.println("3 -- Enter New Observation Type");
-		System.out.println("4 -- Schedule Meeting With Patient");
-		System.out.println("5 -- Aggregate Report Options");
-		System.out.println("6 -- View Patient Info");
-		System.out.println("7 -- Go back");
-		
-		int choice = Utility.getValidChoice(8);
-		
-		if (choice == 0) {
-			ProPrescriptionDriver.drive(p);
-		}
-		else if (choice == 1) {
-			ProAssignOtToCondition.drive();
-		}
-		else if (choice == 2) {
-			ProassignSocialWorker.drive();
-		}
-		else if (choice == 3) {
-			ProEnterNewObsType.drive();
-		}
-		else if (choice == 4) {
-			ProScheduleMeeting.drive(p);
-		}
-		else if (choice == 5) {
-			ProViewAgrrReport.drive();
-		}
-		else if (choice == 6) {
-			ProViewPatientInfo.drive();
-		}
-		else if (choice == 7) {
-			return;
+		while (true) {
+			System.out.println("What would you like to do: ");
+			System.out.println("0 -- Prescription Options");
+			System.out.println("1 -- Assign Observation Type to Condition");
+			System.out.println("2 -- Assign Social Worker to Patient");
+			System.out.println("3 -- Enter New Observation Type");
+			System.out.println("4 -- Schedule Meeting With Patient");
+			System.out.println("5 -- Aggregate Report Options");
+			System.out.println("6 -- View Patient Info");
+			System.out.println("7 -- Go back");
+			
+			int choice = Utility.getValidChoice(8);
+			
+			if (choice == 0) {
+				ProPrescriptionDriver.drive(p);
+			}
+			else if (choice == 1) {
+				ProAssignOtToCondition.drive();
+			}
+			else if (choice == 2) {
+				ProassignSocialWorker.drive();
+			}
+			else if (choice == 3) {
+				ProEnterNewObsType.drive();
+			}
+			else if (choice == 4) {
+				ProScheduleMeeting.drive(p);
+			}
+			else if (choice == 5) {
+				ProViewAgrrReport.drive();
+			}
+			else if (choice == 6) {
+				ProViewPatientInfo.drive();
+			}
+			else if (choice == 7) {
+				return;
+			}
 		}
 	}
 }
