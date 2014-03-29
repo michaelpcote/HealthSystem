@@ -14,11 +14,12 @@ public class ProDriver {
 			System.out.println("2 -- Assign Social Worker to Patient");
 			System.out.println("3 -- Enter New Observation Type");
 			System.out.println("4 -- Schedule Meeting With Patient");
-			System.out.println("5 -- Aggregate Report Options");
-			System.out.println("6 -- View Patient Info");
-			System.out.println("7 -- Go back");
+			System.out.println("5 -- View Meetings");
+			System.out.println("6 -- Aggregate Report Options");
+			System.out.println("7 -- View Patient Info");
+			System.out.println("8 -- Go back");
 			
-			int choice = Utility.getValidChoice(8);
+			int choice = Utility.getValidChoice(9);
 			
 			if (choice == 0) {
 				ProPrescriptionDriver.drive(p);
@@ -36,12 +37,15 @@ public class ProDriver {
 				ProScheduleMeeting.drive(p);
 			}
 			else if (choice == 5) {
-				ProViewAgrrReport.drive();
+				ProViewMeetings.drive(p);
 			}
 			else if (choice == 6) {
-				ProViewPatientInfo.drive();
+				ProViewAgrrReport.drive();
 			}
 			else if (choice == 7) {
+				ProViewPatientInfo.drive();
+			}
+			else if (choice == 8) {
 				return;
 			}
 		}
