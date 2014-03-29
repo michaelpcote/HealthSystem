@@ -22,7 +22,7 @@ public class PatientDriver {
 			System.out.println("3 -- Clear Alerts");
 			System.out.println("4 -- View Prescriptions");
 			System.out.println("5 -- View Meetings");
-			System.out.println("5 -- Logout");
+			System.out.println("6 -- Logout");
 			
 			int choice = Utility.getValidChoice(6);
 			

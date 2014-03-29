@@ -28,7 +28,7 @@ public class ProDriver {
 				ProAssignOtToCondition.drive();
 			}
 			else if (choice == 2) {
-				ProassignSocialWorker.drive(p);
+				ProAssignSocialWorker.drive(p);
 			}
 			else if (choice == 3) {
 				ProEnterNewObsType.drive();

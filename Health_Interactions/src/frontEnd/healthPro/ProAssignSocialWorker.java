@@ -10,7 +10,7 @@ import beans.Patient;
 import beans.Physician;
 import beans.SocialWorker;
 
-public class ProassignSocialWorker {
+public class ProAssignSocialWorker {
 
 	public static void drive(Physician phy) {
 		SocialWorker sw = getWorker();

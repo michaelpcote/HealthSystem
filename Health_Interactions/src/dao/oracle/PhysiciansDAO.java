@@ -132,8 +132,8 @@ public class PhysiciansDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ArrayList<PhysicianAppt> physicians = new ArrayList<PhysicianAppt>();
-		String query = "SELECT da.phy_id, da.pid, da.appt_date, da.appt_time FROM doctor_appt da ";
-		query += "WHERE da.pid = ?";
+		String query = "SELECT da.phy_pid, da.patient_pid, da.appt_date, da.appt_time FROM doctor_appt da ";
+		query += "WHERE da.patient_pid = ?";
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement(query);
