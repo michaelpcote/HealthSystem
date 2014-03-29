@@ -23,7 +23,7 @@ public class PatientDAO {
 	 * Inserts into the db
 	 * @param patient
 	 */
-	public static int insertPatient( Patient patient ) {
+	public static  int insertPatient( Patient patient ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
