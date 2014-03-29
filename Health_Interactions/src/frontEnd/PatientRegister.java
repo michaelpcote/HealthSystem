@@ -34,7 +34,7 @@ public class PatientRegister {
 		System.out.println("Are you male?");
 		if (Utility.getInput().toLowerCase().startsWith("y")) {
 			p.setSex(1);
-		} //
+		}
 		else {
 			p.setSex(2);
 		}

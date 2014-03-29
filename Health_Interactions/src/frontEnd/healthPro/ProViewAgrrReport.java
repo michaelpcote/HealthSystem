@@ -211,6 +211,7 @@ public class ProViewAgrrReport {
 			System.out.println("No data was found for those parameters.");
 			return;
 		}
+		System.out.println("WHATUP -- \n"+ output);
 		String[] lines = output.split(",");
 		for (int i=0; i<lines.length; i++) {
 			String[] fields = lines[i].split(":");

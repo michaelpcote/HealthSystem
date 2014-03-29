@@ -362,7 +362,7 @@ public class ObservationReportsDAO {
 			return "Not applicable";
 		}
 		String db = ot.getTable_name();
-		String query = "SELECT "+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
+		String query = "SELECT u."+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
 				+"( SELECT MAX(colcounter) FROM "
 				+"(SELECT COUNT(*) AS colcounter FROM "+db+" u2 GROUP BY u2."+col + ") )";
 		try {
@@ -399,7 +399,7 @@ public class ObservationReportsDAO {
 			return "Not applicable";
 		}
 		String db = ot.getTable_name();
-		String query = "SELECT "+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
+		String query = "SELECT u."+col+" FROM "+db+" u GROUP BY u."+col+" HAVING COUNT(*) = "
 				+"( SELECT MIN(colcounter) FROM "
 				+"(SELECT COUNT(*) AS colcounter FROM "+db+" u2 GROUP BY u2."+col + ") )";
 		try {

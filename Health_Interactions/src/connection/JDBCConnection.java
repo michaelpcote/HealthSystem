@@ -26,7 +26,7 @@ public class JDBCConnection {
 	}
 	
 	/**
-	 * Close the prepared statement, the connection, and the result set properly	 * 
+	 * Close the prepared statement, the connection, and the result set properly
 	 * @param conn
 	 * @param ps
 	 * @param rs
