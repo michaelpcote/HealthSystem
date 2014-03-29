@@ -17,6 +17,8 @@ public class PatientRegister {
 	// password, fname, lname, address, city, state, zip, dob, sex, public_status, primary_physician
 	public static Patient getPatientInfo() {
 		Patient p = new Patient();
+		System.out.println("Enter your password: ");
+		p.setPassword(Utility.getInput());
 		System.out.println("Enter your first name: ");
 		p.setFname(Utility.getInput());
 		System.out.println("Enter your last name: ");
@@ -29,6 +31,14 @@ public class PatientRegister {
 		p.setState(Utility.getInput());
 		System.out.println("Enter your zip code: ");
 		p.setZip(Utility.getInput());
+		System.out.println("Are you male?");
+		if (Utility.getInput().toLowerCase().startsWith("y")) {
+			p.setSex(1);
+		}
+		else {
+			p.setSex(2);
+		}
+		p.setDob(Utility.getDate("birth"));
 		System.out.println("Would you like to socialize with Health Friends? ");
 		if (Utility.getInput().toLowerCase().startsWith("y")) {
 			p.setPublicStatus("yes");
