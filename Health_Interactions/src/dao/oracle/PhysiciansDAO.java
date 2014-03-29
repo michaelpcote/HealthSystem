@@ -77,9 +77,8 @@ public class PhysiciansDAO {
 	}
 	
 	/**
-	 * Assign a patient to a social worker
-	 * @param p - The patient
-	 * @param sw - The social worker
+	 * Returns a physician based on the id passed in
+	 * @param p - The physician
 	 */
 	public static Physician getPhysician( int physician ) {
 		Connection conn = null;

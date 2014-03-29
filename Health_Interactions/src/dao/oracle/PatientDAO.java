@@ -135,7 +135,7 @@ public class PatientDAO {
 	 * @param i
 	 * @return
 	 */
-	public Patient getPatient(int i) {
+	public static Patient getPatient(int i) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;

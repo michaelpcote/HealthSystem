@@ -18,7 +18,7 @@ public class LogInDAO {
 	 * This will work temporarily for patients only. I will update it to include doctors and other types once I've added those columns
 	 * @param user - The number ID they enter
 	 * @param pw - The password they enter
-	 * @return
+	 * @return "Patient" "Physician" "Social Worker" or ""
 	 */
 	public static String allowLogIn( int user, String pw ) {
 		Connection conn = null;
@@ -72,6 +72,6 @@ public class LogInDAO {
 			JDBCConnection.closeConnection(conn3, ps3, rs3);
 		}
 		//Return false if this doesn't match
-		return null;
+		return "";
 	}
 }
