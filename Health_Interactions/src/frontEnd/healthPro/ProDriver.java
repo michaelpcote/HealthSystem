@@ -28,7 +28,7 @@ public class ProDriver {
 				ProAssignOtToCondition.drive();
 			}
 			else if (choice == 2) {
-				ProAssignSocialWorker.drive();
+				ProassignSocialWorker.drive(p);
 			}
 			else if (choice == 3) {
 				ProEnterNewObsType.drive();
@@ -43,7 +43,7 @@ public class ProDriver {
 				ProViewAgrrReport.drive();
 			}
 			else if (choice == 7) {
-				ProViewPatientInfo.drive();
+				ProViewPatientInfo.drive(p);
 			}
 			else if (choice == 8) {
 				return;

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.oracle.PatientDAO;
+import dao.oracle.PhysiciansDAO;
 import frontEnd.utility.Utility;
 import beans.Patient;
 import beans.Physician;
@@ -17,9 +18,9 @@ public class ProViewPatientInfo {
 	/**
 	 * Prints out information on the patient selected by the physician.
 	 */
-	public static void drive() {
+	public static void drive(Physician phy) {
 		System.out.println("Enter the patient to view info on: ");
-		List<Patient> list = PatientDAO.viewAllPatients();
+		List<Patient> list = PhysiciansDAO.getMyPatients(phy.getPid());
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() + ", " + list.get(i).getFname());
 		}

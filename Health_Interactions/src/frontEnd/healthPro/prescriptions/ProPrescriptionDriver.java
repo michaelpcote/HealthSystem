@@ -15,13 +15,13 @@ public class ProPrescriptionDriver {
 		int choice = Utility.getValidChoice(4);
 		
 		if (choice == 0) {
-			ProEditPrescription.drive();
+			ProEditPrescription.drive(p);
 		}
 		else if (choice == 1) {
-			ProViewPrescription.drive();
+			ProViewPrescription.drive(p);
 		}
 		else if (choice == 2) {
-			ProPrescribeMedication.drive();
+			ProPrescribeMedication.drive(p);
 		}
 		else if (choice == 3) {
 			return;

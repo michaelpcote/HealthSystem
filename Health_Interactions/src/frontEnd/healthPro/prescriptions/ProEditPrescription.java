@@ -3,15 +3,17 @@ package frontEnd.healthPro.prescriptions;
 import java.util.List;
 
 import dao.oracle.PatientDAO;
+import dao.oracle.PhysiciansDAO;
 import dao.oracle.PrescriptionDAO;
 import frontEnd.utility.Utility;
 import beans.Patient;
+import beans.Physician;
 import beans.Prescription;
 
 public class ProEditPrescription {
 
-	public static void drive() {
-		Patient patient = getPatient();
+	public static void drive(Physician phy) {
+		Patient patient = getPatient(phy);
 		Prescription p = getPrescription(patient);
 		if (p == null){
 			System.out.println("The Patient does not have any prescriptions. ");
@@ -76,9 +78,9 @@ public class ProEditPrescription {
 	 * Gets the patient.
 	 * @return patient
 	 */
-	private static Patient getPatient() {
+	private static Patient getPatient(Physician p) {
 		System.out.println("Select the patient you would like to view: ");
-		List<Patient> list = PatientDAO.viewAllPatients();
+		List<Patient> list = PhysiciansDAO.getMyPatients(p.getPid());
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() +","+ list.get(i).getFname());
 		}

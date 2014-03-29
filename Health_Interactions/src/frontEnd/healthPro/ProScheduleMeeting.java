@@ -51,7 +51,7 @@ public class ProScheduleMeeting {
 	}
 
 	private static int getPid(Physician phys) {
-		List<Patient> list = PatientDAO.viewAllPatients();
+		List<Patient> list = PhysiciansDAO.getMyPatients(phys.getPid());
 		System.out.println("Select the Patient you would like to make an appointment with: ");
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() + ", " + list.get(i).getFname());

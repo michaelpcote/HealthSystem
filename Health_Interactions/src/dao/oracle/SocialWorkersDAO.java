@@ -143,17 +143,18 @@ public class SocialWorkersDAO {
 	 * @param sw - the social worker
 	 * @return a list of patients
 	 */
-	public static List<Patient> getPossiblePatientsForSocialWorker( SocialWorker sw ) {
+	public static List<Patient> getPossiblePatientsForSocialWorker( SocialWorker sw, int phy_id ) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String query = "SELECT p.pid, p.fname, p.lname, p.address, p.city, p.state, p.zip, p.dob, p.sex, p.public_status, "; 
-		query += "p.password FROM patients p WHERE NOT EXISTS ( SELECT * FROM social_w_patients sw WHERE sw.sid = ? ";
+		query += "p.password FROM patients p WHERE p.primary_physician = ? AND NOT EXISTS ( SELECT * FROM social_w_patients sw WHERE sw.sid = ? ";
 		query += "AND sw.pid = p.pid )";
 		try {
 			conn = JDBCConnection.getConnection();
 			ps = conn.prepareStatement(query);
 			int index = 1;
+			ps.setInt(index++, phy_id);
 			ps.setInt(index++, sw.getSid());
 			rs = ps.executeQuery();
     		return PatientDAO.loadPatients(rs);

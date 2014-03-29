@@ -3,6 +3,7 @@ package frontEnd.healthPro.prescriptions;
 import java.util.List;
 
 import beans.Patient;
+import beans.Physician;
 import beans.Prescription;
 import dao.oracle.PatientDAO;
 import dao.oracle.PhysiciansDAO;
@@ -20,9 +21,9 @@ public class ProViewPrescription {
 	 * Selects the patient to view prescriptions of and then displays
 	 * the prescriptions for that patient.
 	 */
-	public static void drive() {
+	public static void drive(Physician p) {
 		System.out.println("Enter the patient to view prescriptions for: ");
-		List<Patient> list = PatientDAO.viewAllPatients();
+		List<Patient> list = PhysiciansDAO.getMyPatients(p.getPid());
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() + ", " + list.get(i).getFname());
 		}

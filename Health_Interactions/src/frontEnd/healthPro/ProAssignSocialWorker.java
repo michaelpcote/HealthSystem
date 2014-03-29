@@ -10,11 +10,11 @@ import beans.Patient;
 import beans.Physician;
 import beans.SocialWorker;
 
-public class ProAssignSocialWorker {
+public class ProassignSocialWorker {
 
-	public static void drive() {
+	public static void drive(Physician phy) {
 		SocialWorker sw = getWorker();
-		Patient patient = getPatient(sw);
+		Patient patient = getPatient(sw, phy);
 		
 		updateDB(sw, patient);
 	}
@@ -33,9 +33,9 @@ public class ProAssignSocialWorker {
 	 * Gets the patient the physician will assign the social worker to.
 	 * @return Patient to be assigned
 	 */
-	private static Patient getPatient(SocialWorker sw) {
+	private static Patient getPatient(SocialWorker sw, Physician phy) {
 		System.out.println("Select the Patient to assign the social worker to: ");
-		List<Patient> list = SocialWorkersDAO.getPossiblePatientsForSocialWorker(sw);
+		List<Patient> list = SocialWorkersDAO.getPossiblePatientsForSocialWorker(sw, phy.getPid());
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
 		}
@@ -54,6 +54,7 @@ public class ProAssignSocialWorker {
 			System.out.println(i + " -- " + list.get(i).getLname() + "," + list.get(i).getFname());
 		}
 		int choice = Utility.getValidChoice(list.size());
+		System.out.println("id ////// " + list.get(choice).getSid());
 		return list.get(choice);
 	}
 }

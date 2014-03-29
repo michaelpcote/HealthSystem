@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.oracle.PatientDAO;
+import dao.oracle.PhysiciansDAO;
 import dao.oracle.PrescriptionDAO;
 import frontEnd.utility.Utility;
 import beans.Patient;
+import beans.Physician;
 import beans.Prescription;
 
 /**
@@ -19,8 +21,8 @@ public class ProPrescribeMedication {
 	 * Adds a prescription for a patient after prompting the user for
 	 * the appropriate fields.
 	 */
-	public static void drive() {
-		Patient patient = getPatient();
+	public static void drive(Physician phy) {
+		Patient patient = getPatient(phy);
 		String drug_name = getDrugName();
 		int dosage = getDosage();
 		String start = Utility.getDate("start");
@@ -51,9 +53,9 @@ public class ProPrescribeMedication {
 	 * Gets the patient.
 	 * @return patient
 	 */
-	private static Patient getPatient() {
+	private static Patient getPatient(Physician p) {
 		System.out.println("Select the patient you would like to view: ");
-		List<Patient> list = PatientDAO.viewAllPatients();
+		List<Patient> list = PhysiciansDAO.getMyPatients(p.getPid());
 		for (int i=0; i<list.size(); i++) {
 			System.out.println(i + " -- " + list.get(i).getLname() +","+ list.get(i).getFname());
 		}

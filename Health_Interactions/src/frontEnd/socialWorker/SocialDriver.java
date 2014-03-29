@@ -10,8 +10,7 @@ public class SocialDriver {
 			System.out.println("What would you like to do: ");
 			System.out.println("0 -- Schedule Meeting With Patient");
 			System.out.println("1 -- View Meetings With Patients");
-			System.out.println("2 -- View Patient Information");
-			System.out.println("3 -- View Patient Observation Data");
+			System.out.println("2 -- View Patient Data");
 			System.out.println("3 -- Go back");
 			
 			int choice = Utility.getValidChoice(4);
@@ -26,9 +25,6 @@ public class SocialDriver {
 				SocialViewPatientData.drive(sw);
 			}
 			else if (choice == 3) {
-				SocialViewPatientObsData.drive(sw);
-			}
-			else if (choice == 4) {
 				return;
 			}
 		}
