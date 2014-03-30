@@ -4,8 +4,17 @@ import frontEnd.healthPro.prescriptions.ProPrescriptionDriver;
 import frontEnd.utility.Utility;
 import beans.Physician;
 
+/**
+ * Driver class for the UI presented to a physician upon logging in.
+ * @author cmnelso5
+ *
+ */
 public class ProDriver {
 
+	/**
+	 * Drives the interaction.
+	 * @param physician logged in
+	 */
 	public static void drive(Physician p) {
 		while (true) {
 			System.out.println("What would you like to do: ");

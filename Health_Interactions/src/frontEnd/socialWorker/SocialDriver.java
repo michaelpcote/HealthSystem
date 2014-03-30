@@ -3,8 +3,17 @@ package frontEnd.socialWorker;
 import beans.SocialWorker;
 import frontEnd.utility.Utility;
 
+/**
+ * Drives the UI for a social worker upon logging in.
+ * @author cmnelso5
+ *
+ */
 public class SocialDriver {
 
+	/**
+	 * Drives the UI for a social worker upon logging in.
+	 * @param sw
+	 */
 	public static void drive(SocialWorker sw) {
 		while (true) { 
 			System.out.println("What would you like to do: ");

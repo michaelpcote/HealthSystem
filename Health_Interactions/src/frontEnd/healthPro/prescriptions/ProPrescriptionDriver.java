@@ -3,8 +3,17 @@ package frontEnd.healthPro.prescriptions;
 import beans.Physician;
 import frontEnd.utility.Utility;
 
+/**
+ * Drives the UI with the phyician when editing prescriptions.
+ * @author cmnelso5
+ *
+ */
 public class ProPrescriptionDriver {
 
+	/**
+	 * Drives the UI with the physician when editing prescriptions.
+	 * @param p
+	 */
 	public static void drive(Physician p) {
 		System.out.println("What Prescription action would you like to do: ");
 		System.out.println("0 -- Edit");

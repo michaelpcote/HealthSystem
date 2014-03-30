@@ -9,8 +9,17 @@ import beans.Patient;
 import beans.Physician;
 import beans.SocialWorker;
 
+/**
+ * Assigns a social worker to a patient, done by a physician.
+ * @author cmnelso5
+ *
+ */
 public class ProAssignSocialWorker {
 
+	/**
+	 * Assigns a social worker to a patient, done by a physician.
+	 * @param physician logged in.
+	 */
 	public static void drive(Physician phy) {
 		SocialWorker sw = getWorker();
 		Patient patient = getPatient(sw, phy);

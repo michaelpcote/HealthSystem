@@ -8,8 +8,17 @@ import frontEnd.utility.Utility;
 import beans.Message;
 import beans.Patient;
 
+/**
+ * Patient views messages.
+ * @author cmnelso5
+ *
+ */
 public class PatientViewMessages {
 
+	/**
+	 * Patient views messages.
+	 * @param patient logged in
+	 */
 	public static void drive(Patient p) {
 		HealthFriendsDAO.checkHealthFriends(p);
 		List<Message> list;

@@ -9,8 +9,17 @@ import frontEnd.patient.viewMeeting.PatientViewMeetingDriver;
 import frontEnd.utility.Utility;
 import beans.Patient;
 
+/**
+ * Drives the UI for a patient upon logging in.
+ * @author nelc
+ *
+ */
 public class PatientDriver {
 
+	/**
+	 * Drives the UI for a patient upon logging in.
+	 * @param patient logged in
+	 */
 	public static void drive(Patient p) {
 		while (true) {
 			System.out.println("Hi " + p.getFname() + " " + p.getLname());

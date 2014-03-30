@@ -10,8 +10,17 @@ import beans.Patient;
 import beans.Physician;
 import beans.Prescription;
 
+/**
+ * Physician edits a prescription.
+ * @author cmnelso5
+ *
+ */
 public class ProEditPrescription {
 
+	/**
+	 * Physician edits a prescription.
+	 * @param physician logged in
+	 */
 	public static void drive(Physician phy) {
 		Patient patient = getPatient(phy);
 		Prescription p = getPrescription(patient);

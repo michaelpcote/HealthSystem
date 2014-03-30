@@ -10,6 +10,11 @@ import beans.ObservationType;
 import beans.Patient;
 import frontEnd.utility.Utility;
 
+/**
+ * Patient enters data.
+ * @author nelc
+ *
+ */
 public class PatientEnterData {
 
 	/**

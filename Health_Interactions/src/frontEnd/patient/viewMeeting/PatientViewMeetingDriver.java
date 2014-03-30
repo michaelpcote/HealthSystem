@@ -3,8 +3,17 @@ package frontEnd.patient.viewMeeting;
 import frontEnd.utility.Utility;
 import beans.Patient;
 
+/**
+ * Drives the UI for a patient viewing meetings.
+ * @author cmnelso5
+ *
+ */
 public class PatientViewMeetingDriver {
 	
+	/**
+	 * Drives the UI for a patient viewing meetings.
+	 * @param p
+	 */
 	public static void drive(Patient p) {
 		System.out.println("Which schedule would you like to view: ");
 		System.out.println("0 -- Physician Meetings");

@@ -9,6 +9,11 @@ import beans.Patient;
 import beans.SocialWorker;
 import beans.SocialWorkerAppt;
 
+/**
+ * Schedules a meeting for a social worker with a patient.
+ * @author cmnelso5
+ *
+ */
 public class SocialScheduleMeeting {
 
 	public static void drive(SocialWorker sw) {
@@ -21,7 +26,6 @@ public class SocialScheduleMeeting {
 		updateDB(swa);
 	}
 
-	// sid, pid, appt_date, appt_time
 	/**
 	 * Returns the appointment, or null if the social worker does not have any patients
 	 * assigned to them.

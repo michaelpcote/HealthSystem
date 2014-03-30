@@ -8,8 +8,17 @@ import dao.oracle.SocialWorkersDAO;
 import frontEnd.patient.viewData.PatientViewDataDriver;
 import frontEnd.utility.Utility;
 
+/**
+ * Views the patient observation data for a social workers patients.
+ * @author cmnelso5
+ *
+ */
 public class SocialViewPatientObsData {
 
+	/**
+	 * Views the patient observation data for a social workers patients.
+	 * @param social worker logged in.
+	 */
 	public static void drive(SocialWorker sw) {
 		List<Patient> list = SocialWorkersDAO.getPatientsForSocialWorker(sw);
 		if (list.size() == 0) {

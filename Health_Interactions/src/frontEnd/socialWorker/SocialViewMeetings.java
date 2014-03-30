@@ -8,9 +8,17 @@ import beans.Patient;
 import beans.SocialWorker;
 import beans.SocialWorkerAppt;
 
-
+/**
+ * Views meetings a social worker has planned.
+ * @author cmnelso5
+ *
+ */
 public class SocialViewMeetings {
 
+	/**
+	 * Views meetings a social worker has planned.
+	 * @param sw
+	 */
 	public static void drive(SocialWorker sw) {
 		List<SocialWorkerAppt> list = SocialWorkersDAO.viewApptsForSocialWorker(sw.getSid());
 		

@@ -3,8 +3,17 @@ package frontEnd.patient.connection;
 import frontEnd.utility.Utility;
 import beans.Patient;
 
+/**
+ * Drives the UI for a patient viewing connections options.
+ * @author cmnelso5
+ *
+ */
 public class PatientConnectionDriver {
 
+	/**
+	 * Drives the UI for a patient viewing connection options.
+	 * @param p
+	 */
 	public static void drive(Patient p) {
 		System.out.println("What would you like to do: ");
 		System.out.println("0 -- View Health Friends");

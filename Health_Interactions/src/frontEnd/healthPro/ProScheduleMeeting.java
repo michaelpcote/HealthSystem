@@ -12,8 +12,17 @@ import beans.PhysicianAppt;
 import beans.SocialWorker;
 import beans.SocialWorkerAppt;
 
+/**
+ * Schedules an appointment for a physician with a patient.
+ * @author cmnelso5
+ *
+ */
 public class ProScheduleMeeting {
 
+	/**
+	 * Schedules an appointment with a patient.
+	 * @param phys
+	 */
 	public static void drive(Physician phys) {
 		PhysicianAppt pha = getAppointment(phys);
 		
@@ -41,15 +50,30 @@ public class ProScheduleMeeting {
 		return pha;
 	}
 
+	/**
+	 * Gets the time the physician wants to meet at
+	 * @param when passed to get choice it gets the choice
+	 * @param limit of the parameter
+	 * @return
+	 */
 	private static int getTime(String when, int limit) {
 		System.out.println("Enter the " + when + " you would like to meet at (in military form): ");
 		return Utility.getValidChoice(limit);
 	}
 
+	/**
+	 * Gets the date of the appointment.
+	 * @return the date
+	 */
 	private static String getDate() {
 		return Utility.getDate("appointment");
 	}
 
+	/**
+	 * Gets the pid of the patient to schedule an appointment yet.
+	 * @param physician scheduling appointment
+	 * @return pid of patient.
+	 */
 	private static int getPid(Physician phys) {
 		List<Patient> list = PhysiciansDAO.getMyPatients(phys.getPid());
 		System.out.println("Select the Patient you would like to make an appointment with: ");
@@ -60,6 +84,10 @@ public class ProScheduleMeeting {
 		return (int) list.get(choice).getPid();
 	}
 
+	/**
+	 * Updates the database with the appointment.
+	 * @param pha
+	 */
 	private static void updateDB(PhysicianAppt pha) {
 		PhysiciansDAO.createAppt(pha);
 	}

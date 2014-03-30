@@ -6,8 +6,17 @@ import dao.oracle.PhysiciansDAO;
 import beans.Patient;
 import beans.PhysicianAppt;
 
+/**
+ * Patient views meetings with physicians.
+ * @author cmnelso5
+ *
+ */
 public class PatientViewPhysicianMeetings {
 
+	/**
+	 * Patient views meetings with physicians.
+	 * @param p
+	 */
 	public static void drive(Patient p) {
 		List<PhysicianAppt> list = PhysiciansDAO.viewPhysicianApptRequest(p);
 		if (list.size() == 0) {

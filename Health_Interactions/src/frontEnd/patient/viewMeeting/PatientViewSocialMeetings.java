@@ -9,8 +9,17 @@ import beans.SocialWorkerAppt;
 import dao.oracle.PhysiciansDAO;
 import dao.oracle.SocialWorkersDAO;
 
+/**
+ * Patient views meetings they have with social workers.
+ * @author cmnelso5
+ *
+ */
 public class PatientViewSocialMeetings {
 
+	/**
+	 * Patient views meetings they have with social workers.
+	 * @param patient logged in
+	 */
 	public static void drive(Patient p) {
 		List<SocialWorkerAppt> list = SocialWorkersDAO.viewSocialWorkerApptRequest(p);
 		if (list.size() == 0) {

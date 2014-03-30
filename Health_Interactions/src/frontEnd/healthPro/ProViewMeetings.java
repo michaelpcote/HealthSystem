@@ -8,8 +8,17 @@ import beans.Patient;
 import beans.Physician;
 import beans.PhysicianAppt;
 
+/**
+ * Views meetings a physician has scheduled.
+ * @author cmnelso5
+ *
+ */
 public class ProViewMeetings {
 
+	/**
+	 * Views meetings a physician has scheduled.
+	 * @param p
+	 */
 	public static void drive(Physician p) {
 		List<PhysicianAppt> list = PhysiciansDAO.viewApptForPhysician(p.getPid());
 		
@@ -19,6 +28,9 @@ public class ProViewMeetings {
 		displayAppts(list);
 	}
 	
+	/**
+	 * Prints out to the user all the appointments.
+	 */
 	public static void displayAppts(List<PhysicianAppt> list) {
 		for (int i=0; i<list.size(); i++) {
 			PhysicianAppt curr = list.get(i);
