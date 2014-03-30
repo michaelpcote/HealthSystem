@@ -143,7 +143,11 @@ public class ProViewAgrrReport {
 		List<Integer> conditions = getPatientConditions();
 		ObservationType ot = getObsType();
 		String output = ObservationReportsDAO.mostOccurringStringValue(ot, conditions);
-		printOutput(output);
+		if ( output != null && !output.equals("")) {
+			printOutput(output);
+		} else {
+			System.out.println("Not applicable");
+		}
 	}
 
 	/**
@@ -211,10 +215,13 @@ public class ProViewAgrrReport {
 			System.out.println("No data was found for those parameters.");
 			return;
 		}
+		System.out.println("WHATAP --" + output + "--");
+		if ( output.contains(",")) {
 		String[] lines = output.split(",");
-		for (int i=0; i<lines.length; i++) {
-			String[] fields = lines[i].split(":");
-			System.out.println(fields[0] + ":  " + fields[1]);
+			for (int i=0; i<lines.length; i++) {
+				String[] fields = lines[i].split(":");
+				System.out.println(fields[0] + ":  " + fields[1]);
+			}
 		}
 	}
 	

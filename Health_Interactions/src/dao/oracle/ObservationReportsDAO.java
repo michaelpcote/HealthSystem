@@ -356,6 +356,9 @@ public class ObservationReportsDAO {
 		ResultSet rs = null;
 		String choices = ot.getValue_choices();
 		String[] choicesInfo = parseChoices(choices);
+		if ( choicesInfo == null ) {
+			return null;
+		}
 		String col = choicesInfo[0];
 		String mostPopular = "";
 		if ( choices == null || choices.equals("") || !choicesInfo[1].equals("String") ) {
@@ -371,6 +374,8 @@ public class ObservationReportsDAO {
 			rs = ps.executeQuery();
 			if ( rs.next() ) {
 				mostPopular += rs.getString(col);
+			} else {
+				return null;
 			}
 			while ( rs.next() ) {
 				mostPopular += ","+rs.getString(col);
@@ -393,6 +398,9 @@ public class ObservationReportsDAO {
 		ResultSet rs = null;
 		String choices = ot.getValue_choices();
 		String[] choicesInfo = parseChoices(choices);
+		if ( choicesInfo == null ) {
+			return null;
+		}
 		String col = choicesInfo[0];
 		String leastPopular = "";
 		if ( choices == null || choices.equals("") || !choicesInfo[1].equals("String") ) {
@@ -618,6 +626,9 @@ public class ObservationReportsDAO {
 	}
 	
 	private static String[] parseChoices(String valueChoices) {
+		if ( valueChoices == null || valueChoices.equals("")) {
+			return null;
+		}
 		String choiceInfo[] = valueChoices.split(":");
 		return choiceInfo;
 	}
